@@ -9,9 +9,9 @@ Attending:	Chan Kai Ho, Ho Kim Long, Hon Kwun Wing, Wong Kwok Wai, Check Hoi Yan
 Absent:	None
 Recorder:	Cheuk Hoi Yan
 
----- 
+----
 
-1.	Report on progress during the past week
+*1.	Report on progress during the past week*
 
 ||Name||	Tasks worked on in the past week||	Total hours||
 ||Chan Kai Ho	||Brainstorming new ideas, studying how to write Android apps, arranging meetings	||5||
@@ -39,4 +39,5 @@ We couldn’t determine whether it is possible for us to make some desired featu
 ---- 
 
 *4.	Meeting adjournment and next meeting*
+
 The meeting was adjourned at 8:00pm. The next meeting will take place on 15 Feb at 6:00pm.
