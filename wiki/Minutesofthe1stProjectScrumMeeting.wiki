@@ -16,7 +16,7 @@ Recorder: Cheuk Hoi Yan
 
 ---- 
 
- *1.	Report on progress during the past week*
+*1.	Report on progress during the past week*
 
 ||Name||	Tasks worked on in the past week||	Total hours||
 ||Chan Kai Ho	||Brainstorming new ideas, studying how to write Android apps, arranging meetings	||5||
