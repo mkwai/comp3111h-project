@@ -1,6 +1,6 @@
 =COMP 3111H: Introduction to Software Engineering=
 
-=Project Proposal : DailyAssistant =
+=Project Proposal : Daily Assistant =
 
 ==Group Members and Corresponding Roles==
 
