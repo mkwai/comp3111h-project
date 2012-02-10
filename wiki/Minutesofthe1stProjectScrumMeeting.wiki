@@ -25,11 +25,13 @@ Recorder: Cheuk Hoi Yan
 ||Hon Kwun Wing	||Brainstorming new ideas, studying how to write Android apps 	||4.5||
 ||Wong Kwok Wai||	Brainstorming new ideas, studying how to write Android apps	||5||
 
+
 ----
  
 *2.	Discussion of impediments and resolution*
 
 We couldn’t determine whether it is possible for us to make some desired features or functions, such as blocking another apps or websites, connecting with friends and getting their timetables, having location-based functions and importing HKUST timetable because of the lack of related knowledge and techniques. We seek advices from teacher assistant and also some senior students. Furthermore, we decided to search for those knowledge and information on the internet individually so that we can predict the difficulties and ways to achieve these features.
+
 
 --------------------------------------------------------------------------------------
 *3.	Goals for the coming week*
@@ -40,6 +42,7 @@ We couldn’t determine whether it is possible for us to make some desired featu
 ||Ho Kin Long||	Investigating the ways to import HKUST timetable assistant and develop some functions||
 ||Hon Kwun Wing||	Investigating server and database development for the function of connecting friends’ timetable||
 ||Wong Kwok Wai||	Studying networking and develop location-based event reminder, and finding out the possibility of blocking other apps such as facebook and twitter||
+
 
 --------------------------------------------------------------------------------------
 *4.	Meeting adjournment and next meeting*
