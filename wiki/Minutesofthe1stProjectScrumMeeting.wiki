@@ -41,8 +41,7 @@ We couldn’t determine whether it is possible for us to make some desired featu
 ||Hon Kwun Wing||	Investigating server and database development for the function of connecting friends’ timetable||
 ||Wong Kwok Wai||	Studying networking and develop location-based event reminder, and finding out the possibility of blocking other apps such as facebook and twitter||
 
----- 
-
+--------------------------------------------------------------------------------------
 *4.	Meeting adjournment and next meeting*
 
 The meeting was adjourned at 8:00pm. The next meeting will take place on 15 Feb at 6:00pm.
