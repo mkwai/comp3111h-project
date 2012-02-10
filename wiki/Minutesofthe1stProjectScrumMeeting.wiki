@@ -31,8 +31,7 @@ Recorder: Cheuk Hoi Yan
 
 We couldn’t determine whether it is possible for us to make some desired features or functions, such as blocking another apps or websites, connecting with friends and getting their timetables, having location-based functions and importing HKUST timetable because of the lack of related knowledge and techniques. We seek advices from teacher assistant and also some senior students. Furthermore, we decided to search for those knowledge and information on the internet individually so that we can predict the difficulties and ways to achieve these features.
 
----- 
-
+--------------------------------------------------------------------------------------
 *3.	Goals for the coming week*
 
 ||Name||	Tasks that will be worked on in the coming week||
