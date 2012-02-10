@@ -1,6 +1,6 @@
 =COMP 3111H: Introduction to Software Engineering=
 ==Minutes of the 1st Project Scrum Meeting==
-==DailyAssistant==
+==Daily Assistant==
 
 Date:	7/2/2012
 Time:	6:00pm
@@ -9,9 +9,9 @@ Attending:	Chan Kai Ho, Ho Kim Long, Hon Kwun Wing, Wong Kwok Wai, Check Hoi Yan
 Absent:	None
 Recorder:	Cheuk Hoi Yan
 
-----
+---- 
 
-*1.	Report on progress during the past week*
+ *1.	Report on progress during the past week*
 
 ||Name||	Tasks worked on in the past week||	Total hours||
 ||Chan Kai Ho	||Brainstorming new ideas, studying how to write Android apps, arranging meetings	||5||
@@ -21,7 +21,6 @@ Recorder:	Cheuk Hoi Yan
 ||Wong Kwok Wai||	Brainstorming new ideas, studying how to write Android apps	||5||
 
 ---- 
-
 *2.	Discussion of impediments and resolution*
 We couldn’t determine whether it is possible for us to make some desired features or functions, such as blocking another apps or websites, connecting with friends and getting their timetables, having location-based functions and importing HKUST timetable because of the lack of related knowledge and techniques. We seek advices from teacher assistant and also some senior students. Furthermore, we decided to search for those knowledge and information on the internet individually so that we can predict the difficulties and ways to achieve these features.
 
