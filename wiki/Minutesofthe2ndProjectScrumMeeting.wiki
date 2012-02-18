@@ -3,14 +3,19 @@
 ==Daily Assistant==
  
 Date:       15/2/2012
+
  
 Time:       6:00pm
+
  
 Place:      Library LG1
+
  
 Attending:  Chan Kai Ho, Ho Kin Long, Hon Kwun Wing, Wong Kwok Wai, Check Hoi Yan
+
  
 Absent:   None
+
  
 Recorder: Cheuk Hoi Yan
 
@@ -33,6 +38,7 @@ Recorder: Cheuk Hoi Yan
  
 *2.   Discussion of impediments and resolution*
  
+
 Wong Kwok Wai has tried to developed the location-based function and implement the GPS but he does not have an Android phone so that it is very inconvenient for him to test the program. Therefore, he tested with Cheuk Hoi Yan’s phone during the meeting and we borrowed another Android phone for developing our project.
 
 Wong Kwok Wai tested the GPS and found that the location indicated was wrong. He hence found another library.
