@@ -61,4 +61,5 @@ Chan Kai Ho could not fully understand how to develop a calendar interface, such
 --------------------------------------------------------------------------------------
 *4.   Meeting adjournment and next meeting*
  
+
 The meeting was adjourned at 10:00pm. The next meeting will take place on 22 Feb at 7:30pm.
