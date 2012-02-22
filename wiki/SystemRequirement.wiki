@@ -56,7 +56,9 @@ Another button is a download button. It is to get information of other users fro
 More than that, there is a feature in DailyAssistant that user can find out the common available time slots among friends in one month, as the schedule is likely to have changes if it is too far way from today. User can select a group of people, whose timetables are already downloaded, to list out all common available time slots, in the format of “day/month starting time-ending time”, such as 29/2 8:00-10:00”. The result is in chronological order.
  
 Additionally, there is a filter function to set constrains on the resulting list. Different option is provided to facilitate the function, including filter out which day of the week, or time period, which shown in a list and user can cross out those he want to filter out.
+
 Time period that can be filter out include:
+
 0:00-06:00
 
 06:01-12:00
