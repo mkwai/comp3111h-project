@@ -12,7 +12,7 @@ public class AndroidCalendar2Activity extends Activity {
 	CalendarView view;
 	Button b1;
 	
-	
+	//testing123
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
