@@ -120,13 +120,3 @@ Using the GPS function of smart phones, DailyAssistant can get the current locat
 
 
 ----
-
-
-*IMPLEMENTATION SCHEDULE*
-
-||*Sprint*||  ||*requirements (product backlog items)*||*Remarks*||*Due Date*||
-||1||Basic Platform|| ||Release Beta version||March 26||
-||2||Implementation Team||1,2,3,4,5,7||Activitiy 3: Progress CheckPoint1||April 2||
-||3||Implementation Team||6,8,9||Activitiy 3: Progress CheckPoint2||April 16||
-||4||Debugging||ALL||Activitiy 3: Peer Acceptance testing 1 (Improving reliability of program)||April 23||
-||5||Debugging||ALL||Activitiy 3: Peer Acceptance testing 2||April 30||
