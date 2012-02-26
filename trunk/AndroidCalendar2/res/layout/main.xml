@@ -2,21 +2,36 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" 
-    android:background="#111111">
+    android:background="#111111"
+    android:orientation="vertical" >
 
-
-
-    <Button
-        android:id="@+id/b1"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" 
-        android:text="@string/goToToday">
-    </Button>
+        android:layout_height="wrap_content"
+        android:background="#111111"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/bGoToToday"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="@string/go_to_today" >
+        </Button>
+
+        <Button
+            android:id="@+id/bAddEvent"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="@string/add_event" >
+        </Button>
+    </LinearLayout>
 
     <CalendarView
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/view2"
+        android:id="@+id/calendarV"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:focusedMonthDateColor="#FFFFFF"

@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="goToToday">Go To Today</string>
+    <string name="go_to_today">Go To Today</string>
     <string name="app_name">AndroidCalendar2</string>
+    <string name="add_event">Add Event</string>
+    <string name="addevent_content">Content</string>
+    <string name="addevent_content_hint">Enter event content</string>
+    <string name="addevent_starting_time">Starting Time</string>
+    <string name="addevent_ending_time">Ending Time</string>
+    <string name="addevent_location_hint">Enter Location</string>
+    <string name="addevent_location">Location</string>
+    <string name="addevent_reminder">Reminder</string>
+    <string name="addevent_restrict">Restict facebook</string>
+    <string name="addevent_private_event">Private Event</string>
+    <string name="addevent_contact_person">Contatct Person</string>
+    <string name="addevent_optional">Optional:</string>
+    <string name="addevent_contact_person_hint">Enter Contact Person</string>
+    <string name="addevent_confirm">Confirm</string>
+    <string name="addevent_cancel">Cancel</string>
 
 </resources>
