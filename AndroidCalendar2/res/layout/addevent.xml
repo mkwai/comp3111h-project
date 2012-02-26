@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="none" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <!-- content -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/addevent_content"
+            android:textSize="20dp" >
+        </TextView>
+
+        <EditText
+            android:id="@+id/addevent_content_edit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/addevent_content_hint" >
+        </EditText>
+
+        <!-- starting time -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/addevent_starting_time"
+            android:textSize="20dp" >
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/addevent_starting_date_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+            </Button>
+
+            <Button
+                android:id="@+id/addevent_starting_time_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+            </Button>
+        </LinearLayout>
+
+        <!-- ending time -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/addevent_ending_time"
+            android:textSize="20dp" >
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/addevent_ending_date_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+            </Button>
+
+            <Button
+                android:id="@+id/addevent_ending_time_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+            </Button>
+        </LinearLayout>
+
+        <!-- location -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/addevent_location"
+            android:textSize="20dp" >
+        </TextView>
+
+        <EditText
+            android:id="@+id/addevent_location_edit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/addevent_location_hint" >
+        </EditText>
+
+        <!-- reminder setting -->
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/addevent_reminder"
+                android:textSize="20dp" >
+            </TextView>
+
+            <CheckBox
+                android:id="@+id/reminder_checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right" />
+        </LinearLayout>
+        <!-- optional: -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/addevent_optional"
+            android:textSize="20dp" >
+        </TextView>
+
+        <!-- contact person -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/addevent_contact_person"
+            android:textSize="20dp" >
+        </TextView>
+
+        <EditText
+            android:id="@+id/addevent_contact_person_edit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/addevent_contact_person_hint" >
+        </EditText>
+
+        <!-- private event setting -->
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/addevent_private_event"
+                android:textSize="20dp" >
+            </TextView>
+
+            <CheckBox
+                android:id="@+id/private_event_checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right" />
+        </LinearLayout>
+        <!-- restrict facebook setting -->
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/addevent_restrict"
+                android:textSize="20dp" >
+            </TextView>
+
+            <CheckBox
+                android:id="@+id/restrict_checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right" />
+        </LinearLayout>
+
+        <!-- cancel / confirm -->
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/addevent_cancel_button"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="50" 
+                android:text="@string/addevent_cancel">
+            </Button>
+
+            <Button
+                android:id="@+id/addevent_confirm_button"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="50" 
+                                android:text="@string/addevent_confirm">
+            </Button>
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
