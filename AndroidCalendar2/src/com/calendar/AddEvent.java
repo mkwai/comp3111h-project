@@ -13,16 +13,19 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TimePicker;
 
 public class AddEvent extends Activity {
 	private Button cancelButton;
-	private Button saveButton;
+	private Button confirmButton;
 	private Button startingDateButton;
 	private Button endingDateButton;
 	private Button startingTimeButton;
@@ -34,15 +37,33 @@ public class AddEvent extends Activity {
 	public static final int ENDING_DATE_DIALOG = 2;
 	public static final int ENDING_TIME_DIALOG = 3;
 
-
 	// storing the event starting/ending calendar(date+time)
 	private Calendar startingCalendar = Calendar.getInstance();
 	private Calendar endingCalendar = Calendar.getInstance();
 
+	// variable for storing data
+	private EditText content;
+	private EditText location;
+	private EditText contactPerson;
+	private CheckBox reminder;
+	private CheckBox privateEvent;
+	private CheckBox restrictFacebook;
+
 	public void onCreate(Bundle savedInstanceState) {
+
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.addevent);
 
+		content = (EditText) findViewById(R.id.addevent_content_edit);
+		location = (EditText) findViewById(R.id.addevent_location_edit);
+		contactPerson = (EditText) findViewById(R.id.addevent_contact_person_edit);
+		reminder = (CheckBox) findViewById(R.id.reminder_checkBox);
+		privateEvent = (CheckBox) findViewById(R.id.private_event_checkBox);
+		restrictFacebook = (CheckBox) findViewById(R.id.restrict_checkBox);
+
+		cancelButton = (Button)findViewById(R.id.addevent_cancel_button);
+		confirmButton = (Button)findViewById(R.id.addevent_confirm_button);
 		startingDateButton = (Button) findViewById(R.id.addevent_starting_date_button);
 		startingTimeButton = (Button) findViewById(R.id.addevent_starting_time_button);
 		endingDateButton = (Button) findViewById(R.id.addevent_ending_date_button);
@@ -50,7 +71,7 @@ public class AddEvent extends Activity {
 
 		// setting up default starting/ending date/time
 		Calendar calendar = Calendar.getInstance();
-	
+
 		startingDateButton.setText(DateFormat.format("MMM", calendar) + " "
 				+ DateFormat.format("dd", calendar) + " , "
 				+ DateFormat.format("yyyy", calendar));
@@ -62,7 +83,46 @@ public class AddEvent extends Activity {
 		endingTimeButton.setText(DateFormat.format("kk", calendar) + ":"
 				+ DateFormat.format("mm", calendar));
 
-		//setting up onClickListener for each button
+		// setting up onClickListener for each button
+
+		cancelButton.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				content.setText("");
+				location.setText("");
+				Calendar calendar = Calendar.getInstance();
+
+				startingDateButton.setText(DateFormat.format("MMM", calendar) + " "
+						+ DateFormat.format("dd", calendar) + " , "
+						+ DateFormat.format("yyyy", calendar));
+				startingTimeButton.setText(DateFormat.format("kk", calendar) + ":"
+						+ DateFormat.format("mm", calendar));
+				endingDateButton.setText(DateFormat.format("MMM", calendar) + " "
+						+ DateFormat.format("dd", calendar) + " , "
+						+ DateFormat.format("yyyy", calendar));
+				endingTimeButton.setText(DateFormat.format("kk", calendar) + ":"
+						+ DateFormat.format("mm", calendar));				
+				
+				contactPerson.setText("");
+				reminder.setChecked(false);
+				privateEvent.setChecked(false);
+				restrictFacebook.setChecked(false);
+			}
+			
+		});
+
+		confirmButton.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				// sent data to database
+			}
+			
+		});
+		
 		startingDateButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
@@ -91,7 +151,11 @@ public class AddEvent extends Activity {
 				showDialog(ENDING_TIME_DIALOG);
 			}
 		});
+		
+		
+		
 	}
+
 	// call when create dialog
 	protected Dialog onCreateDialog(int id) {
 
@@ -122,14 +186,15 @@ public class AddEvent extends Activity {
 
 			}
 		};
-		
+
 		// listener for setting date in ending date dialog
 		OnDateSetListener endingDateSetListener = new OnDateSetListener() {
 
 			// use when "set" press
 			public void onDateSet(DatePicker view, int year, int monthOfYear,
 					int dayOfMonth) {
-				//compareCalendar is temp, if valid input then compare -> ending
+				// compareCalendar is temp, if valid input then compare ->
+				// ending
 				Calendar compareCalendar = Calendar.getInstance();
 				compareCalendar.set(year, monthOfYear, dayOfMonth);
 				compareCalendar.set(Calendar.HOUR_OF_DAY,
@@ -152,7 +217,7 @@ public class AddEvent extends Activity {
 
 			}
 		};
-		
+
 		// listener for setting date in starting time dialog
 		OnTimeSetListener startingTimeSetListener = new OnTimeSetListener() {
 
@@ -200,16 +265,17 @@ public class AddEvent extends Activity {
 			}
 		};
 
-		
-		//select which dialog to show by verifying which button was press
+		// select which dialog to show by verifying which button was press
 		switch (id) {
 		case STARTING_DATE_DIALOG:
 			return new DatePickerDialog(this, startingDateSetListener,
-					startingCalendar.get(Calendar.YEAR), startingCalendar.get(Calendar.MONTH),
+					startingCalendar.get(Calendar.YEAR),
+					startingCalendar.get(Calendar.MONTH),
 					startingCalendar.get(Calendar.DAY_OF_MONTH));
 		case ENDING_DATE_DIALOG:
 			return new DatePickerDialog(this, endingDateSetListener,
-					endingCalendar.get(Calendar.YEAR), endingCalendar.get(Calendar.MONTH),
+					endingCalendar.get(Calendar.YEAR),
+					endingCalendar.get(Calendar.MONTH),
 					endingCalendar.get(Calendar.DAY_OF_MONTH));
 		case STARTING_TIME_DIALOG:
 			return new TimePickerDialog(this, startingTimeSetListener,
@@ -222,5 +288,39 @@ public class AddEvent extends Activity {
 		}
 		return null;
 
+	}
+
+	
+// the following is get function for getting data	
+	public Calendar getStartingCalendar() {
+		return startingCalendar;
+	}
+
+	public Calendar getEndingCalendar() {
+		return endingCalendar;
+	}
+
+	public Editable getContent() {
+		return content.getText();
+	}
+
+	public Editable getLocation() {
+		return location.getText();
+	}
+
+	public Editable getContactPerson() {
+		return contactPerson.getText();
+	}
+
+	public boolean getReminder() {
+		return reminder.isChecked();
+	}
+
+	public boolean getPrivateEvent() {
+		return privateEvent.isChecked();
+	}
+
+	public boolean getRestrictFacebook() {
+		return restrictFacebook.isChecked();
 	}
 }

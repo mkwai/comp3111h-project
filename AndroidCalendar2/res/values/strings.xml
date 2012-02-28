@@ -11,7 +11,7 @@
     <string name="addevent_location_hint">Enter Location</string>
     <string name="addevent_location">Location</string>
     <string name="addevent_reminder">Reminder</string>
-    <string name="addevent_restrict">Restict facebook</string>
+    <string name="addevent_restrict">Restrict facebook</string>
     <string name="addevent_private_event">Private Event</string>
     <string name="addevent_contact_person">Contatct Person</string>
     <string name="addevent_optional">Optional:</string>
