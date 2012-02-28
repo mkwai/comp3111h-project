@@ -12,9 +12,11 @@ import android.app.Dialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -75,11 +77,14 @@ public class AddEvent extends Activity {
 		startingDateButton.setText(DateFormat.format("MMM", calendar) + " "
 				+ DateFormat.format("dd", calendar) + " , "
 				+ DateFormat.format("yyyy", calendar));
+		
 		startingTimeButton.setText(DateFormat.format("kk", calendar) + ":"
 				+ DateFormat.format("mm", calendar));
+		
 		endingDateButton.setText(DateFormat.format("MMM", calendar) + " "
 				+ DateFormat.format("dd", calendar) + " , "
 				+ DateFormat.format("yyyy", calendar));
+		
 		endingTimeButton.setText(DateFormat.format("kk", calendar) + ":"
 				+ DateFormat.format("mm", calendar));
 
@@ -278,18 +283,88 @@ public class AddEvent extends Activity {
 					endingCalendar.get(Calendar.MONTH),
 					endingCalendar.get(Calendar.DAY_OF_MONTH));
 		case STARTING_TIME_DIALOG:
-			return new TimePickerDialog(this, startingTimeSetListener,
+			return new MyTimePickerDialog(this, startingTimeSetListener,
 					startingCalendar.get(Calendar.HOUR_OF_DAY),
 					startingCalendar.get(Calendar.MINUTE), true);
 		case ENDING_TIME_DIALOG:
-			return new TimePickerDialog(this, endingTimeSetListener,
+			return new MyTimePickerDialog(this, endingTimeSetListener,
 					endingCalendar.get(Calendar.HOUR_OF_DAY),
 					endingCalendar.get(Calendar.MINUTE), true);
 		}
+
+		
+		
 		return null;
-
 	}
+	
+	
+	private class MyTimePickerDialog extends TimePickerDialog{
+		
+		private int currentMinute = 0;
+		public MyTimePickerDialog(Context context,
+				OnTimeSetListener callBack, int hourOfDay, int minute,
+				boolean is24HourView) {
+			super(context, callBack, hourOfDay, minute, is24HourView);
+			// TODO Auto-generated constructor stub
+			currentMinute = restoreMinute(minute);
+		}
+		
+	    public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+	        updateDisplay(view, hourOfDay, minute);          
+	    }
+		
 
+	    private void updateDisplay(TimePicker timePicker, int hourOfDay, int minute) {
+	    	
+	    	// do calculation of next time 
+	    	if(currentMinute==0 && minute==59){
+	    		currentMinute = 55;
+	    	}else
+	    		currentMinute = ((currentMinute-minute)>0)?currentMinute-5:currentMinute+5;  
+	    	
+	    	timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+	            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {}
+	        });
+	    	
+	    	// set minute
+	    	timePicker.setCurrentMinute(currentMinute);
+	    	if(currentMinute==60)
+	    		timePicker.setCurrentHour(hourOfDay+1);
+	    	currentMinute=timePicker.getCurrentMinute();
+	    	
+	    	timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+	            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+	            	updateDisplay(view,hourOfDay,minute);
+	            }
+	    	});
+	    	
+
+	    }
+		
+
+	    
+	}
+	
+	//lower bound
+    private int restoreMinute(int minute){
+    	int intervals[]= new int[12];
+    	int startmin=0;
+    	for(int i = 0;i<11;i++){
+    		intervals[i]=startmin;
+    		startmin+=5;
+    	}
+    	
+    	
+    	int nextMinute=0;
+    	for(int i = 11;i>=0;i--){
+    		if(minute>intervals[i]){
+    			nextMinute=intervals[i];
+    			break;
+    		}
+    	}
+    	
+    	return nextMinute;
+    }
 	
 // the following is get function for getting data	
 	public Calendar getStartingCalendar() {
