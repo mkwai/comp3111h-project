@@ -1,5 +1,6 @@
 package com.calendar;
 
+import com.localdb.*;
 import com.test2.R;
 
 import android.app.Activity;
@@ -14,13 +15,21 @@ public class AndroidCalendar2Activity extends Activity {
 	/** Called when the activity is first created. */
 	CalendarView calendarV;
 	Button bGoToToday, bAddEvent;
-
+	private static MyDataBase mdb;
+	
+	public static MyDataBase getDB(){
+		return mdb;
+	}
+	
 	// testing123
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
+		// create or connect database
+		mdb = new MyDataBase(this);
+		
 		// button GoToToday
 		bGoToToday = (Button) findViewById(R.id.bGoToToday);
 		bGoToToday.setOnClickListener(new OnClickListener() {
