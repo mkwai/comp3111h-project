@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.json.JSONArray;
+
 import com.test2.R;
 
 import android.app.Activity;
@@ -124,6 +126,34 @@ public class AddEvent extends Activity {
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				// sent data to database
+				
+				/*		SAMPLE TO TEST THE DATABASE
+				
+				String eventid="123123"; //random, cannot repeated in database, need check db
+				String title = "sth"; 
+				String body = content.getText().toString();
+				String startTime = startingTimeButton.getText().toString();
+				String endTime = endingTimeButton.getText().toString();
+				String isPrivate = privateEvent.isChecked()?"1":"0";
+				String locat = location.getText().toString();
+				String remind = reminder.getText().toString();
+				
+				String args[] ={eventid,title,body,startTime,endTime,isPrivate,locat,remind};
+				
+				AndroidCalendar2Activity.getDB().insert("TimeTable", args);
+				JSONArray ja;
+				try{
+					ja = AndroidCalendar2Activity.getDB().fetchAllNotes("TimeTable", null, null);
+					for(int i = 0;i<ja.length();i++){
+						Log.i("output",ja.getJSONObject(i).toString());
+					}
+				}catch (Exception e){
+					Log.i("error",e.toString());
+				}
+				
+				*/
+				
+				
 			}
 			
 		});
