@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="go_to_today">Go To Today</string>
+    <string name="monthlyview_go_to_today">Go To Today</string>
     <string name="app_name">AndroidCalendar2</string>
-    <string name="add_event">Add Event</string>
+    <string name="monthlyview_add_event">Add Event</string>
     <string name="addevent_content">Content</string>
     <string name="addevent_content_hint">Enter event content</string>
     <string name="addevent_starting_time">Starting Time</string>
@@ -18,5 +18,7 @@
     <string name="addevent_contact_person_hint">Enter Contact Person</string>
     <string name="addevent_confirm">Confirm</string>
     <string name="addevent_cancel">Cancel</string>
-
+    <color name="background_color">#505050</color>
+    <string name="monthlyview_synchronous">synchronous</string>
+ 
 </resources>

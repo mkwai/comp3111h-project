@@ -2,8 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#111111"
-    android:orientation="vertical" >
+    android:background="@color/background_color"
+    android:orientation="vertical" 
+
+ >
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,17 +18,25 @@
             android:id="@+id/bGoToToday"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="50"
-            android:text="@string/go_to_today" >
+            android:layout_weight="33"
+            android:text="@string/monthlyview_go_to_today" >
         </Button>
 
         <Button
             android:id="@+id/bAddEvent"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="50"
-            android:text="@string/add_event" >
+            android:layout_weight="33"
+            android:text="@string/monthlyview_add_event" >
         </Button>
+                <Button
+            android:id="@+id/bSynchronous"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            android:text="@string/monthlyview_synchronous" >
+        </Button>
+        
     </LinearLayout>
 
     <CalendarView
