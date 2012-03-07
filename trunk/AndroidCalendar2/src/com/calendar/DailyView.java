@@ -12,7 +12,6 @@ public class DailyView extends Activity {
 
 	public static int dailyYear, dailyMonth, dailyDayOfMonth;
 	TextView dailyview_today;
-	TableLayout dailyV;
 	
 	
 	protected static void setDailyYear(int year) {
@@ -32,9 +31,7 @@ public class DailyView extends Activity {
 		setContentView(R.layout.dailyview);
 		dailyview_today = (TextView) findViewById(R.id.dailyview_today);
 		dailyview_today.setText("Today is " + dailyDayOfMonth + " / " + dailyMonth + " / " +dailyYear);
-		dailyV = (TableLayout)findViewById(R.id.dailyV);
-		dailyV.setColumnShrinkable(2, true);
-		dailyV.setColumnStretchable(2, true);
+
 	}
 
 }
