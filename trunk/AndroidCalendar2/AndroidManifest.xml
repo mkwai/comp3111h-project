@@ -18,11 +18,38 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+                <activity
+            android:name="com.calendar.MonthlyView"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.calendar.MONTHLYVIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
         <activity
             android:name="com.calendar.AddEvent"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="com.calendar.ADDEVENT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.calendar.DailyView"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.calendar.DAILYVIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+                <activity
+            android:name="com.calendar.Synchronous"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.calendar.SYNCHRONOUS" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

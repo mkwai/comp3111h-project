@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="dailyview_12am">12:00am</string>
+    <string name="dailyview_1am">1:00am</string>
+    <string name="dailyview_2am">2:00am</string>
+    <string name="dailyview_3am">3:00am</string>
+    <string name="dailyview_4am">4:00am</string>
+    <string name="dailyview_5am">5:00am</string>
+    <string name="dailyview_6am">6:00am</string>
+    <string name="dailyview_7am">7:00am</string>
+    <string name="dailyview_8am">8:00am</string>
+    <string name="dailyview_9am">9:00am</string>
+    <string name="dailyview_10am">10:00am</string>
+    <string name="dailyview_11am">11:00am</string>
+ 
+</resources>
