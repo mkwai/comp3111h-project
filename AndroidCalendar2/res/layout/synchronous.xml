@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-        android:background="@color/background_color" >
+    android:background="@color/background_color" >
 
     <TextView
         android:layout_width="wrap_content"
@@ -12,4 +12,8 @@
         android:text="This is synchornous page"
         android:textSize="20dp" />
 
+    
+    
+    
+    
 </LinearLayout>
