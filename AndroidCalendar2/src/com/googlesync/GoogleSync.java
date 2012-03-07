@@ -1,7 +1,4 @@
-/**
- * @author (Your Name Here)
- *
- */
+
 package com.googlesync;
 
 import com.google.gdata.client.calendar.CalendarQuery;
