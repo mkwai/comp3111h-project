@@ -4,6 +4,10 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
-	<classpathentry kind="lib" path="C:/Users/Dickson/Desktop/gdata-src.java-1.46.0/gdata/java/lib/gdata-calendar-2.0.jar"/>
+	<classpathentry kind="lib" path="lib/gdata-calendar-2.0.jar"/>
+	<classpathentry kind="lib" path="lib/gdata-calendar-meta-2.0.jar"/>
+	<classpathentry kind="lib" path="lib/gdata-client-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/gdata-client-meta-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/gdata-core-1.0.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
