@@ -8,7 +8,7 @@ Time:       6pm
 
 Place:      Library LG1
 
-Attending:  Chan Kai Ho, Ho Kin Long, Hon Kwun Wing, Wong Kwok Wai, Check Hoi Yan
+Attending:  Chan Kai Ho, Ho Kin Long, Hon Kwun Wing, Wong Kwok Wai, Cheuk Hoi Yan
 
 Absent:   None
 
@@ -20,7 +20,7 @@ Recorder: Cheuk Hoi Yan
 
 ||Name||       Tasks worked on in the past week||     Total hours||
 ||Chan Kai Ho||    Developing the interface of daily view ||8||
-||Check Hoi Yan     ||Writing minutes, preparing project presentation||7||
+||Cheuk Hoi Yan     ||Writing minutes, preparing project presentation||7||
 ||Ho Kin Long|| Developing google calendar synchronization using google API||8||
 ||Hon Kwun Wing||  Developing timetable sharing social interaction system, linking the app to facebook using facebook API  ||7||
 ||Wong Kwok Wai||  Developing function of checking current accessed websites  ||7||
@@ -40,7 +40,7 @@ Ho Kin Long asked that if we can use the existing .jar in our project. We tried 
 
 ||Name||       Tasks that will be worked on in the coming week||
 ||Chan Kai Ho||    Studying how to implement daily view using imageview,Writing use-case model ||
-||Check Hoi Yan     ||Writing minutes||
+||Cheuk Hoi Yan     ||Writing minutes||
 ||Ho Kin Long||     Writing domain model, use-case model, implementing export timetable to an image file(.jpg) ||
 ||Hon Kwun Wing||      Writing domain model, use-case model||
 ||Wong Kwok Wai||      Writing use-case model||
