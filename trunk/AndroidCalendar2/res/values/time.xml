@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="vertical_spacing">60dp</dimen><string name="twelve_am">12:00am</string>
+    <string name="one_am">1:00am</string>
+    
+    <string name="three_am">3:00am</string>
+    <string name="two_am">2:00am</string>
+    <string name="four_am">4:00am</string>
+    <color name="thick_line">#606060</color>
+    
+</resources>

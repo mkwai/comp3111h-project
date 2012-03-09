@@ -11,7 +11,9 @@ public class DailyView extends Activity {
 
 	public static int dailyYear, dailyMonth, dailyDayOfMonth;
 	TextView dailyview_today;
-
+	TextView testing;
+	
+	
 	protected static void setDailyYear(int year) {
 		dailyYear = year;
 	}
@@ -31,6 +33,9 @@ public class DailyView extends Activity {
 		dailyview_today.setText("Today is " + dailyDayOfMonth + " / "
 				+ dailyMonth + " / " + dailyYear);
 
+		testing = new TextView(this);
+		//testing.set
+		
 	}
 
 }
