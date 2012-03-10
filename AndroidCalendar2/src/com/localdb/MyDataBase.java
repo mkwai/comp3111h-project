@@ -2,6 +2,7 @@ package com.localdb;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -34,13 +35,14 @@ public class MyDataBase {
     
     private static class TimeTable implements Table{
     	public String[] getFields(){
-    		return new String[] {"eventID", "title", "body", "startTime",
+    		return new String[] {"eventID", "title", "body","startDate","endDate", "startTime",
     				"endTime", "private", "location","reminder"};
     	}
+
     	public String getName(){return "TimeTable";}
     	public String getCreate(){
     		return "create table TimeTable "+
-    				"(eventID INT, title TEXT, body TEXT, startTime TEXT, endTime TEXT, private INT, location TEXT, reminder TEXT);";
+    				"(eventID INT, title TEXT, body TEXT, startDate INT, endDate INT, startTime TEXT, endTime TEXT, private INT, location TEXT, reminder TEXT);";
     	}
     }
     
@@ -123,7 +125,6 @@ public class MyDataBase {
     	mCursor.moveToFirst();
     	try{
     	while(mCursor.isAfterLast()==false){
-    		Log.i("once","once");
     		JSONObject JO = new JSONObject();
     		for(int i = 0;i<T.getFields().length;i++){
     			JO.put(T.getFields()[i], mCursor.getString(i));
@@ -135,6 +136,40 @@ public class MyDataBase {
     	Log.i("inf",Integer.toString(JA.length()));
     	}
     	return JA;
+    }
+    
+    public JSONArray fetchConditional(String tableName, String condition){
+    	Table T = getTable(tableName);
+    	JSONArray JA = new JSONArray();
+    	Cursor mCursor = mDb.query(T.getName(), T.getFields(), condition, null, null, null, null);mCursor.moveToFirst();
+    	try{
+    	while(mCursor.isAfterLast()==false){
+    		JSONObject JO = new JSONObject();
+    		for(int i = 0;i<T.getFields().length;i++){
+    			JO.put(T.getFields()[i], mCursor.getString(i));
+    		}
+    		JA.put(JO);
+    		mCursor.moveToNext();
+    	}
+    	}catch(Exception e){
+    	Log.i("inf",Integer.toString(JA.length()));
+    	}
+    	return JA;
+    }
+    
+    // generate 36chars random event id
+    public String GiveEventID(){
+    	Random x = new Random();
+    	String pool = "abcdefghijklmnopqrstuvwxyz0123456789";
+    	String newid = "";
+    	for(int i = 0;i<36;i++){
+    		newid+=pool.charAt(x.nextInt(36));
+    	}
+    	JSONArray ja = fetchAllNotes(TimeT.getName(),new String[] {TimeT.getFields()[0]},new String[] {newid});
+    	if(ja.length()!=0)
+    		newid = GiveEventID();
+    	return newid;
+    	
     }
     
     public String whereFields(String[] fields){
