@@ -19,6 +19,6 @@
     <string name="addevent_confirm">Confirm</string>
     <string name="addevent_cancel">Cancel</string>
     <color name="background_color">#505050</color>
-    <string name="monthlyview_synchronous">synchronous</string>
+    <string name="monthlyview_synchronous">Synchronous</string>
  
 </resources>

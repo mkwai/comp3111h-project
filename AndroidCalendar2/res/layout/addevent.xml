@@ -7,8 +7,8 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" 
-        android:background="@color/background_color">
+        android:background="@color/background_color"
+        android:orientation="vertical" >
 
         <!-- content -->
 
@@ -98,7 +98,7 @@
 
         <!-- reminder setting -->
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
@@ -106,6 +106,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
                 android:text="@string/addevent_reminder"
                 android:textSize="20dp" >
             </TextView>
@@ -114,8 +116,10 @@
                 android:id="@+id/reminder_checkBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="right" />
-        </LinearLayout>
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true" />
+        </RelativeLayout>
+
         <!-- optional: -->
 
         <TextView
@@ -143,7 +147,7 @@
 
         <!-- private event setting -->
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
@@ -151,19 +155,23 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
                 android:text="@string/addevent_private_event"
                 android:textSize="20dp" >
+                >
             </TextView>
 
             <CheckBox
                 android:id="@+id/private_event_checkBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="right" />
-        </LinearLayout>
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true" />
+        </RelativeLayout>
         <!-- restrict facebook setting -->
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
@@ -171,16 +179,20 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
                 android:text="@string/addevent_restrict"
                 android:textSize="20dp" >
+                >
             </TextView>
 
             <CheckBox
                 android:id="@+id/restrict_checkBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="right" />
-        </LinearLayout>
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true" />
+        </RelativeLayout>
 
         <!-- cancel / confirm -->
 
@@ -193,16 +205,16 @@
                 android:id="@+id/addevent_cancel_button"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="50" 
-                android:text="@string/addevent_cancel">
+                android:layout_weight="50"
+                android:text="@string/addevent_cancel" >
             </Button>
 
             <Button
                 android:id="@+id/addevent_confirm_button"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="50" 
-                                android:text="@string/addevent_confirm">
+                android:layout_weight="50"
+                android:text="@string/addevent_confirm" >
             </Button>
         </LinearLayout>
     </LinearLayout>
