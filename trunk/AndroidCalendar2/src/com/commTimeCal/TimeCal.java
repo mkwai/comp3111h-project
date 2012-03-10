@@ -1,7 +1,16 @@
 package com.commTimeCal;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import org.json.JSONArray;
+
+import android.util.Log;
+
+import com.calendar.AndroidCalendar2Activity;
 
 public class TimeCal {
 	/*
@@ -110,4 +119,70 @@ public class TimeCal {
 		}
 	}
 	
+	// input two days, e.g. 10-03-2012, 10-03-2012
+	// return {eventID, start time, length, .. .. ..}
+	public static String[] getInterval(String sDate){
+		LinkedList<String> x = new LinkedList<String>();
+		
+		JSONArray ja; 
+		String condition=" startDate <= '"+sDate+"' AND endDate >= '"+sDate+"' ";
+		
+		
+		try{
+			ja = AndroidCalendar2Activity.getDB().fetchConditional("TimeTable", condition);
+			for(int i = 0;i<ja.length();i++){
+				String eid, sd,ed,st,et,stime, len;
+				eid = ja.getJSONObject(i).getString("eventID");
+				sd = ja.getJSONObject(i).getString("startDate");
+				st = ja.getJSONObject(i).getString("startTime");
+				if(Integer.parseInt(sd)<Integer.parseInt(sDate)){
+					stime = "0";
+					st = "00:00"; //for later compare
+				}
+				else{
+					stime = st;
+				}
+				
+
+				ed = ja.getJSONObject(i).getString("endDate");
+				et = ja.getJSONObject(i).getString("endTime");
+				
+				if(Integer.parseInt(ed)>Integer.parseInt(sDate))
+					len=String.valueOf(24*5);
+				else{
+					Date sx = new SimpleDateFormat("HH:mm").parse(st);
+					Date ex = new SimpleDateFormat("HH:mm").parse(et);
+					len = String.valueOf(TimeUnit.MILLISECONDS.toMinutes((ex.getTime()-sx.getTime())/5));
+				}
+				
+				x.add(eid);
+				x.add(stime);
+				x.add(len);		
+			}
+			
+			}catch(Exception e){
+				Log.i("error",e.toString()); 
+		}
+		
+		
+		
+		return x.toArray(new String[x.size()]);
+		
+		
+	}
+	
+	// convert to date format
+	public static Date getADate(String adate, String atime){
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd HH:mm");
+		Date x = new Date();
+		try{
+			x = df.parse(adate+" "+atime);
+		}catch(Exception e){
+			Log.i("date",e.toString());
+		}
+		return x;
+		
+	}
+	
+
 }
