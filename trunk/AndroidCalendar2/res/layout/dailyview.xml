@@ -24,7 +24,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@color/background_color"
-            android:orientation="vertical">
+            android:orientation="vertical" 
+            android:id="@+id/daily_relativelayout">
 
             <!-- time text from 12am to 12pm -->
 
@@ -78,10 +79,10 @@
             </TextView>
 
             <!-- line in each xx:00 -->
-            
-            
-            
+
+
             <!-- line in each xx:30 -->
+
 
 
         </RelativeLayout>

@@ -16,6 +16,7 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.format.DateFormat;
@@ -42,6 +43,7 @@ public class AddEvent extends Activity {
 	public static final int ENDING_DATE_DIALOG = 2;
 	public static final int ENDING_TIME_DIALOG = 3;
 
+	private Calendar currentCalendar = Calendar.getInstance();
 	// storing the event starting/ending calendar(date+time)
 	private Calendar startingCalendar = Calendar.getInstance();
 	private Calendar endingCalendar = Calendar.getInstance();
@@ -56,7 +58,6 @@ public class AddEvent extends Activity {
 
 	public void onCreate(Bundle savedInstanceState) {
 
-
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.addevent);
 
@@ -67,98 +68,108 @@ public class AddEvent extends Activity {
 		privateEvent = (CheckBox) findViewById(R.id.private_event_checkBox);
 		restrictFacebook = (CheckBox) findViewById(R.id.restrict_checkBox);
 
-		cancelButton = (Button)findViewById(R.id.addevent_cancel_button);
-		confirmButton = (Button)findViewById(R.id.addevent_confirm_button);
+		cancelButton = (Button) findViewById(R.id.addevent_cancel_button);
+		confirmButton = (Button) findViewById(R.id.addevent_confirm_button);
 		startingDateButton = (Button) findViewById(R.id.addevent_starting_date_button);
 		startingTimeButton = (Button) findViewById(R.id.addevent_starting_time_button);
 		endingDateButton = (Button) findViewById(R.id.addevent_ending_date_button);
 		endingTimeButton = (Button) findViewById(R.id.addevent_ending_time_button);
 
 		// setting up default starting/ending date/time
-		Calendar calendar = Calendar.getInstance();
 
-		startingDateButton.setText(DateFormat.format("MMM", calendar) + " "
-				+ DateFormat.format("dd", calendar) + " , "
-				+ DateFormat.format("yyyy", calendar));
-		
-		startingTimeButton.setText(DateFormat.format("kk", calendar) + ":"
-				+ DateFormat.format("mm", calendar));
-		
-		endingDateButton.setText(DateFormat.format("MMM", calendar) + " "
-				+ DateFormat.format("dd", calendar) + " , "
-				+ DateFormat.format("yyyy", calendar));
-		
-		endingTimeButton.setText(DateFormat.format("kk", calendar) + ":"
-				+ DateFormat.format("mm", calendar));
+		CharSequence currentYear = DateFormat.format("yyyy", currentCalendar);
+		CharSequence currentMonth = DateFormat.format("MMM", currentCalendar);
+		CharSequence currentDate = DateFormat.format("dd", currentCalendar);
+		CharSequence currentHour = DateFormat.format("kk", currentCalendar);
+		int currentMinute = Integer.parseInt((String) (DateFormat.format("mm",
+				currentCalendar)));
+		currentMinute = (currentMinute / 5) * 5;
+
+		// convert the minutes in current calendar to 5 minute interval
+		currentCalendar.set(Calendar.MINUTE, currentMinute);
+		startingCalendar = currentCalendar;
+		endingCalendar = currentCalendar;
+
+		CharSequence currentMinuteConverted = currentMinute <= 5 ? "0"
+				+ Integer.toString(currentMinute) : Integer
+				.toString(currentMinute);
+
+		startingDateButton.setText(currentMonth + " " + currentDate + " , "
+				+ currentYear);
+
+		startingTimeButton.setText(currentHour + ":" + currentMinuteConverted);
+
+		endingDateButton.setText(currentMonth + " " + currentDate + " , "
+				+ currentYear);
+
+		endingTimeButton.setText(currentHour + ":" + currentMinuteConverted);
 
 		// setting up onClickListener for each button
 
-		cancelButton.setOnClickListener(new OnClickListener(){
+		cancelButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				content.setText("");
-				location.setText("");
-				Calendar calendar = Calendar.getInstance();
 
-				startingDateButton.setText(DateFormat.format("MMM", calendar) + " "
-						+ DateFormat.format("dd", calendar) + " , "
-						+ DateFormat.format("yyyy", calendar));
-				startingTimeButton.setText(DateFormat.format("kk", calendar) + ":"
-						+ DateFormat.format("mm", calendar));
-				endingDateButton.setText(DateFormat.format("MMM", calendar) + " "
-						+ DateFormat.format("dd", calendar) + " , "
-						+ DateFormat.format("yyyy", calendar));
-				endingTimeButton.setText(DateFormat.format("kk", calendar) + ":"
-						+ DateFormat.format("mm", calendar));				
-				
-				contactPerson.setText("");
-				reminder.setChecked(false);
-				privateEvent.setChecked(false);
-				restrictFacebook.setChecked(false);
-			}
-			
+				finish();
+				/*
+				 * content.setText(""); location.setText(""); Calendar calendar
+				 * = Calendar.getInstance();
+				 * 
+				 * startingDateButton.setText(DateFormat.format("MMM", calendar)
+				 * + " " + DateFormat.format("dd", calendar) + " , " +
+				 * DateFormat.format("yyyy", calendar));
+				 * startingTimeButton.setText(DateFormat.format("kk", calendar)
+				 * + ":" + DateFormat.format("mm", calendar));
+				 * endingDateButton.setText(DateFormat.format("MMM", calendar) +
+				 * " " + DateFormat.format("dd", calendar) + " , " +
+				 * DateFormat.format("yyyy", calendar));
+				 * endingTimeButton.setText(DateFormat.format("kk", calendar) +
+				 * ":" + DateFormat.format("mm", calendar));
+				 * 
+				 * contactPerson.setText(""); reminder.setChecked(false);
+				 * privateEvent.setChecked(false);
+				 * restrictFacebook.setChecked(false);
+				 */}
+
 		});
 
-		confirmButton.setOnClickListener(new OnClickListener(){
+		confirmButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				// sent data to database
-				
-				/*		SAMPLE TO TEST THE DATABASE
-				
-				String eventid="123123"; //random, cannot repeated in database, need check db
-				String title = "sth"; 
-				String body = content.getText().toString();
-				String startTime = startingTimeButton.getText().toString();
-				String endTime = endingTimeButton.getText().toString();
-				String isPrivate = privateEvent.isChecked()?"1":"0";
-				String locat = location.getText().toString();
-				String remind = reminder.getText().toString();
-				
-				String args[] ={eventid,title,body,startTime,endTime,isPrivate,locat,remind};
-				
-				AndroidCalendar2Activity.getDB().insert("TimeTable", args);
-				JSONArray ja;
-				try{
-					ja = AndroidCalendar2Activity.getDB().fetchAllNotes("TimeTable", null, null);
-					for(int i = 0;i<ja.length();i++){
-						Log.i("output",ja.getJSONObject(i).toString());
-					}
-				}catch (Exception e){
-					Log.i("error",e.toString());
-				}
-				
-				*/
-				
-				
+
+				/*
+				 * SAMPLE TO TEST THE DATABASE
+				 * 
+				 * String eventid="123123"; //random, cannot repeated in
+				 * database, need check db String title = "sth"; String body =
+				 * content.getText().toString(); String startTime =
+				 * startingTimeButton.getText().toString(); String endTime =
+				 * endingTimeButton.getText().toString(); String isPrivate =
+				 * privateEvent.isChecked()?"1":"0"; String locat =
+				 * location.getText().toString(); String remind =
+				 * reminder.getText().toString();
+				 * 
+				 * String args[]
+				 * ={eventid,title,body,startTime,endTime,isPrivate
+				 * ,locat,remind};
+				 * 
+				 * AndroidCalendar2Activity.getDB().insert("TimeTable", args);
+				 * JSONArray ja; try{ ja =
+				 * AndroidCalendar2Activity.getDB().fetchAllNotes("TimeTable",
+				 * null, null); for(int i = 0;i<ja.length();i++){
+				 * Log.i("output",ja.getJSONObject(i).toString()); } }catch
+				 * (Exception e){ Log.i("error",e.toString()); }
+				 */
+
 			}
-			
+
 		});
-		
+
 		startingDateButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
@@ -187,9 +198,7 @@ public class AddEvent extends Activity {
 				showDialog(ENDING_TIME_DIALOG);
 			}
 		});
-		
-		
-		
+
 	}
 
 	// call when create dialog
@@ -323,81 +332,80 @@ public class AddEvent extends Activity {
 					endingCalendar.get(Calendar.MINUTE), true);
 		}
 
-		
-		
 		return null;
 	}
-	
-	
-	private class MyTimePickerDialog extends TimePickerDialog{
-		
+
+	private class MyTimePickerDialog extends TimePickerDialog {
+
 		private int currentMinute = 0;
-		public MyTimePickerDialog(Context context,
-				OnTimeSetListener callBack, int hourOfDay, int minute,
-				boolean is24HourView) {
+
+		public MyTimePickerDialog(Context context, OnTimeSetListener callBack,
+				int hourOfDay, int minute, boolean is24HourView) {
 			super(context, callBack, hourOfDay, minute, is24HourView);
 			// TODO Auto-generated constructor stub
 			currentMinute = restoreMinute(minute);
 		}
-		
-	    public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-	        updateDisplay(view, hourOfDay, minute);          
-	    }
-		
 
-	    private void updateDisplay(TimePicker timePicker, int hourOfDay, int minute) {
-	    	
-	    	// do calculation of next time 
-	    	if(currentMinute==0 && minute==59){
-	    		currentMinute = 55;
-	    	}else
-	    		currentMinute = ((currentMinute-minute)>0)?currentMinute-5:currentMinute+5;  
-	    	
-	    	timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-	            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {}
-	        });
-	    	
-	    	// set minute
-	    	timePicker.setCurrentMinute(currentMinute);
-	    	if(currentMinute==60)
-	    		timePicker.setCurrentHour(hourOfDay+1);
-	    	currentMinute=timePicker.getCurrentMinute();
-	    	
-	    	timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-	            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-	            	updateDisplay(view,hourOfDay,minute);
-	            }
-	    	});
-	    	
+		public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+			updateDisplay(view, hourOfDay, minute);
+		}
 
-	    }
-		
+		private void updateDisplay(TimePicker timePicker, int hourOfDay,
+				int minute) {
 
-	    
+			// do calculation of next time
+			if (currentMinute == 0 && minute == 59) {
+				currentMinute = 55;
+			} else
+				currentMinute = ((currentMinute - minute) > 0) ? currentMinute - 5
+						: currentMinute + 5;
+
+			timePicker
+					.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+						public void onTimeChanged(TimePicker view,
+								int hourOfDay, int minute) {
+						}
+					});
+
+			// set minute
+			timePicker.setCurrentMinute(currentMinute);
+			if (currentMinute == 60)
+				timePicker.setCurrentHour(hourOfDay + 1);
+			currentMinute = timePicker.getCurrentMinute();
+
+			timePicker
+					.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+						public void onTimeChanged(TimePicker view,
+								int hourOfDay, int minute) {
+							updateDisplay(view, hourOfDay, minute);
+						}
+					});
+
+		}
+
 	}
-	
-	//lower bound
-    private int restoreMinute(int minute){
-    	int intervals[]= new int[12];
-    	int startmin=0;
-    	for(int i = 0;i<11;i++){
-    		intervals[i]=startmin;
-    		startmin+=5;
-    	}
-    	
-    	
-    	int nextMinute=0;
-    	for(int i = 11;i>=0;i--){
-    		if(minute>intervals[i]){
-    			nextMinute=intervals[i];
-    			break;
-    		}
-    	}
-    	
-    	return nextMinute;
-    }
-	
-// the following is get function for getting data	
+
+	// lower bound
+	private int restoreMinute(int minute) {
+		int intervals[] = new int[12];
+		int startmin = 0;
+		for (int i = 0; i < 11; i++) {
+			intervals[i] = startmin;
+			startmin += 5;
+		}
+
+		int nextMinute = 0;
+		for (int i = 11; i >= 0; i--) {
+			if (minute > intervals[i]) {
+				nextMinute = intervals[i];
+				break;
+			}
+		}
+
+		return nextMinute;
+	}
+
+	// the following is get function for getting data
 	public Calendar getStartingCalendar() {
 		return startingCalendar;
 	}
