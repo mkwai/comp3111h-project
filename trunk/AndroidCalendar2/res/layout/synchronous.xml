@@ -12,8 +12,11 @@
         android:text="This is synchornous page"
         android:textSize="20dp" />
 
-    
-    
-    
+    <com.facebook.LoginButton
+        android:id="@+id/login"
+        android:layout_width="74dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:src="@drawable/login_button" />
     
 </LinearLayout>
