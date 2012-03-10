@@ -27,7 +27,7 @@ public class FbHandler{
 	public static Facebook mFacebook = new Facebook(APP_ID);
     public static AsyncFacebookRunner mAsyncRunner = new AsyncFacebookRunner(mFacebook);
     
-    public FbHandler(com.calendar.AndroidCalendar2Activity t){
+    public FbHandler(Activity t){
         SessionStore.restore(mFacebook, t);
         SessionEvents.addAuthListener(new SampleAuthListener());
         SessionEvents.addLogoutListener(new SampleLogoutListener());
