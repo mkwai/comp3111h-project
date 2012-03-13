@@ -1,9 +1,16 @@
 package com.calendar;
 
+import java.lang.reflect.Array;
+import java.util.Date;
+
+import com.commTimeCal.TimeCal;
 import com.test2.R;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -12,7 +19,6 @@ public class DailyView extends Activity {
 
 	public static int dailyYear, dailyMonth, dailyDayOfMonth;
 	TextView dailyview_today;
-	TextView event1, event2, event3;
 	TextView twelve_am;
 	RelativeLayout relativeLayout;
 
@@ -37,29 +43,53 @@ public class DailyView extends Activity {
 				+ dailyMonth + " / " + dailyYear);
 
 		twelve_am = (TextView) findViewById(R.id.twelve_am);
-
-		event1 = new TextView(this);
-		event2 = new TextView(this);
-		event3 = new TextView(this);
-
-		relativeLayout.addView(event1);
-		relativeLayout.addView(event2);
-		relativeLayout.addView(event3);
-
-		// get event content + location
+		
+		testAddLabels(this);
+		
+		/* get event content + location
 		event1.setText("event1");
-		event2.setText("event2");
-		event3.setText("event3");
-
 		event1.setX(100);
 		event1.setY(twelve_am.getY());
-
-		event2.setX(100);
-		event2.setY(twelve_am.getY()/* + event time changed to minutes */);
-		
-		event3.setX(100);
-		event3.setY(twelve_am.getY()/* + event time changed to minutes */);
+		*/
 
 	}
+	
+	public void testAddLabels(Context t){
+		String sdate = dailyYear + "" + getZero(dailyMonth) + "" +getZero(dailyDayOfMonth);
+		String output[] = TimeCal.getInterval(sdate);
+		if(output.length!=0){
+			EventItem events[] = new EventItem[output.length/3];
+			for(int i = 0;i<output.length;i+=3){
+				long stime = Long.parseLong(output[i+1]);
+				long etime = Long.parseLong(output[i+2]);
+				events[i/3] = new EventItem(t,stime,etime);
+				relativeLayout.addView(events[i/3]);
+			}
+		}
+	}
 
+	private class EventItem extends TextView{
+		public EventItem(Context t, long stime, long etime){
+			super(t);
+			setBackgroundColor(Color.rgb(4, 26, 55));
+			setHeight((int) dp2px(t,etime*5));
+			setText("s: "+stime+"  e: "+etime);
+			setX(100);
+			setY(twelve_am.getY()+ dp2px(t,(stime*5)));
+		}
+	}
+	
+	// convert month or day
+	private String getZero(int x){
+		if(String.valueOf(x).length()<2){
+			return "0"+String.valueOf(x);
+		}
+		return String.valueOf(x);
+	}
+	
+	// convert dp to px
+	private float dp2px(Context t, float dp){
+		float scale = t.getResources().getDisplayMetrics().density;
+		return (dp*scale +0.5f);
+	}
 }

@@ -119,7 +119,7 @@ public class TimeCal {
 		}
 	}
 	
-	// input two days, e.g. 10-03-2012, 10-03-2012
+	// input a day e.g. yyyyMMdd
 	// return {eventID, start time, length, .. .. ..}
 	public static String[] getInterval(String sDate){
 		LinkedList<String> x = new LinkedList<String>();
@@ -154,6 +154,10 @@ public class TimeCal {
 					Date ex = new SimpleDateFormat("HH:mm").parse(et);
 					len = String.valueOf(TimeUnit.MILLISECONDS.toMinutes((ex.getTime()-sx.getTime())/5));
 				}
+
+				Date sx = new SimpleDateFormat("HH:mm").parse(st);
+				Date sx2 = new SimpleDateFormat("HH:mm").parse("00:00");
+				stime =  String.valueOf(TimeUnit.MILLISECONDS.toMinutes((sx.getTime()-sx2.getTime())/5));
 				
 				x.add(eid);
 				x.add(stime);
