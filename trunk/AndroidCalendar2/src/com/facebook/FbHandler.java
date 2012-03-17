@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.facebook.AsyncFacebookRunner;
@@ -40,7 +41,10 @@ public class FbHandler{
     
     	if(mFacebook.isSessionValid()){
 			SampleRequestListener getter = new SampleRequestListener();
-			mAsyncRunner.request("me/friends",getter);
+            Bundle params = new Bundle();
+            params.putString("fields", "id, name, picture");
+			
+			mAsyncRunner.request("me/friends",params,getter);
 			return	getter.result.getJSONArray("data");
     	}
     	
