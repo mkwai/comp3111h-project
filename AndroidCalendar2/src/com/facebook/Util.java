@@ -16,9 +16,11 @@
 
 package com.facebook;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -26,6 +28,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
@@ -34,6 +37,9 @@ import org.json.JSONObject;
 
 import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.http.AndroidHttpClient;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.CookieManager;
@@ -46,6 +52,55 @@ import android.webkit.CookieSyncManager;
  *
  */
 public final class Util {
+	
+	// my adding
+	 public static Bitmap getBitmapFromURL(String src) {
+		 Bitmap bm = null;
+
+		 AndroidHttpClient httpclient = null;
+	        try {
+	            URL aURL = new URL(src);
+	            URLConnection conn = aURL.openConnection();
+	            conn.connect();
+	            InputStream is = conn.getInputStream();
+	            BufferedInputStream bis = new BufferedInputStream(is);
+	            bm = BitmapFactory.decodeStream(new FlushedInputStream(is));
+	            bis.close();
+	            is.close();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        } finally {
+	            if (httpclient != null) {
+	                httpclient.close();
+	            }
+	        }
+	        return bm;
+	    }
+	 static class FlushedInputStream extends FilterInputStream {
+	        public FlushedInputStream(InputStream inputStream) {
+	            super(inputStream);
+	        }
+
+	        @Override
+	        public long skip(long n) throws IOException {
+	            long totalBytesSkipped = 0L;
+	            while (totalBytesSkipped < n) {
+	                long bytesSkipped = in.skip(n - totalBytesSkipped);
+	                if (bytesSkipped == 0L) {
+	                    int b = read();
+	                    if (b < 0) {
+	                        break; // we reached EOF
+	                    } else {
+	                        bytesSkipped = 1; // we read one byte
+	                    }
+	                }
+	                totalBytesSkipped += bytesSkipped;
+	            }
+	            return totalBytesSkipped;
+	        }
+	    }
+
+	
 
     /**
      * Generate the multi-part post body providing the parameters and boundary

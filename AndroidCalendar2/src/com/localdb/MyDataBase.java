@@ -25,6 +25,7 @@ public class MyDataBase {
     
     private static final List<Table> Ts = new ArrayList<Table>();
     private static final TimeTable TimeT = new TimeTable();
+    private static final FriendTable FriendT = new FriendTable();
     
     
     private static interface Table{
@@ -44,6 +45,18 @@ public class MyDataBase {
     		return "create table TimeTable "+
     				"(eventID INT, title TEXT, startDate INT, endDate INT, startTime TEXT, endTime TEXT, private INT, location TEXT, reminder TEXT);";
     	}
+    }
+    
+    private static class FriendTable implements Table{
+		public String[] getFields() {
+			return new String[] {"friendID","name","isShare","lastUpdate", "picLink"};
+		}
+		public String getName() {return "FriendTable";}
+		public String getCreate() {
+			return "create table FriendTable "+
+					"(friendID TEXT, name TEXT, isShare TeXT, lastUpdate TEXT, picLink TEXT);";
+		}
+    	
     }
     
     
@@ -79,6 +92,7 @@ public class MyDataBase {
 
     public MyDataBase(Context ctx) {
     	Ts.add(TimeT);
+    	Ts.add(FriendT);
         this.mCtx = ctx;      
         mDbHelper = new DatabaseHelper(mCtx);
         mDb = mDbHelper.getWritableDatabase();
