@@ -12,21 +12,20 @@
         android:gravity="center"
         android:textSize="20dp" >
     </TextView>
-
+
     <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none" >
-
+
         <RelativeLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
+            android:id="@+id/daily_relativelayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/background_color"
-            android:orientation="vertical" 
-            android:id="@+id/daily_relativelayout"
-            >
+            android:orientation="vertical" >
 
             <!-- time text from 12am to 12pm -->
 
@@ -37,43 +36,7 @@
                 android:layout_alignParentLeft="true"
                 android:text="@string/twelve_am" >
             </TextView>
-
-            <TextView
-                android:id="@+id/one_am"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@id/twelve_am"
-                android:text="@string/one_am" >
-            </TextView>
-
-            <TextView
-                android:id="@+id/two_am"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@id/one_am"
-                android:text="@string/two_am" >
-            </TextView>
-
-            <TextView
-                android:id="@+id/three_am"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@id/two_am"
-                android:text="@string/three_am" >
-            </TextView>
-
-            <TextView
-                android:id="@+id/four_am"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@id/three_am"
-                android:text="@string/four_am" >
-            </TextView>
-
+						
             <!-- line in each xx:00 -->
 
 

@@ -28,6 +28,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 public class AddEvent extends Activity {
 	private Button cancelButton;
@@ -141,11 +142,18 @@ public class AddEvent extends Activity {
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				// sent data to database
+			
 				String eventid = AndroidCalendar2Activity.getDB().GiveEventID();
-				String title = eventid;
-				String body = content.getText().toString();
+				String title = content.getText().toString();
+				if(title.length()==0){
+					Toast.makeText(
+							AddEvent.this,"You Should enter valid context/title",Toast.LENGTH_SHORT
+							).show();
+					return;
+				}
 				String startTime = startingTimeButton.getText().toString();
 				String endTime = endingTimeButton.getText().toString();
+				
 				
 
 				String startDate="";
@@ -160,11 +168,18 @@ public class AddEvent extends Activity {
 					Log.i("error",e.toString());
 				}
 				
+				if(startDate.endsWith(endDate) && startTime.equals(endTime)){
+					Toast.makeText(
+							AddEvent.this,"Event should not have zero duration",Toast.LENGTH_SHORT
+							).show();
+					return;
+				}
+				
 				
 				String isPrivate = privateEvent.isChecked()?"1":"0";
 				String locat = location.getText().toString();
 				String remind = reminder.isChecked()?"1":"0";
-				String args[] = {eventid,title,body,startDate,endDate,startTime,endTime,isPrivate,locat,remind};	
+				String args[] = {eventid,title,startDate,endDate,startTime,endTime,isPrivate,locat,remind};	
 			
 				Log.i("done",startDate+" "+endDate);
 				
