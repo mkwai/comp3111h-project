@@ -35,14 +35,14 @@ public class MyDataBase {
     
     private static class TimeTable implements Table{
     	public String[] getFields(){
-    		return new String[] {"eventID", "title", "body","startDate","endDate", "startTime",
+    		return new String[] {"eventID", "title","startDate","endDate", "startTime",
     				"endTime", "private", "location","reminder"};
     	}
 
     	public String getName(){return "TimeTable";}
     	public String getCreate(){
     		return "create table TimeTable "+
-    				"(eventID INT, title TEXT, body TEXT, startDate INT, endDate INT, startTime TEXT, endTime TEXT, private INT, location TEXT, reminder TEXT);";
+    				"(eventID INT, title TEXT, startDate INT, endDate INT, startTime TEXT, endTime TEXT, private INT, location TEXT, reminder TEXT);";
     	}
     }
     
