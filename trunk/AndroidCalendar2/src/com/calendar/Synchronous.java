@@ -1,9 +1,6 @@
 package com.calendar;
 
-import java.io.BufferedInputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.json.JSONArray;
@@ -13,17 +10,13 @@ import org.json.JSONObject;
 import com.facebook.LoginButton;
 import com.facebook.DoTask;
 import com.facebook.FbHandler;
-import com.facebook.Util;
-import com.facebook.Utility;
 import com.test2.R;
 
 import android.app.Activity;
-import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.http.AndroidHttpClient;
+import android.content.Intent;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,14 +25,17 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,9 +43,11 @@ public class Synchronous extends Activity implements OnItemClickListener{
    	
     private LoginButton mLoginButton;
     private Button mRefreshButton;
+    private Button mShareButton;
     private FbHandler FB;
-	ListView listLayout;
+	private ListView listLayout;
 	private JSONArray myFriends = new JSONArray();
+	private boolean checked[];
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,16 +75,53 @@ public class Synchronous extends Activity implements OnItemClickListener{
         	
         });
         
+        mShareButton = (Button) findViewById(R.id.share);
+        mShareButton.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				if(!FB.IsLogin()){
+					Toast.makeText(Synchronous.this, "Not Yet Login!", Toast.LENGTH_SHORT).show();
+					return;
+				}
+				
+				
+				JSONArray ja = new JSONArray();
+				try{
+					for(int i = 0;i<checked.length;i++){
+						if(checked[i]==true)
+							ja.put(myFriends.getJSONObject(i));
+					}
+				}catch(Exception e){
+					Log.i("js",e.toString());
+				}
+				
+				if(ja.length()==0){
+					Toast.makeText(Synchronous.this, "No target to share! ", Toast.LENGTH_SHORT).show();
+					return;
+				}
+				
+                Intent myIntent = new Intent(getApplicationContext(), Share.class);
+                myIntent.putExtra("sharefriends", ja.toString());
+                startActivity(myIntent);
+				
+			}
+        	
+        });
+        
+        
+        
         getFdFromDB();
         
         ShowFdList();
-        
-        
         
 	}
 	
 	public void getFdFromDB(){
 		myFriends = AndroidCalendar2Activity.getDB().fetchAllNotes("FriendTable", null, null);
+		checked = new boolean[myFriends.length()];
+		for(int i = 0;i<checked.length;i++){
+			checked[i]=false;
+		}
 	}
 	
 	public void UpdateFdList(){
@@ -105,8 +140,7 @@ public class Synchronous extends Activity implements OnItemClickListener{
         listLayout.setAdapter(new FDAdapter(this));
 	}
 	
-	
-	public class FDAdapter extends BaseAdapter implements Filterable {
+	public class FDAdapter extends BaseAdapter {
 		private LayoutInflater mInflater;
 		private Context context;
 		
@@ -115,8 +149,6 @@ public class Synchronous extends Activity implements OnItemClickListener{
 			TextView textLine;
 			CheckBox CheckBox;
 		}
-		
-		ViewHolder holders[];
 		
 		public FDAdapter(Context t){
 			context = t;
@@ -164,29 +196,47 @@ public class Synchronous extends Activity implements OnItemClickListener{
 				holder = (ViewHolder) convertView.getTag();
 			}
 			
-			String picurl = "";
 			try {
 				holder.textLine.setText(aFriend.getString("name")+ "\nLast updated: "+aFriend.getString("lastUpdate"));
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				Log.i("fd",e.toString());
 			}
+			
+			
+			
+			
+			holder.CheckBox.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(View arg0) {
+					if(checked[position]){
+						checked[position]=false;
+					}else{
+						checked[position]=true;
+					}
+				}
+				
+			});
+			
+			holder.CheckBox.setChecked(false);
+			
+			if(checked[position]==true){
+				holder.CheckBox.setChecked(true);
+			}
 			 
 			return convertView;
 			
-		}
-
-		@Override
-		public Filter getFilter() {
-			// TODO Auto-generated method stub
-			return null;
 		}
 
 		
 	}
 	
 	
+	
 	private class LoadFdTask extends DoTask {
+
+		JSONArray temp = new JSONArray();
 		
 		public LoadFdTask(ProgressDialog progress) {
 			super(progress);
@@ -195,8 +245,9 @@ public class Synchronous extends Activity implements OnItemClickListener{
 
 		@Override
 		protected Void doInBackground(Void... arg0) {
+			
 			try{
-				myFriends=FbHandler.getFdList();
+				temp=FbHandler.getFdList();
 			}catch(Exception e){
 				Log.i("error",e.toString());	
 			}
@@ -205,14 +256,14 @@ public class Synchronous extends Activity implements OnItemClickListener{
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
-					for(int i = 0;i<myFriends.length();i++){
+					for(int i = 0;i<temp.length();i++){
 						String fid ="";
 						String fn = "";
 						String piclink = "";
 						try {
-							fid = myFriends.getJSONObject(i).getString("id");
-							fn = myFriends.getJSONObject(i).getString("name");
-							piclink = myFriends.getJSONObject(i).getString("picture");
+							fid = temp.getJSONObject(i).getString("id");
+							fn = temp.getJSONObject(i).getString("name");
+							piclink = temp.getJSONObject(i).getString("picture");
 						} catch (JSONException e) {
 							Log.i("json",e.toString());
 						}
@@ -253,7 +304,7 @@ public class Synchronous extends Activity implements OnItemClickListener{
 
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+	public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
 		// TODO Auto-generated method stub
 		
 	}
