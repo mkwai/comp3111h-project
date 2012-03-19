@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="User Name:" />
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Password:" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:password="true" />
+
+    <TextView
+        android:id="@+id/TextView01"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="5.10" />
+
+    <RadioGroup
+        android:id="@+id/widget1"
+        android:layout_width="135dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="From the pass " />
+
+        <RadioButton
+            android:id="@+id/pass7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="7 days" />
+
+        <RadioButton
+            android:id="@+id/pass30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="30 days" />
+
+        <RadioButton
+            android:id="@+id/pass60"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="60 days" />
+
+        <RadioButton
+            android:id="@+id/pass90"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="90 days" />
+
+        <RadioButton
+            android:id="@+id/pass180"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="180 days" />
+
+        <RadioButton
+            android:id="@+id/pass365"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="365 days" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/GoogleSync"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SYNC!" />
+
+</LinearLayout>
