@@ -13,6 +13,7 @@ import com.test2.R;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -20,6 +21,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -34,7 +37,8 @@ public class DailyView extends Activity {
 	TextView dailyview_today;
 	TextView twelve_am;
 	RelativeLayout relativeLayout;
-
+	Button bAddEvent;
+	
 	protected static void setDailyYear(int year) {
 		dailyYear = year;
 	}
@@ -55,6 +59,20 @@ public class DailyView extends Activity {
 
 		setContentView(R.layout.dailyview);
 		relativeLayout = (RelativeLayout) findViewById(R.id.daily_relativelayout);
+		
+		// button AddEvent
+		bAddEvent = (Button) findViewById(R.id.dailyview_bAddEvent);
+		bAddEvent.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				// setContentView(R.layout.addevent);
+				startActivity(new Intent("com.calendar.ADDEVENT"));
+			}
+
+		});
+
 		
 		dailyview_today = (TextView) findViewById(R.id.dailyview_today);
 		dailyview_today.setText("Date: " + dailyDayOfMonth + " / "

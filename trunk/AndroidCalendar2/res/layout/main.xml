@@ -23,6 +23,7 @@
             android:text="@string/monthlyview_synchronous" >
         </Button>
 
+        
         <Button
             android:id="@+id/bGoTo"
             android:layout_width="wrap_content"

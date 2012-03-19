@@ -3,11 +3,19 @@
 
     <item
         android:id="@+id/menu_addEvent"
-        android:title="Add new event">
+        android:title="add new event">
     </item>
     <item
         android:id="@+id/menu_synchronous"
-        android:title="Go to dailyView">
+        android:title="synchronous">
     </item>
-
+    <item
+        android:id="@+id/menu_import"
+        android:title="import from Google">
+    </item>
+    <item
+        android:id="@+id/menu_export"
+        android:title="export to photo">
+    </item>    
+    
 </menu>

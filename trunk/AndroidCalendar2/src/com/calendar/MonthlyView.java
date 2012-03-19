@@ -63,6 +63,8 @@ public class MonthlyView extends Activity {
 			}
 		});
 
+
+		
 		//button GoTo
 		bGoTo = (Button) findViewById(R.id.bGoTo);
 		bGoTo.setOnClickListener(new OnClickListener() {
@@ -174,6 +176,12 @@ public class MonthlyView extends Activity {
 			return true;
 		case R.id.menu_synchronous:
 			startActivity(new Intent("com.calendar.SYNCHRONOUS"));
+			return true;
+		case R.id.menu_import:
+//			startActivity(new Intent("com.calendar.IMPORT"));
+			return true;
+		case R.id.menu_export:
+//			startActivity(new Intent("com.calendar.EXPORT"));
 			return true;
 		}
 		return false;

@@ -36,5 +36,6 @@
     <string name="addtask_cancel">Cancel</string>
     <string name="addtask_confirm">Confirm</string>
     <string name="addevent_addevent">Add Event</string>
+    <string name="dailyview_addevent">+</string>
  
 </resources>
