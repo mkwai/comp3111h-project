@@ -16,18 +16,24 @@
         android:background="#111111"
         android:orientation="horizontal" >
 
-      
-        <Button
-            android:id="@+id/bDaily"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/monthlyview_daily" >
-        </Button>
         <Button
             android:id="@+id/bSynchronous"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/monthlyview_synchronous" >
+        </Button>
+
+        <Button
+            android:id="@+id/bGoTo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/monthlyview_goto" >
+        </Button>
+        <Button
+            android:id="@+id/bTodoList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/monthlyview_todoList" >
         </Button>
         
         <Button
@@ -36,8 +42,24 @@
             android:layout_height="wrap_content"
             android:text="@string/monthlyview_add_event" >
         </Button>
-  
+    </LinearLayout>
 
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/linear_top2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/linear_top"
+        android:background="#111111"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/bDaily"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/monthlyview_daily" >
+        </Button>
     </LinearLayout>
 
     <LinearLayout
@@ -46,7 +68,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/linear_top" >
+        android:layout_below="@id/linear_top2" >
 
         <CalendarView
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -54,8 +76,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:focusedMonthDateColor="#FFFFFF"
-            android:maxDate="1/1/2111"
-            android:selectedWeekBackgroundColor="#9999FF" >
+            android:selectedWeekBackgroundColor="@color/background_color" >
         </CalendarView>
     </LinearLayout>
 

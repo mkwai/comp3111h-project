@@ -6,7 +6,7 @@
         android:title="Add new event">
     </item>
     <item
-        android:id="@+id/menu_dailyView"
+        android:id="@+id/menu_synchronous"
         android:title="Go to dailyView">
     </item>
 
