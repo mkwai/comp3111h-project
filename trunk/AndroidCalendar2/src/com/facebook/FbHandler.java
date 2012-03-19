@@ -36,6 +36,19 @@ public class FbHandler{
     
     public boolean IsLogin(){return mFacebook.isSessionValid();}
     
+    public static JSONObject getMine() throws Exception{
+    	if(mFacebook.isSessionValid()){
+    		SampleRequestListener getter = new SampleRequestListener();
+            Bundle params = new Bundle();
+            params.putString("fields", "id, name, picture");
+			
+			mAsyncRunner.request("me",params,getter);
+			return	getter.result;
+    	}
+    	return null;
+    }
+    
+    
     public static JSONArray getFdList() throws Exception{
     	
     

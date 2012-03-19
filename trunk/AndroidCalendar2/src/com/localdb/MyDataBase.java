@@ -26,6 +26,7 @@ public class MyDataBase {
     private static final List<Table> Ts = new ArrayList<Table>();
     private static final TimeTable TimeT = new TimeTable();
     private static final FriendTable FriendT = new FriendTable();
+    private static final OtherTable OtherT = new OtherTable();
     
     
     private static interface Table{
@@ -55,6 +56,20 @@ public class MyDataBase {
 		public String getCreate() {
 			return "create table FriendTable "+
 					"(friendID TEXT, name TEXT, isShare TeXT, lastUpdate TEXT, picLink TEXT);";
+		}
+    	
+    }
+    
+    private static class OtherTable implements Table{
+
+		public String[] getFields() {
+			return new String[] {"key","value"};
+		}
+		public String getName() {return "OtherTable";}
+
+		public String getCreate() {
+			return "create table OtherTable "+
+					"(key TEXT, value TEXT)";
 		}
     	
     }
@@ -91,8 +106,7 @@ public class MyDataBase {
 
 
     public MyDataBase(Context ctx) {
-    	Ts.add(TimeT);
-    	Ts.add(FriendT);
+    	Ts.add(TimeT); Ts.add(FriendT); Ts.add(OtherT);
         this.mCtx = ctx;      
         mDbHelper = new DatabaseHelper(mCtx);
         mDb = mDbHelper.getWritableDatabase();
