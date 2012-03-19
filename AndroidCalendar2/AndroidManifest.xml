@@ -18,7 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-                <activity
+        <activity
             android:name="com.calendar.MonthlyView"
             android:label="@string/app_name" >
             <intent-filter>
@@ -27,12 +27,12 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name="com.calendar.AddEvent"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="com.calendar.ADDEVENT" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -45,7 +45,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-                <activity
+        <activity
             android:name="com.calendar.Synchronous"
             android:label="@string/app_name" >
             <intent-filter>
@@ -53,7 +53,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </activity> 
+        </activity>
         <activity
             android:name="com.calendar.Share"
             android:label="@string/app_name" >
@@ -83,7 +83,11 @@
         </activity>
     </application>
 
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"></uses-permission>
-	<uses-permission android:name="android.permission.USE_CREDENTIALS"></uses-permission>
-	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" >
+    </uses-permission>
+
 </manifest>
