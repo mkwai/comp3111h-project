@@ -18,6 +18,8 @@ import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -47,8 +49,13 @@ public class DailyView extends Activity {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//set to full screen
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
 		setContentView(R.layout.dailyview);
 		relativeLayout = (RelativeLayout) findViewById(R.id.daily_relativelayout);
+		
 		dailyview_today = (TextView) findViewById(R.id.dailyview_today);
 		dailyview_today.setText("Date: " + dailyDayOfMonth + " / "
 				+ dailyMonth + " / " + dailyYear);
@@ -57,8 +64,6 @@ public class DailyView extends Activity {
 		setupDailyTimes(this);
 		
 		testAddLabels(this);
-		
-		
 
 	}
 	

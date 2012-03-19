@@ -46,7 +46,7 @@ public class AddEvent extends Activity {
 	public static final int ENDING_DATE_DIALOG = 2;
 	public static final int ENDING_TIME_DIALOG = 3;
 
-	private Calendar currentCalendar = Calendar.getInstance();
+	static protected Calendar currentDateCalendar = Calendar.getInstance();
 	// storing the event starting/ending calendar(date+time)
 	private Calendar startingCalendar = Calendar.getInstance();
 	private Calendar endingCalendar = Calendar.getInstance();
@@ -85,18 +85,18 @@ public class AddEvent extends Activity {
 
 		// setting up default starting/ending date/time
 
-		CharSequence currentYear = DateFormat.format("yyyy", currentCalendar);
-		CharSequence currentMonth = DateFormat.format("MMM", currentCalendar);
-		CharSequence currentDate = DateFormat.format("dd", currentCalendar);
-		CharSequence currentHour = DateFormat.format("kk", currentCalendar);
+		CharSequence currentYear = DateFormat.format("yyyy", currentDateCalendar);
+		CharSequence currentMonth = DateFormat.format("MMM", currentDateCalendar);
+		CharSequence currentDate = DateFormat.format("dd", currentDateCalendar);
+		CharSequence currentHour = DateFormat.format("kk", currentDateCalendar);
 		int currentMinute = Integer.parseInt((String) (DateFormat.format("mm",
-				currentCalendar)));
+				currentDateCalendar)));
 		currentMinute = (currentMinute / 5) * 5;
 
 		// convert the minutes in current calendar to 5 minute interval
-		currentCalendar.set(Calendar.MINUTE, currentMinute);
-		startingCalendar = currentCalendar;
-		endingCalendar = currentCalendar;
+		currentDateCalendar.set(Calendar.MINUTE, currentMinute);
+		startingCalendar = currentDateCalendar;
+		endingCalendar = currentDateCalendar;
 
 		CharSequence currentMinuteConverted = currentMinute <= 5 ? "0"
 				+ Integer.toString(currentMinute) : Integer

@@ -1,10 +1,17 @@
 package com.calendar;
 
+import java.util.Calendar;
+
+
 import com.test2.R;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.Menu;
@@ -17,12 +24,13 @@ import android.view.View.OnClickListener;
 import android.view.View.OnDragListener;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.DatePicker;
 import android.widget.CalendarView.OnDateChangeListener;
 
 public class MonthlyView extends Activity {
 
 	CalendarView calendarV;
-	Button bGoToToday, bAddEvent, bSynchronous,bDaily,bMonthly;
+	Button bGoTo, bAddEvent, bSynchronous,bDaily,bMonthlyb,bTodoList;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//set to full screen
@@ -55,6 +63,17 @@ public class MonthlyView extends Activity {
 			}
 		});
 
+		//button GoTo
+		bGoTo = (Button) findViewById(R.id.bGoTo);
+		bGoTo.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				showDialog(1);
+			}
+		});
+
 		//button Daily
 		bDaily = (Button) findViewById(R.id.bDaily);
 		bDaily.setOnClickListener(new OnClickListener() {
@@ -66,43 +85,95 @@ public class MonthlyView extends Activity {
 			}
 		});
 		
+		//button TodoList
+		bTodoList = (Button) findViewById(R.id.bTodoList);
+		bTodoList.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				startActivity(new Intent("com.calendar.TODOLIST"));
+			}
+		});
+		
+		
 		// calendar view
 		calendarV = (CalendarView) findViewById(R.id.calendarV);
 		calendarV.setEnabled(true);
 		calendarV.setShowWeekNumber(false);
+		
+		//setting the minimum date of the calendar
+		Calendar minDate = Calendar.getInstance();
+		minDate.set(1950, 0, 1, 0, 0, 0);			//0 = Jan
+		calendarV.setMinDate(minDate.getTimeInMillis());
+		
+		//setting the maximum date of the calendar
+		Calendar maxDate = Calendar.getInstance();
+		maxDate.set(2050, 11, 31, 23, 59, 59);		//11 = Dec
+		calendarV.setMaxDate(maxDate.getTimeInMillis());
+		
+		// call when the selected date changes		
 		calendarV.setOnDateChangeListener(new OnDateChangeListener() {
 
 			@Override
 			public void onSelectedDayChange(CalendarView arg0, int year,
 					int month, int dayOfMonth) {
-//				Log.i("abc", Long.toString(arg0.getDate()));	
-//				startActivity(new Intent("com.calendar.DAILYVIEW"));
+				//for dailyview
 				DailyView.setDailyYear(year);
 				DailyView.setDailyMonth(month);
 				DailyView.setDailyDayOfMonth(dayOfMonth);
+				//for add event
+				AddEvent.currentDateCalendar.set(Calendar.YEAR, year);
+				AddEvent.currentDateCalendar.set(Calendar.MONTH, month);
+				AddEvent.currentDateCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
 			}
 		});
 		
 	}
 
+	// call when create dialog, for GoTo use
+	protected Dialog onCreateDialog(int id) {
+
+		// listener for setting date in starting date dialog
+		OnDateSetListener goToDateSetListener = new OnDateSetListener() {
+
+			// use when "set" press
+			public void onDateSet(DatePicker view, int year, int monthOfYear,
+					int dayOfMonth) {
+				Calendar date = Calendar.getInstance();
+				date.set(year, monthOfYear, dayOfMonth);
+				calendarV.setDate(date.getTimeInMillis());
+
+			}
+		};
+		
+		return  new DatePickerDialog(this, goToDateSetListener,
+				Calendar.getInstance().get(Calendar.YEAR),
+				Calendar.getInstance().get(Calendar.MONTH),
+				Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+	}
+	
 	
 //FOR menu	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		
 		super.onCreateOptionsMenu(menu);
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.main_menu, menu);
+		
 		return true;
 	}
-
-	public boolean onOptionItemSelected(MenuItem item) {
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_addEvent:
 			startActivity(new Intent("com.calendar.ADDEVENT"));
 			return true;
-		case R.id.menu_dailyView:
-			startActivity(new Intent("com.calendar.DAILYVIEW"));
+		case R.id.menu_synchronous:
+			startActivity(new Intent("com.calendar.SYNCHRONOUS"));
 			return true;
 		}
 		return false;

@@ -4,15 +4,15 @@
     
     <string name="addevent_content">Content</string>
     <string name="addevent_content_hint">Enter event content</string>
-    <string name="addevent_starting_time">Starting Time</string>
-    <string name="addevent_ending_time">Ending Time</string>
+    <string name="addevent_starting_time">Starting</string>
+    <string name="addevent_ending_time">Ending</string>
     <string name="addevent_location_hint">Enter Location</string>
     <string name="addevent_location">Location</string>
     <string name="addevent_reminder">Reminder</string>
     <string name="addevent_restrict">Restrict facebook</string>
     <string name="addevent_private_event">Private Event</string>
     <string name="addevent_contact_person">Contatct Person</string>
-    <string name="addevent_optional">Optional:</string>
+    <string name="addevent_optional">optional field</string>
     <string name="addevent_contact_person_hint">Enter Contact Person</string>
     <string name="addevent_confirm">Confirm</string>
     <string name="addevent_cancel">Cancel</string>
@@ -20,5 +20,21 @@
     <string name="monthlyview_synchronous">Syn.</string><string name="monthlyview_add_event">+</string>
     <string name="monthlyview_daily">Daily Schedule</string>
     <string name="monthlyview_monthly">Monthly</string>
+    <string name="monthlyview_goto">GoTo</string>
+    <string name="monthlyview_todoList">To-do List</string>
+    <string name="todolist_todolist">TO-DO LIST</string>
+    <string name="todolist_addtask">+</string>
+    <string name="todolist_sorting">sort</string>
+    <string name="addtask_title">Title:</string>
+    <string name="addtask_location">Location:</string>
+    <string name="addtask_title_hint">Enter the title</string>
+    <string name="addtask_location_hint">Enter the location</string>
+    <string name="addtask_addtask">Add task</string>
+    <string name="addtask_progress">Progress:</string>
+    <string name="addtask_deadlinetime">Deadline:</string>
+    <string name="addtask_reminder">Reminder Setting:</string>
+    <string name="addtask_cancel">Cancel</string>
+    <string name="addtask_confirm">Confirm</string>
+    <string name="addevent_addevent">Add Event</string>
  
 </resources>
