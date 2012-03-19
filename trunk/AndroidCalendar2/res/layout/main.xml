@@ -1,38 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/daily_relativelayout"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
     android:background="@color/background_color"
     android:orientation="vertical" >
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/linear_top"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
         android:background="#111111"
         android:orientation="horizontal" >
 
+      
         <Button
-            android:id="@+id/bAddEvent"
-            android:layout_width="fill_parent"
+            android:id="@+id/bDaily"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="50"
-            android:text="@string/monthlyview_add_event" >
+            android:text="@string/monthlyview_daily" >
         </Button>
-
         <Button
             android:id="@+id/bSynchronous"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="50"
             android:text="@string/monthlyview_synchronous" >
         </Button>
+        
+        <Button
+            android:id="@+id/bAddEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/monthlyview_add_event" >
+        </Button>
+  
+
     </LinearLayout>
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/linear_calendar"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/linear_top" >
 
         <CalendarView
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -45,4 +59,4 @@
         </CalendarView>
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

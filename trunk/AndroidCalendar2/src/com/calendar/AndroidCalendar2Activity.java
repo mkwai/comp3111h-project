@@ -11,6 +11,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.CalendarView.OnDateChangeListener;
@@ -30,6 +32,7 @@ public class AndroidCalendar2Activity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		// set to full screen
 
 		// first page showing is the monthly view
 		startActivity(new Intent("com.calendar.MONTHLYVIEW"));
@@ -42,6 +45,7 @@ public class AndroidCalendar2Activity extends Activity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+
 		startActivity(new Intent("com.calendar.MONTHLYVIEW"));
 
 	}

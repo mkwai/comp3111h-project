@@ -1,6 +1,7 @@
 package com.calendar;
 
 import java.lang.reflect.Array;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
@@ -14,6 +15,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -23,7 +25,10 @@ import android.widget.Toast;
 
 public class DailyView extends Activity {
 
-	public static int dailyYear, dailyMonth, dailyDayOfMonth;
+	//initialize the day to today
+	public static int dailyYear =Calendar.getInstance().get(Calendar.YEAR); 
+	public static int dailyMonth=Calendar.getInstance().get(Calendar.MONTH) + 1;
+	public static int dailyDayOfMonth=Calendar.getInstance().get(Calendar.DATE);
 	TextView dailyview_today;
 	TextView twelve_am;
 	RelativeLayout relativeLayout;
@@ -45,7 +50,7 @@ public class DailyView extends Activity {
 		setContentView(R.layout.dailyview);
 		relativeLayout = (RelativeLayout) findViewById(R.id.daily_relativelayout);
 		dailyview_today = (TextView) findViewById(R.id.dailyview_today);
-		dailyview_today.setText("Today is " + dailyDayOfMonth + " / "
+		dailyview_today.setText("Date: " + dailyDayOfMonth + " / "
 				+ dailyMonth + " / " + dailyYear);
 
 		twelve_am = (TextView) findViewById(R.id.twelve_am);

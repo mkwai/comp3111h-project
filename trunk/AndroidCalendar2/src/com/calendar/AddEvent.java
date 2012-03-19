@@ -22,6 +22,8 @@ import android.text.Editable;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -60,6 +62,11 @@ public class AddEvent extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
+		// set to full screen
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
 		setContentView(R.layout.addevent);
 
 		content = (EditText) findViewById(R.id.addevent_content_edit);
@@ -140,6 +147,7 @@ public class AddEvent extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
+
 				// TODO Auto-generated method stub
 				// sent data to database
 			
