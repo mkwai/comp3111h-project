@@ -25,19 +25,24 @@
         <Button
             android:id="@+id/share_starting_date_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:layout_weight="0.6" />
 
         <Button
             android:id="@+id/ToShare"
-            android:layout_width="wrap_content"
+            android:layout_width="92dp"
             android:layout_height="wrap_content"
-            android:text="Share now" />
+            android:text="Share" />
 
         <Button
             android:id="@+id/share_ending_date_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right" />
+            android:layout_gravity="right"
+            android:textSize="14dp"
+            android:layout_weight="0.6" />
+
     </LinearLayout>
 
     <TextView
