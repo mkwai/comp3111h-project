@@ -117,7 +117,7 @@ public class DailyView extends Activity {
 			float h = twelve_am.getY()+dp2px(t,60*(i+1));
 			tv.setY(h);
 			relativeLayout.addView(tv);
-			relativeLayout.setMinimumHeight((int) (h));
+			relativeLayout.setMinimumHeight((int) (h+dp2px(t,61)));
 		}
 		
 	}

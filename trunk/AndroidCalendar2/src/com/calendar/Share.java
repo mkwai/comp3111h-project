@@ -3,7 +3,10 @@ package com.calendar;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -23,11 +26,15 @@ import com.facebook.FbHandler;
 import com.test2.R;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Looper;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +46,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.DatePicker;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -58,6 +66,9 @@ public class Share extends Activity{
 	private String myid;
 	private String response;
 	private ProgressDialog progress;
+	static protected Calendar currentDateCalendar = Calendar.getInstance();
+	private Calendar startingCalendar = Calendar.getInstance();
+	private Calendar endingCalendar = Calendar.getInstance();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +80,14 @@ public class Share extends Activity{
 		mEndDate = (Button) findViewById(R.id.share_ending_date_button);
 
 		listLayout = (LinearLayout) findViewById(R.id.shareLayout);
+		
+		mStartDate.setText(DateFormat.format("dd", currentDateCalendar)+
+				"/"+DateFormat.format("MM", currentDateCalendar)+
+				"/"+DateFormat.format("yyyy", currentDateCalendar));
+		mEndDate.setText(DateFormat.format("dd", currentDateCalendar)+
+				"/"+DateFormat.format("MM", currentDateCalendar)+
+				"/"+DateFormat.format("yyyy", currentDateCalendar));
+		
         
         Bundle extras = getIntent().getExtras();
         try {
@@ -86,6 +105,21 @@ public class Share extends Activity{
         }catch(Exception e){
         	Log.i("h",e.toString());
         }
+        
+        
+        mStartDate.setOnClickListener(new OnClickListener(){
+        	
+			public void onClick(View arg0) {
+				showDialog(1);
+			}
+        });
+        
+        mEndDate.setOnClickListener(new OnClickListener(){
+        	
+			public void onClick(View arg0) {
+				showDialog(2);
+			}
+        });
         
         mShare.setOnClickListener(new OnClickListener(){
 
@@ -130,14 +164,32 @@ public class Share extends Activity{
 						AndroidCalendar2Activity.getDB().insert("OtherTable",
 								new String [] {ins[1],ins[0]});
 						
-						progress.incrementProgressBy(10);
 						}
-
+						progress.incrementProgressBy(10);
+						
+						// ready to share
+						String startDate="";
+						String endDate="";
+						SimpleDateFormat df = new SimpleDateFormat("dd/mm/yyyy");
+						try{
+							Date sdate = df.parse(mStartDate.getText().toString());
+							startDate=DateFormat.format("yyyyMMdd",sdate)+"";
+							Date edate = df.parse(mStartDate.getText().toString());
+							endDate=DateFormat.format("yyyyMMdd",edate)+"";
+						}catch(Exception e){
+							Log.i("error",e.toString());
+						}
+						
+						
+						
+						
+						
 						if(progress.isShowing()){
 							progress.setProgress(progress.getMax());
 							progress.cancel();
 							
 						}
+						
 						
 					}
 				};
@@ -199,5 +251,68 @@ public class Share extends Activity{
 		return result;
 	}
 	
+
+	protected Dialog onCreateDialog(int id) {
+		
+		OnDateSetListener startingDateSetListener = new OnDateSetListener() {
+
+			public void onDateSet(DatePicker view, int year, int monthOfYear,
+					int dayOfMonth) {
+				// store the date set by the dialog to startingCalendar variable
+				startingCalendar.set(year, monthOfYear, dayOfMonth);
+				// renew endingCalendar (ending > starting)
+				if (startingCalendar.after(endingCalendar)) {
+					endingCalendar.set(year, monthOfYear, dayOfMonth);
+					mEndDate.setText(DateFormat.format("dd",startingCalendar)
+							+ "/" + DateFormat.format("MM", startingCalendar)
+							+ "/" + DateFormat.format("yyyy", startingCalendar));
+				}
+				mStartDate.setText(DateFormat.format("dd",startingCalendar)
+						+ "/" + DateFormat.format("MM", startingCalendar)
+						+ "/" + DateFormat.format("yyyy", startingCalendar));
+				Log.i("done",mStartDate.getText().toString());
+				
+			}
+			
+		};
+		
+		OnDateSetListener endingDateSetListener = new OnDateSetListener() {
+
+			@Override
+			public void onDateSet(DatePicker view, int year, int monthOfYear,
+					int dayOfMonth) {
+				// compareCalendar is temp, if valid input then compare ->
+				// ending
+				Calendar compareCalendar = Calendar.getInstance();
+				compareCalendar.set(year, monthOfYear, dayOfMonth);
+				
+				// store the date set by the dialog to endingCalendar variable
+				// renew endingCalendar (ending > starting)
+				if (compareCalendar.after(startingCalendar)) {
+
+					endingCalendar.set(year, monthOfYear, dayOfMonth);
+					mEndDate.setText(DateFormat.format("dd", endingCalendar)
+							+ "/" + DateFormat.format("MM", endingCalendar)
+							+ "/" + DateFormat.format("yyyy", endingCalendar));
+				}
+			}
+			
+		};
+		
+		switch(id){
+			case 1:
+				return new DatePickerDialog(this, startingDateSetListener,
+						startingCalendar.get(Calendar.YEAR),
+						startingCalendar.get(Calendar.MONTH),
+						startingCalendar.get(Calendar.DAY_OF_MONTH));
+			case 2:
+				return new DatePickerDialog(this, endingDateSetListener,
+						endingCalendar.get(Calendar.YEAR),
+						endingCalendar.get(Calendar.MONTH),
+						endingCalendar.get(Calendar.DAY_OF_MONTH));
+		}
+		
+		return null;
+	}
 	
 }

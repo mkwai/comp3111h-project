@@ -27,7 +27,7 @@ public class MyDataBase {
     private static final TimeTable TimeT = new TimeTable();
     private static final FriendTable FriendT = new FriendTable();
     private static final OtherTable OtherT = new OtherTable();
-    
+    private static final FriendTimeTable FTimeT = new FriendTimeTable();
     
     private static interface Table{
     	public String[] getFields();
@@ -55,9 +55,20 @@ public class MyDataBase {
 		public String getName() {return "FriendTable";}
 		public String getCreate() {
 			return "create table FriendTable "+
-					"(friendID TEXT, name TEXT, isShare TeXT, lastUpdate TEXT, picLink TEXT);";
+					"(friendID TEXT, name TEXT, isShare TEXT, lastUpdate TEXT, picLink TEXT);";
 		}
     	
+    }
+    
+    private static class FriendTimeTable implements Table{
+    	public String[] getFields(){
+    		return new String[] {"friendID","title", "startDate", "endDate","startTime", "endTime", "location"};
+    	}
+    	public String getName(){return "FriendTimeTable";}
+    	public String getCreate(){
+			return "create table FriendTimeTable "+
+					"(friendID TEXT, title TEXT, startDate TEXT, endDate TEXT, startTime TEXT, endTime TEXT, location TEXT);";
+    	}
     }
     
     private static class OtherTable implements Table{
@@ -106,7 +117,7 @@ public class MyDataBase {
 
 
     public MyDataBase(Context ctx) {
-    	Ts.add(TimeT); Ts.add(FriendT); Ts.add(OtherT);
+    	Ts.add(TimeT); Ts.add(FriendT); Ts.add(OtherT); Ts.add(FTimeT);
         this.mCtx = ctx;      
         mDbHelper = new DatabaseHelper(mCtx);
         mDb = mDbHelper.getWritableDatabase();
