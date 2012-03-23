@@ -1,5 +1,5 @@
 =COMP 3111H: Introduction to Software Engineering=
-==Minutes of the 6th Project Scrum Meeting==
+==Minutes of the 7th Project Scrum Meeting==
 ==Daily Assistant==
 
 Date:       21/3/2012
