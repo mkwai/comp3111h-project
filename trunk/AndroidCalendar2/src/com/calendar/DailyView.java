@@ -68,7 +68,9 @@ public class DailyView extends Activity {
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				// setContentView(R.layout.addevent);
-				startActivity(new Intent("com.calendar.ADDEVENT"));
+				finish();
+				startActivity(new Intent("com.calendar.ADDEVENT"));	
+
 			}
 
 		});

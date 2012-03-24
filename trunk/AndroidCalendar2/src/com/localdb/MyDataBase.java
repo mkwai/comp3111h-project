@@ -94,7 +94,7 @@ public class MyDataBase {
             // **************************************
             // delete database every time for testing
             // **************************************
-            context.deleteDatabase(DATABASE_NAME);
+            //context.deleteDatabase(DATABASE_NAME);
         }
 
         @Override
