@@ -38,6 +38,7 @@ public class GoogleSync {
 	private CalendarService myService;
 	private static URL metafeedUrl = null;
 	private static URL eventFeedUrl = null;
+	
 	private String userName;
 	private String userPassword;
 
@@ -48,26 +49,42 @@ public class GoogleSync {
 		this.userName = userName;
 		this.userPassword = userPassword;
 	}
-
+	
+	public void setUserName(String name){
+		this.userName= name;
+	}
+	public void setUserPassword(String password){
+		this.userPassword= password;
+	}
+	public void setUserInfo(String name, String password){
+		this.userName= name;
+		this.userPassword= password;
+	}
+	
+	
 	/*
+	 * 
 	 * METHOD 0 - Start Connection with userName, userPassword, return false if
 	 * the connection fails.
 	 */
 	public boolean GoogleLogin() {
 		myService = new CalendarService("applicationName");
 		try {
+			if (userName== null || userPassword== null)
+				return false;
+			
 			myService.setUserCredentials(userName, userPassword);
 			metafeedUrl = new URL(METAFEED_URL_BASE + userName);
 			eventFeedUrl = new URL(METAFEED_URL_BASE + userName
 					+ EVENT_FEED_URL_SUFFIX);
 		} catch (AuthenticationException e) {
 			// TODO Auto-generated catch block
-			System.out.println("User password is not matched");
+			//System.out.println("User password is not matched");
 			return false;
 			// e.printStackTrace();
 		} catch (MalformedURLException e) {
 			// Bad URL
-			System.err.println("Uh oh - you've got an invalid URL.");
+			//System.err.println("Uh oh - you've got an invalid URL.");
 			return false;
 			// e.printStackTrace();
 		}
@@ -275,3 +292,4 @@ public class GoogleSync {
  * 
  * return newEvent; }
  */
+
