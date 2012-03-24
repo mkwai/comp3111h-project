@@ -7,10 +7,11 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="User Name:" />
+        android:text="@string/gs_username" />
+
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/gs_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:singleLine="true" >
@@ -21,74 +22,153 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Password:" />
+        android:text="@string/gs_password" />
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/gs_password"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:password="true" />
 
-    <TextView
-        android:id="@+id/TextView01"
-        android:layout_width="match_parent"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="5.10" />
+        android:orientation="horizontal" >
 
-    <RadioGroup
-        android:id="@+id/widget1"
-        android:layout_width="135dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="150dp"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="From the pass " />
+            <RadioGroup
+                android:id="@+id/gs_rgpass"
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
 
-        <RadioButton
-            android:id="@+id/pass7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="7 days" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gs_fromthepass" />
 
-        <RadioButton
-            android:id="@+id/pass30"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="30 days" />
+                <RadioButton
+                    android:id="@+id/gs_pass7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gs_day1" />
 
-        <RadioButton
-            android:id="@+id/pass60"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="60 days" />
+                <RadioButton
+                    android:id="@+id/gs_pass30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/gs_day2" />
+					
+                <RadioButton
+                    android:id="@+id/gs_pass60"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gs_day3" />
 
-        <RadioButton
-            android:id="@+id/pass90"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="90 days" />
+                <RadioButton
+                    android:id="@+id/gs_pass90"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gs_day4" />
 
-        <RadioButton
-            android:id="@+id/pass180"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="180 days" />
+                <RadioButton
+                    android:id="@+id/gs_pass180"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gs_day5" />
 
-        <RadioButton
-            android:id="@+id/pass365"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="365 days" />
-    </RadioGroup>
+                <RadioButton
+                    android:id="@+id/gs_pass365"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gs_day6" />
+            </RadioGroup>
+        </LinearLayout>
 
-    <Button
-        android:id="@+id/GoogleSync"
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="150dp"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+
+            <RadioGroup
+                android:id="@+id/gs_rgfuture"
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gs_tothefuture" />
+
+                <RadioButton
+                    android:id="@+id/gs_future7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gs_day1" />
+
+                <RadioButton
+                    android:id="@+id/gs_future30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/gs_day2" />
+
+                <RadioButton
+                    android:id="@+id/gs_future60"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gs_day3" />
+
+                <RadioButton
+                    android:id="@+id/gs_future90"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gs_day4" />
+
+                <RadioButton
+                    android:id="@+id/gs_future180"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gs_day5" />
+
+                <RadioButton
+                    android:id="@+id/gs_future365"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gs_day6" />
+            </RadioGroup>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SYNC!" />
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/gs_sync"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.12"
+            android:text="@string/gs_sync" />
+
+        <Button
+            android:id="@+id/gs_disconnect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.13"
+            android:text="@string/gs_disconnect" />
+    </LinearLayout>
 
 </LinearLayout>

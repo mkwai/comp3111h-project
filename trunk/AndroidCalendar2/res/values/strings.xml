@@ -38,4 +38,17 @@
     <string name="addevent_addevent">Add Event</string>
     <string name="dailyview_addevent">+</string>
  
+    <string name="gs_username">User Name: </string>
+    <string name="gs_password">Password: </string>
+    <string name="gs_fromthepass">From the pass </string>
+    <string name="gs_tothefuture">To the future </string>
+    <string name="gs_day1">7 days </string>
+    <string name="gs_day2">30 days </string>
+    <string name="gs_day3">60 days </string>
+    <string name="gs_day4">90 days </string>
+    <string name="gs_day5">180 days </string>
+    <string name="gs_day6">365 days </string>
+    <string name="gs_sync">Sync</string>
+    <string name="gs_disconnect">Disconnect</string>
+    
 </resources>
