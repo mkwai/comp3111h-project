@@ -19,6 +19,7 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -261,35 +262,90 @@ public class GoogleSync {
 			entry.delete();
 		}
 	}
+	/*
+	 *  NEW METHOD1
+	 */
+	public void getRangeEvents2(String startDate, int passDay, int futureDay) {
+		CalendarQuery myQuery = new CalendarQuery(eventFeedUrl);
+		
+		String t1 = addDays(startDate, -passDay);
+		String t2 = addDays(startDate, futureDay);
+
+		myQuery.setMinimumStartTime(DateTime.parseDate(t1));
+		myQuery.setMaximumStartTime(DateTime.parseDate(t2));
+
+		myQuery.setMaxResults(1000);
+		int startIndex = 1;
+		int entriesReturned;
+
+		CalendarEventFeed resultFeed;
+
+		while (true) {
+			myQuery.setStartIndex(startIndex);
+			try {
+				resultFeed = myService.query(myQuery, CalendarEventFeed.class);
+
+				entriesReturned = resultFeed.getEntries().size();
+				if (entriesReturned == 0)
+					break;
+
+				for (int i = 0; i < resultFeed.getEntries().size(); i++) {
+					CalendarEventEntry entry = resultFeed.getEntries().get(i);
+					getEventEntry(entry); // get each event entry
+				}
+				startIndex = startIndex + entriesReturned;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ServiceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
+	
+	/*
+	 *  NEW METHOD2
+	 */
+	public void delRangeEvents2(String startDate, int passDay, int futureDay) {
+		CalendarQuery myQuery = new CalendarQuery(eventFeedUrl);
+
+		String t1 = addDays(startDate, -passDay);
+		String t2 = addDays(startDate, futureDay);
+
+		myQuery.setMinimumStartTime(DateTime.parseDate(t1));
+		myQuery.setMaximumStartTime(DateTime.parseDate(t2));
+
+		myQuery.setMaxResults(1000);
+		int startIndex = 1;
+		int entriesReturned;
+
+		CalendarEventFeed resultFeed;
+		while (true) {
+			myQuery.setStartIndex(startIndex);
+
+			try {
+				resultFeed = myService.query(myQuery, CalendarEventFeed.class);
+
+				entriesReturned = resultFeed.getEntries().size();
+				if (entriesReturned == 0)
+					// We've hit the end of the list
+					break;
+
+				for (int i = 0; i < resultFeed.getEntries().size(); i++) {
+					CalendarEventEntry entry = resultFeed.getEntries().get(i);
+					entry.delete();
+				}
+				
+				startIndex = startIndex + entriesReturned;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ServiceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 }
-
-/*
- * // testing public void insertBatchEvents(List<CalendarEventEntry>
- * eventsToInsert) { try { CalendarEventFeed batchRequest = new
- * CalendarEventFeed(); for (int i = 0; i < eventsToInsert.size(); i++) {
- * CalendarEventEntry toInsert = eventsToInsert.get(i);
- * BatchUtils.setBatchId(toInsert, String.valueOf(i));
- * BatchUtils.setBatchOperationType(toInsert, BatchOperationType.INSERT);
- * batchRequest.getEntries().add(toInsert); }
- * 
- * CalendarEventFeed feed;
- * 
- * feed = myService.getFeed(eventFeedUrl, CalendarEventFeed.class);
- * 
- * Link batchLink = feed.getLink(Link.Rel.FEED_BATCH, Link.Type.ATOM); URL
- * batchUrl = new URL(batchLink.getHref());
- * 
- * } catch (Exception e) { } }
- * 
- * // testing public CalendarEventEntry getNewEvent(String title, DateTime
- * start, DateTime end) { CalendarEventEntry newEvent = new
- * CalendarEventEntry();
- * 
- * newEvent.setTitle(new PlainTextConstruct(title));
- * 
- * When eventTimes = new When(); eventTimes.setStartTime(start);
- * eventTimes.setEndTime(end); newEvent.addTime(eventTimes);
- * 
- * return newEvent; }
- */
-
