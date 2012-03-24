@@ -20,39 +20,26 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.calendar.Synchronous.FDAdapter.ViewHolder;
-import com.facebook.DoTask;
 import com.facebook.FbHandler;
 import com.test2.R;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
-import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
 import android.os.Looper;
 import android.text.format.DateFormat;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.DatePicker;
-import android.widget.Filter;
-import android.widget.Filterable;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -164,13 +151,39 @@ public class Share extends Activity{
 						AndroidCalendar2Activity.getDB().insert("OtherTable",
 								new String [] {ins[1],ins[0]});
 						
+						}else{
+							JSONArray ja=AndroidCalendar2Activity.getDB().fetchConditional("OtherTable", " key ='"+myid+"'");
+							String pw="";
+							try{
+								pw=ja.getJSONObject(0).getString("value");
+							}catch(Exception e){
+								Log.i("error",e.toString());
+							}
+
+							ArrayList<NameValuePair> input = new ArrayList<NameValuePair>();
+							input.add(new BasicNameValuePair("oldbaby","1"));
+							input.add(new BasicNameValuePair("uid",myid));
+							input.add(new BasicNameValuePair("upw",pw));
+							response = RequestShare(input);
+							if(response=="-1"){
+								progress.cancel();
+								Looper.prepare();
+								Toast.makeText(Share.this, "Problem found! plz connect to server agent",
+									Toast.LENGTH_SHORT).show();
+								Looper.loop();
+								return ;
+							}
+							
 						}
+						
+						
 						progress.incrementProgressBy(10);
 						
 						// ready to share
+						
 						String startDate="";
 						String endDate="";
-						SimpleDateFormat df = new SimpleDateFormat("dd/mm/yyyy");
+						SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 						try{
 							Date sdate = df.parse(mStartDate.getText().toString());
 							startDate=DateFormat.format("yyyyMMdd",sdate)+"";
@@ -180,16 +193,67 @@ public class Share extends Activity{
 							Log.i("error",e.toString());
 						}
 						
+
+						JSONArray shareevents = new JSONArray(); //array of event record
+						String condition=" startDate >= '"+startDate+"' AND startDate <= '"+endDate+"' ";
+						try{
+							JSONArray ja = AndroidCalendar2Activity.getDB().fetchConditional("TimeTable", condition);
+							if(ja.length()==0){
+								progress.cancel();
+								Looper.prepare();
+								Toast.makeText(Share.this, "no events to share in this period",
+										Toast.LENGTH_SHORT).show();
+								Looper.loop();
+								return;
+							}
+							
+							for(int i = 0;i<ja.length();i++){
+								JSONObject jo = ja.getJSONObject(i);
+								if(jo.getString("private")!="1"){
+									jo.remove("private");jo.remove("reminder");jo.remove("eventID");
+									shareevents.put(jo);
+								}
+							}
+						}catch(Exception e){
+							Log.i("error",e.toString()); 
+						}
+						progress.incrementProgressBy(20);
 						
-						
-						
+						String namelist = ""; //string of idlist
+						try{
+							for(int i = 0;i<shareFriends.length();i++){
+								namelist += shareFriends.getJSONObject(i).getString("friendID");
+								if(i!=shareFriends.length()-1)
+									namelist+="*";
+							}	
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+						progress.incrementProgressBy(10);
+
+						ArrayList<NameValuePair> input = new ArrayList<NameValuePair>();
+						input.add(new BasicNameValuePair("readyshare","1"));
+						input.add(new BasicNameValuePair("namelist",namelist));
+						input.add(new BasicNameValuePair("myid",myid));
+						input.add(new BasicNameValuePair("eventlist",shareevents.toString()));
+						response = RequestShare(input);
 						
 						if(progress.isShowing()){
 							progress.setProgress(progress.getMax());
 							progress.cancel();
-							
 						}
-						
+						Looper.prepare();
+						final Dialog s = new AlertDialog.Builder(Share.this)
+						.setTitle("Thanks for Sharing!")
+						.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+							public void onClick(DialogInterface arg0, int arg1) {
+								arg0.cancel();
+								finish();
+							}
+							
+						}).create();
+						s.show();
+						Looper.loop();
 						
 					}
 				};
