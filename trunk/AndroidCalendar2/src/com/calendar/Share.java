@@ -281,7 +281,7 @@ public class Share extends Activity{
 		}
 	}
 	
-	public String RequestShare(ArrayList<NameValuePair> nameValuePairs){
+	public static String RequestShare(ArrayList<NameValuePair> nameValuePairs){
 
 		InputStream is = null;
 		try{
