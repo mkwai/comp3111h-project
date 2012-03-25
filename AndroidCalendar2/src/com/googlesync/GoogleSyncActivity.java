@@ -1,5 +1,7 @@
 package com.googlesync; 
 
+import java.util.Calendar;
+
 import com.test2.R;
 
 import android.app.Activity;
@@ -12,12 +14,14 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
-
+ 
 public class GoogleSyncActivity extends Activity {
 	/** Called when the activity is first created. */
 	private Button sync;
@@ -25,8 +29,21 @@ public class GoogleSyncActivity extends Activity {
 	private GoogleSync temp;
 	private EditText ET_username;
 	private EditText ET_password;
+	private RadioGroup rgpast;
+	private RadioGroup rgfuture;
+	private int pastdayID;
+	private int past;
+	private int futuredayID;
+	private int future;
+	private String year ;
+	private String month;
+	private String date;
+	
+	
 	private String username;
 	private String password;
+	static protected Calendar currentDateCalendar = Calendar.getInstance();
+	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -46,6 +63,10 @@ public class GoogleSyncActivity extends Activity {
 				username= ET_username.getText().toString();
 				password= ET_password.getText().toString();
 				
+				year = DateFormat.format("yyyy", currentDateCalendar).toString();
+				month = DateFormat.format("MMM", currentDateCalendar).toString();
+				date = DateFormat.format("dd", currentDateCalendar).toString();
+						
 				System.out.println(username);
 				System.out.println(password);
 				
@@ -58,7 +79,7 @@ public class GoogleSyncActivity extends Activity {
 				}
 				else if (password.length()==0){
 					Context context = getApplicationContext();
-					CharSequence text = "Please fill in password.";
+					CharSequence text = "Please fill in pastword.";
 					int duration = Toast.LENGTH_SHORT;
 					Toast toast = Toast.makeText(context, text, duration);
 					toast.show();
@@ -66,15 +87,53 @@ public class GoogleSyncActivity extends Activity {
 				else{ 
 					new Thread (new Runnable(){
 						public void run() {
+						
 							temp.setUserInfo(username, password);
+							
+							rgpast = (RadioGroup)findViewById(R.id.gs_rgpast);
+							pastdayID= rgpast.getCheckedRadioButtonId();
+							
+							if (pastdayID== R.id.gs_past7)
+								past=7;
+							if (pastdayID== R.id.gs_past30)
+								past=30;
+							if (pastdayID== R.id.gs_past60)
+								past=60;
+							if (pastdayID== R.id.gs_past90)
+								past=90;
+							if (pastdayID== R.id.gs_past180)
+								past=180;
+							if (pastdayID== R.id.gs_past365)
+								past=365;
+							
+							rgfuture = (RadioGroup)findViewById(R.id.gs_rgfuture);
+							futuredayID= rgfuture.getCheckedRadioButtonId();
+							
+							if (futuredayID== R.id.gs_future7)
+								future=7;
+							if (futuredayID== R.id.gs_future30)
+								future=30;
+							if (futuredayID== R.id.gs_future60)
+								future=60;
+							if (futuredayID== R.id.gs_future90)
+								future=90;
+							if (futuredayID== R.id.gs_future180)
+								future=180;
+							if (futuredayID== R.id.gs_future365)
+								future=365;
+							
+							
 							if (temp.GoogleLogin()== false){
 								Looper.prepare();
-								ShowMsgDialog("System","User name and password not match.");
+								ShowMsgDialog("System","User name and pastword not match.");
 								Looper.loop();
 							}
 							else{
 								Looper.prepare();
 								ShowMsgDialog("System","Connected Successfully.");
+								
+								temp.getRangeEvents2((year+ "-" + month+ "-" + date), past, future);
+								
 								Looper.loop();
 							}
 						}

@@ -1,5 +1,6 @@
 package com.googlesync;
 
+import com.calendar.AndroidCalendar2Activity;
 import com.google.gdata.client.calendar.CalendarQuery;
 import com.google.gdata.client.calendar.CalendarService;
 import com.google.gdata.data.DateTime;
@@ -23,6 +24,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
+
+import org.json.JSONArray;
 
 public class GoogleSync {
 	public class Event {
@@ -43,6 +47,21 @@ public class GoogleSync {
 	private String userName;
 	private String userPassword;
 
+	private String eventid;
+	private String title;
+	private String description;
+	private String location;
+	
+	private String startDate;
+	private String startTime;
+	private DateTime startdt;
+	private DateTime enddt;
+	private String endDate;
+	private String endTime;
+	private String isPrivate;
+	private String remind;
+	
+	
 	public GoogleSync() {
 	}
 
@@ -183,7 +202,7 @@ public class GoogleSync {
 			e.printStackTrace();
 		}
 	}
-
+	
 	/*
 	 * Called from method 1, 2 : Get info, to be stored in the database
 	 */
@@ -191,32 +210,61 @@ public class GoogleSync {
 		assert entry != null;
 		
 		Event store = new Event();
-		store.title = entry.getTitle().getPlainText(); // get title
-		store.description = entry.getPlainTextContent(); // get description
-		store.location = entry.getLocations().get(0).getValueString(); // get
-																		// location
-
+		
+		 title = entry.getTitle().getPlainText(); // get title
+		 description = entry.getPlainTextContent(); // get description
+		 location = entry.getLocations().get(0).getValueString(); // get location
+		
 		if (entry.getTimes().size() > 0) {
 			When eventTimes = entry.getTimes().get(0);
-			if (eventTimes.getStartTime().isDateOnly()) { // Check if it is a
-															// whole day event
-				store.iswholeday = true;
-			} else {
-				store.starttime = eventTimes.getStartTime();
-				store.endtime = eventTimes.getEndTime();
+			if (eventTimes.getStartTime().isDateOnly()) { // Check if it is a whole day event
+				Boolean iswholeday = true;
+			} 
+			else {
+				startdt = eventTimes.getStartTime();
+				String[] t = startdt.toString().split("[T:+\\.-]");
+				
+				startDate= t[0]+t[1]+t[2];
+				startTime= t[3]+":"+ t[4]; 
+				
+				enddt= eventTimes.getEndTime();
+				t = null;
+				t= enddt.toString().split("[T:+\\.-]");
+				
+				endDate= t[0]+t[1]+t[2];
+				endTime= t[3]+":"+t[4];
+				System.out.println(startDate);
+				System.out.println(startTime);
+				System.out.println(endDate);
+				System.out.println(endTime);
+				System.out.println();
+				
+				isPrivate= "0";
+				remind= null;
+				
 			}
 		}
-
+		
 		/*
 		 * Display in console - to be removed later
 		 */
-		   
-		 	System.out.println(store.title);
+		eventid = AndroidCalendar2Activity.getDB().GiveEventID();
+		String args[] = {eventid,title,startDate,endDate,startTime,endTime,isPrivate,location,remind};
+		AndroidCalendar2Activity.getDB().insert("TimeTable", args);
+		
+		//String args[] = {eventid,title,startDate,endDate,startTime,endTime,isPrivate,locat,remind};	
+		
+		
+		//AndroidCalendar2Activity.getDB().insert("TimeTable", args);
+		
+		
+		
+		 	/*System.out.println(store.title);
 			System.out.println(store.description);
 			System.out.println(store.location);
 			System.out.println(store.starttime);
 			System.out.println(store.endtime);
-			System.out.println();
+			System.out.println();*/
 		
 		
 	}
