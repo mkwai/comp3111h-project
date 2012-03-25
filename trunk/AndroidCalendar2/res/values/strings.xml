@@ -17,8 +17,8 @@
     <string name="addevent_confirm">Confirm</string>
     <string name="addevent_cancel">Cancel</string>
     <color name="background_color">#505050</color>
-    <string name="monthlyview_synchronous">Syn.</string><string name="monthlyview_add_event">+</string>
-    <string name="monthlyview_daily">Daily Schedule</string>
+    <string name="monthlyview_synchronous">Sharing</string><string name="monthlyview_add_event">+</string>
+    <string name="monthlyview_google">Google Sync.</string><string name="monthlyview_daily">Daily Schedule</string>
     <string name="monthlyview_monthly">Monthly</string>
     <string name="monthlyview_goto">GoTo</string>
     <string name="monthlyview_todoList">To-do List</string>
@@ -37,7 +37,7 @@
     <string name="addtask_confirm">Confirm</string>
     <string name="addevent_addevent">Add Event</string>
     <string name="dailyview_addevent">+</string>
-    <string name="monthlyview_google">Google</string>
+    
  
     <string name="gs_username">User Name: </string>
     <string name="gs_password">Password: </string>
@@ -53,5 +53,6 @@
     <string name="gs_disconnect">Disconnect</string>
     <string name="gs_gs">Sign in to Google</string>
     <string name="addtask_progress_percent">0 % </string>
+    <string name="monthlyview_weekDay"></string>
     
 </resources>

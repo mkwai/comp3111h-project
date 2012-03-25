@@ -36,7 +36,7 @@ public class AddTask extends Activity {
 
 	private SeekBar progressBar;
 	private TextView progressPercent;
-	private int progress;
+	private int progress = 0;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

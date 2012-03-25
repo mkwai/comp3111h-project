@@ -16,7 +16,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class TodoList extends Activity {
-	//storing the 
+	//storing today
 	protected Calendar currentDateCalendar = Calendar.getInstance();
 	Button addTask, sorting;
 	TextView today;

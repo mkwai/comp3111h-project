@@ -33,6 +33,7 @@ public class MonthlyView extends Activity {
 	CalendarView calendarV;
 	Button bGoTo, bAddEvent, bSynchronous, bDaily, bMonthlyb, bTodoList,
 			bGoogle;
+	public static final int SET_DATE_DIALOG = 0;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -74,7 +75,7 @@ public class MonthlyView extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				showDialog(1);
+				showDialog(SET_DATE_DIALOG);
 			}
 		});
 
@@ -123,7 +124,7 @@ public class MonthlyView extends Activity {
 
 		// setting the maximum date of the calendar
 		Calendar maxDate = Calendar.getInstance();
-		maxDate.set(2050, 11, 31, 23, 59, 59); // 11 = Dec
+		maxDate.set(2037, 11, 31, 23, 59, 59); // 11 = Dec
 		calendarV.setMaxDate(maxDate.getTimeInMillis());
 
 		// call when the selected date changes
@@ -156,12 +157,15 @@ public class MonthlyView extends Activity {
 			// use when "set" press
 			public void onDateSet(DatePicker view, int year, int monthOfYear,
 					int dayOfMonth) {
-				try {
+				if(year< 1950 || year > 2050){
+					ShowMsgDialog("ALERT","The selected date is out of range!");
+				}
+				else{
+			
 					Calendar date = Calendar.getInstance();
 					date.set(year, monthOfYear, dayOfMonth);
 					calendarV.setDate(date.getTimeInMillis());
-				} catch (IllegalArgumentException e) {
-					ShowMsgDialog("Alert","The selected date is out of range!");
+					calendarV.recomputeViewAttributes(calendarV);
 				}
 			}
 		};
