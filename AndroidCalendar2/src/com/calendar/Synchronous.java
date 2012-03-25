@@ -128,7 +128,7 @@ public class Synchronous extends Activity implements OnItemClickListener{
 	}
 	
 	public void getFdFromDB(){
-		myFriends = AndroidCalendar2Activity.getDB().fetchAllNotes("FriendTable", null, null);
+		myFriends = AndroidCalendar2Activity.getDB().fetchConditional("FriendTable", null, "name");
 		if(myFriends.length()==0) return;
 		checked = new boolean[myFriends.length()];
 		for(int i = 0;i<checked.length;i++){

@@ -1,15 +1,24 @@
 package com.calendar;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.commTimeCal.TimeCal;
 import com.test2.R;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -29,13 +38,15 @@ public class FriendsView extends Activity{
 	public static int dailyYear; 
 	public static int dailyMonth;
 	public static int dailyDayOfMonth;
+	private Button mPrev;
+	private Button mNext;
 	private TextView friendview;
 	private TextView noon;
 	private RelativeLayout DayLayout;
 	private HorizontalScrollView SV;
 	private ScrollView innerSV;
 	private String myfriendid;
-	private int numOfDays = 0;
+	private String today;
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -43,18 +54,157 @@ public class FriendsView extends Activity{
 		
 		Bundle extras = getIntent().getExtras();
 		myfriendid = extras.getString("targetfriend");
+		today = extras.getString("today");
 		
 		friendview = (TextView) findViewById(R.id.friendview);
 		SV = (HorizontalScrollView) findViewById(R.id.hsv1);
+		mPrev = (Button) findViewById(R.id.prev);
+		mNext = (Button) findViewById(R.id.next);
+		
+
+		mNext.setOnClickListener(new OnClickListener(){
+			public void onClick(View v) {
+				String condition =" friendID = '"+myfriendid+"' AND startDate > "+today+" ";
+				JSONArray ja = AndroidCalendar2Activity.getDB().fetchConditional("FriendTimeTable", condition, "startDate");
+				if(ja.length()==0){
+					Toast.makeText(FriendsView.this, "no more record", Toast.LENGTH_SHORT).show();
+				}else{
+					try{
+						today = ja.getJSONObject(0).getString("startDate");
+						Intent t = getIntent();
+						t.putExtra("today", today);
+						finish();
+						startActivity(t);
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+		
+		mPrev.setOnClickListener(new OnClickListener(){
+			public void onClick(View v) {
+				String condition =" friendID = '"+myfriendid+"' AND startDate < "+today+" ";
+				JSONArray ja = AndroidCalendar2Activity.getDB().fetchConditional("FriendTimeTable", condition, "startDate");
+				if(ja.length()==0){
+					Toast.makeText(FriendsView.this, "no more record", Toast.LENGTH_SHORT).show();
+				}else{
+					try{
+						today = ja.getJSONObject(ja.length()-1).getString("startDate");
+						Intent t = getIntent();
+						t.putExtra("today", today);
+						finish();
+						startActivity(t);
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+				}
+			}
+		});
 		
 		//compute before calculate
-		
+		if(today!=null){
+		}else{
+			getToday();
+		}
 		
 		
 		//set
 		setbackground(this);
 		
 		setupDailyTimes(this);
+		
+		testAddLabels(this);
+		
+	}
+	
+	public void testAddLabels(Context t){
+		JSONArray x = new JSONArray();
+		
+		JSONArray ja; 
+		String condition=" friendID = '"+myfriendid+"' AND startDate <= '"+today+"' AND endDate >= '"+today+"' ";
+		
+		
+		try{
+			ja = AndroidCalendar2Activity.getDB().fetchConditional("FriendTimeTable", condition);
+			for(int i = 0;i<ja.length();i++){
+				String eid, sd,ed,st,et,stime, len;
+				sd = ja.getJSONObject(i).getString("startDate");
+				st = ja.getJSONObject(i).getString("startTime");
+				if(Integer.parseInt(sd)<Integer.parseInt(today)){
+					stime = "0";
+					st = "00:00"; //for later compare
+				}
+				else{
+					stime = st;
+				}
+				
+
+				ed = ja.getJSONObject(i).getString("endDate");
+				et = ja.getJSONObject(i).getString("endTime");
+				
+				if(Integer.parseInt(ed)>Integer.parseInt(today))
+					len=String.valueOf(24*5);
+				else{
+					Date sx = new SimpleDateFormat("HH:mm").parse(st);
+					Date ex = new SimpleDateFormat("HH:mm").parse(et);
+					len = String.valueOf(TimeUnit.MILLISECONDS.toMinutes((ex.getTime()-sx.getTime())/5));
+				}
+
+				Date sx = new SimpleDateFormat("HH:mm").parse(st);
+				Date sx2 = new SimpleDateFormat("HH:mm").parse("00:00");
+				stime =  String.valueOf(TimeUnit.MILLISECONDS.toMinutes((sx.getTime()-sx2.getTime())/5));
+				
+				JSONObject jo = ja.getJSONObject(i);
+				jo.put("len", len);
+				jo.put("stime", stime);
+				x.put(jo);
+			}
+			
+			}catch(Exception e){
+				Log.i("error",e.toString()); 
+			}
+		
+		
+		
+		if(x.length()!=0){
+			EventItem events[] = new EventItem[x.length()];
+			try{
+			for(int i = 0;i<x.length();i++){
+				events[i] = new EventItem(t,x.getJSONObject(i));
+				DayLayout.addView(events[i]);
+			}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
+	public void getToday(){
+		String condition = "friendID = '"+myfriendid+"' ";
+		JSONArray ja = AndroidCalendar2Activity.getDB().fetchConditional("FriendTimeTable", condition);
+		if(ja.length()==0){
+			final Dialog s = new AlertDialog.Builder(FriendsView.this)
+			.setTitle("No Single Record")
+			.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+				public void onClick(DialogInterface arg0, int arg1) {
+					arg0.cancel();
+					finish();
+				}
+			}).create();
+			s.show();
+		}else{
+			try{
+				today = ja.getJSONObject(0).getString("startDate");
+				Date d = new Date();
+				SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+				d = df.parse(today);
+				friendview.setText(getZero(d.getDate())+"/"+getZero(d.getMonth()+1)+"/"+(d.getYear()+1900));
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
 		
 	}
 	
@@ -68,29 +218,22 @@ public class FriendsView extends Activity{
 		DayLayout.addView(noon);
 	}
 	
-	public int DateExist(Context t){
-		int i = 0;
-		JSONArray ja = AndroidCalendar2Activity.getDB().fetchConditional("FriendTable",  " friendID = '"+myfriendid+"' ");
-		
-		return i;
-	}
-	
 	private class EventItem extends TextView{
-		String friendid;
 		Context outside;
-		public EventItem(Context t, long stime, long etime, String ID){
+		JSONObject record;
+		public EventItem(Context t, JSONObject jo){
 			super(t);
 			outside = t;
-			friendid = ID;
+			record = jo;
 			setBackgroundColor(randomColor());
-			setHeight((int) dp2px(t,etime*5));
 			try{
-				setText(getJO().getString("title"));
+				setHeight((int) dp2px(t,jo.getInt("len")*5));
+				setText(jo.getString("title"));
+				setX(100);
+				setY(noon.getY()+ dp2px(t,(jo.getInt("stime")*5)));
 			}catch (Exception e){
 				Log.i("not get JO",e.toString());
 			}
-			setX(100);
-			setY(noon.getY()+ dp2px(t,(stime*5)));
 			super.setWidth(300);
 			
 			super.setOnClickListener(new OnClickListener(){
@@ -99,28 +242,18 @@ public class FriendsView extends Activity{
 				public void onClick(View arg0) {
 					// TODO Auto-generated method stub
 					try{
-					JSONObject itemOB = getJO();
-					String t = "Title:   "+itemOB.getString("title")+"\n" + 
-							"Start: 	 "+itemOB.getString("startTime")+"\n" + 
-							"End:   "+itemOB.getString("endTime")+"\n" + 
-							"Location:   "+itemOB.getString("location")+"\n";
+					String t = "Title:   "+record.getString("title")+"\n" + 
+							"Start: 	 "+record.getString("startTime")+"\n" + 
+							"End:   "+record.getString("endTime")+"\n" + 
+							"Location:   "+record.getString("location")+"\n";
 					Toast.makeText(outside, t, Toast.LENGTH_SHORT).show();
 					}catch(Exception e){
-						
+						e.printStackTrace();
 					}
 				}
 				
 			});
 		}
-		
-		//get entire record for this event
-		public JSONObject getJO() throws Exception{
-			JSONArray ja = AndroidCalendar2Activity.getDB().fetchConditional("FriendTable", " friendID = '"+friendid+"' ");
-			if(ja==null) return null;
-			if(ja.length()!=1) return null;
-			return ja.getJSONObject(0);
-		}
-		
 		//produce random color for the item
 		public int randomColor(){
 			return Color.rgb(new Random().nextInt(255),
@@ -150,6 +283,14 @@ public class FriendsView extends Activity{
 			DayLayout.setMinimumHeight((int) (h+dp2px(t,61)));
 		}
 		
+	}	
+	
+	// convert month or day
+	private String getZero(int x){
+		if(String.valueOf(x).length()<2){
+			return "0"+String.valueOf(x);
+		}
+		return String.valueOf(x);
 	}
 	
 	// convert dp to px
