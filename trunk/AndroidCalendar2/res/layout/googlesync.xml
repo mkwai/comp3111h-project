@@ -2,25 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" 
-        android:background="@color/background_color">
+    android:background="@color/background_color"
+    android:orientation="vertical" >
 
-    
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
         android:text="@string/gs_gs"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
         android:textSize="20dp" />
-    
-    
+
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/gs_username"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
+        android:text="@string/gs_username"
         android:textSize="20dp" />
 
     <EditText
@@ -35,17 +33,16 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/gs_password" 
-                android:layout_marginLeft="10dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
+        android:text="@string/gs_password"
         android:textSize="20dp" />
 
     <EditText
         android:id="@+id/gs_password"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:password="true" />
+        android:inputType="textPassword" />
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -60,7 +57,7 @@
             android:orientation="vertical" >
 
             <RadioGroup
-                android:id="@+id/gs_rgpass"
+                android:id="@+id/gs_rgpast"
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
@@ -68,44 +65,44 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/gs_fromthepass" 
-                            android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:textSize="20dp" />
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/gs_fromthepast"
+                    android:textSize="20dp" />
 
                 <RadioButton
-                    android:id="@+id/gs_pass7"
+                    android:id="@+id/gs_past7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/gs_day1" />
 
                 <RadioButton
-                    android:id="@+id/gs_pass30"
+                    android:id="@+id/gs_past30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
                     android:text="@string/gs_day2" />
 
                 <RadioButton
-                    android:id="@+id/gs_pass60"
+                    android:id="@+id/gs_past60"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/gs_day3" />
 
                 <RadioButton
-                    android:id="@+id/gs_pass90"
+                    android:id="@+id/gs_past90"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/gs_day4" />
 
                 <RadioButton
-                    android:id="@+id/gs_pass180"
+                    android:id="@+id/gs_past180"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/gs_day5" />
 
                 <RadioButton
-                    android:id="@+id/gs_pass365"
+                    android:id="@+id/gs_past365"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/gs_day6" />
@@ -127,10 +124,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/gs_tothefuture" 
-                            android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:textSize="20dp" />
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/gs_tothefuture"
+                    android:textSize="20dp" />
 
                 <RadioButton
                     android:id="@+id/gs_future7"
