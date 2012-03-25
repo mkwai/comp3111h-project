@@ -41,7 +41,7 @@
  
     <string name="gs_username">User Name: </string>
     <string name="gs_password">Password: </string>
-    <string name="gs_fromthepass">From the past </string>
+    <string name="gs_fromthepast">From the past </string>
     <string name="gs_tothefuture">To the future </string>
     <string name="gs_day1">7 days </string>
     <string name="gs_day2">30 days </string>
