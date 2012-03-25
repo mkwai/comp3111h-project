@@ -2,13 +2,14 @@ package com.calendar;
 
 import java.util.Calendar;
 
-
 import com.test2.R;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -30,12 +31,15 @@ import android.widget.CalendarView.OnDateChangeListener;
 public class MonthlyView extends Activity {
 
 	CalendarView calendarV;
-	Button bGoTo, bAddEvent, bSynchronous,bDaily,bMonthlyb,bTodoList,bGoogle;
+	Button bGoTo, bAddEvent, bSynchronous, bDaily, bMonthlyb, bTodoList,
+			bGoogle;
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//set to full screen
+		// set to full screen
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 		setContentView(R.layout.main);
 
@@ -62,8 +66,8 @@ public class MonthlyView extends Activity {
 				startActivity(new Intent("com.calendar.SYNCHRONOUS"));
 			}
 		});
-	
-		//button GoTo
+
+		// button GoTo
 		bGoTo = (Button) findViewById(R.id.bGoTo);
 		bGoTo.setOnClickListener(new OnClickListener() {
 
@@ -74,7 +78,7 @@ public class MonthlyView extends Activity {
 			}
 		});
 
-		//button Daily
+		// button Daily
 		bDaily = (Button) findViewById(R.id.bDaily);
 		bDaily.setOnClickListener(new OnClickListener() {
 
@@ -84,8 +88,8 @@ public class MonthlyView extends Activity {
 				startActivity(new Intent("com.calendar.DAILYVIEW"));
 			}
 		});
-		
-		//button TodoList
+
+		// button TodoList
 		bTodoList = (Button) findViewById(R.id.bTodoList);
 		bTodoList.setOnClickListener(new OnClickListener() {
 
@@ -95,8 +99,8 @@ public class MonthlyView extends Activity {
 				startActivity(new Intent("com.calendar.TODOLIST"));
 			}
 		});
-		
-		//button Google
+
+		// button Google
 		bGoogle = (Button) findViewById(R.id.bGoogle);
 		bGoogle.setOnClickListener(new OnClickListener() {
 
@@ -106,41 +110,41 @@ public class MonthlyView extends Activity {
 				startActivity(new Intent("com.calendar.GOOGLESYNC"));
 			}
 		});
-			
-		
+
 		// calendar view
 		calendarV = (CalendarView) findViewById(R.id.calendarV);
 		calendarV.setEnabled(true);
 		calendarV.setShowWeekNumber(false);
-		
-		//setting the minimum date of the calendar
+
+		// setting the minimum date of the calendar
 		Calendar minDate = Calendar.getInstance();
-		minDate.set(1950, 0, 1, 0, 0, 0);			//0 = Jan
+		minDate.set(1950, 0, 1, 0, 0, 0); // 0 = Jan
 		calendarV.setMinDate(minDate.getTimeInMillis());
-		
-		//setting the maximum date of the calendar
+
+		// setting the maximum date of the calendar
 		Calendar maxDate = Calendar.getInstance();
-		maxDate.set(2050, 11, 31, 23, 59, 59);		//11 = Dec
+		maxDate.set(2050, 11, 31, 23, 59, 59); // 11 = Dec
 		calendarV.setMaxDate(maxDate.getTimeInMillis());
-		
-		// call when the selected date changes		
+
+		// call when the selected date changes
 		calendarV.setOnDateChangeListener(new OnDateChangeListener() {
 
 			@Override
 			public void onSelectedDayChange(CalendarView arg0, int year,
 					int month, int dayOfMonth) {
-				//for dailyview
+				// for dailyview
 				DailyView.setDailyYear(year);
 				DailyView.setDailyMonth(month);
 				DailyView.setDailyDayOfMonth(dayOfMonth);
-				//for add event
+				// for add event
 				AddEvent.currentDateCalendar.set(Calendar.YEAR, year);
 				AddEvent.currentDateCalendar.set(Calendar.MONTH, month);
-				AddEvent.currentDateCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+				AddEvent.currentDateCalendar.set(Calendar.DAY_OF_MONTH,
+						dayOfMonth);
 
 			}
 		});
-		
+
 	}
 
 	// call when create dialog, for GoTo use
@@ -152,31 +156,33 @@ public class MonthlyView extends Activity {
 			// use when "set" press
 			public void onDateSet(DatePicker view, int year, int monthOfYear,
 					int dayOfMonth) {
-				Calendar date = Calendar.getInstance();
-				date.set(year, monthOfYear, dayOfMonth);
-				calendarV.setDate(date.getTimeInMillis());
-
+				try {
+					Calendar date = Calendar.getInstance();
+					date.set(year, monthOfYear, dayOfMonth);
+					calendarV.setDate(date.getTimeInMillis());
+				} catch (IllegalArgumentException e) {
+					ShowMsgDialog("Alert","The selected date is out of range!");
+				}
 			}
 		};
-		
-		return  new DatePickerDialog(this, goToDateSetListener,
-				Calendar.getInstance().get(Calendar.YEAR),
-				Calendar.getInstance().get(Calendar.MONTH),
-				Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+
+		return new DatePickerDialog(this, goToDateSetListener, Calendar
+				.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(
+				Calendar.MONTH), Calendar.getInstance().get(
+				Calendar.DAY_OF_MONTH));
 	}
-	
-	
-//FOR menu	
+
+	// FOR menu
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		
+
 		super.onCreateOptionsMenu(menu);
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.main_menu, menu);
-		
+
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -187,13 +193,28 @@ public class MonthlyView extends Activity {
 			startActivity(new Intent("com.calendar.SYNCHRONOUS"));
 			return true;
 		case R.id.menu_import:
-//			startActivity(new Intent("com.calendar.IMPORT"));
+			// startActivity(new Intent("com.calendar.IMPORT"));
 			return true;
 		case R.id.menu_export:
-//			startActivity(new Intent("com.calendar.EXPORT"));
+			// startActivity(new Intent("com.calendar.EXPORT"));
 			return true;
 		}
 		return false;
 
 	}
+	
+	//for exception, selected date 
+	private void ShowMsgDialog(String title, String msg) {
+		AlertDialog.Builder MyAlertDialog = new AlertDialog.Builder(this);
+		MyAlertDialog.setTitle(title);
+		MyAlertDialog.setMessage(msg);
+		DialogInterface.OnClickListener OkClick = new DialogInterface.OnClickListener(){
+			public void onClick(DialogInterface dialog, int which) {
+				// no action
+			}
+		};
+		MyAlertDialog.setNeutralButton("Okay", OkClick);
+		MyAlertDialog.show();
+	}
+	
 }
