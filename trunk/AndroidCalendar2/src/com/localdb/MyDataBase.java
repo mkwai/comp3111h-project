@@ -195,7 +195,24 @@ public class MyDataBase {
     	}
     	return JA;
     }
-    
+    public JSONArray fetchConditional(String tableName, String condition, String order){
+    	Table T = getTable(tableName);
+    	JSONArray JA = new JSONArray();
+    	Cursor mCursor = mDb.query(T.getName(), T.getFields(), condition, null, null, null, order);mCursor.moveToFirst();
+    	try{
+    	while(mCursor.isAfterLast()==false){
+    		JSONObject JO = new JSONObject();
+    		for(int i = 0;i<T.getFields().length;i++){
+    			JO.put(T.getFields()[i], mCursor.getString(i));
+    		}
+    		JA.put(JO);
+    		mCursor.moveToNext();
+    	}
+    	}catch(Exception e){
+    	Log.i("inf",Integer.toString(JA.length()));
+    	}
+    	return JA;
+    }
     // generate 36chars random event id
     public String GiveEventID(){
     	Random x = new Random();
