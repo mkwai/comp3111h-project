@@ -18,7 +18,7 @@
         </TextView>
 
         <!-- title -->
-        
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
         </LinearLayout>
 
         <!-- location -->
-        
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,24 +65,39 @@
             </EditText>
         </LinearLayout>
 
-        <!--  progress -->
-        
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/addtask_progress"
-            android:textSize="20dp" >
-        </TextView>
+        <!-- progress -->
 
-        <ProgressBar
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="@string/addtask_progress"
+                android:textSize="20dp" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/addtask_progressPercent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="@string/addtask_progress_percent"
+                android:textSize="20dp" >
+            </TextView>
+        </LinearLayout>
+
+        <SeekBar
             android:id="@+id/addtask_progressBar"
-            style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="fill_parent"
-            android:layout_height="5dp"
+            android:layout_height="30dp"
             android:layout_margin="10dp" />
 
         <!-- deadline time -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -97,14 +112,14 @@
             </TextView>
 
             <Button
-                android:id="@+id/addevent_deadlinedate"
+                android:id="@+id/addtask_deadlinedate_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp" >
             </Button>
 
             <Button
-                android:id="@+id/addevent_deadlinetime"
+                android:id="@+id/addtask_deadlinetime_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp" >
@@ -112,7 +127,7 @@
         </LinearLayout>
 
         <!-- reminder -->
-        
+
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

@@ -2,13 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+        android:background="@color/background_color">
 
+    
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/gs_username" />
-
+        android:text="@string/gs_gs"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:textSize="20dp" />
+    
+    
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/gs_username"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:textSize="20dp" />
 
     <EditText
         android:id="@+id/gs_username"
@@ -22,7 +35,10 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/gs_password" />
+        android:text="@string/gs_password" 
+                android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:textSize="20dp" />
 
     <EditText
         android:id="@+id/gs_password"
@@ -52,7 +68,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/gs_fromthepass" />
+                    android:text="@string/gs_fromthepass" 
+                            android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:textSize="20dp" />
 
                 <RadioButton
                     android:id="@+id/gs_pass7"
@@ -66,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:checked="true"
                     android:text="@string/gs_day2" />
-					
+
                 <RadioButton
                     android:id="@+id/gs_pass60"
                     android:layout_width="wrap_content"
@@ -108,7 +127,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/gs_tothefuture" />
+                    android:text="@string/gs_tothefuture" 
+                            android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:textSize="20dp" />
 
                 <RadioButton
                     android:id="@+id/gs_future7"
@@ -152,22 +174,22 @@
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
         <Button
             android:id="@+id/gs_sync"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.12"
+            android:layout_weight="50"
             android:text="@string/gs_sync" />
 
         <Button
             android:id="@+id/gs_disconnect"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.13"
+            android:layout_weight="50"
             android:text="@string/gs_disconnect" />
     </LinearLayout>
 
