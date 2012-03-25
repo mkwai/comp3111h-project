@@ -64,6 +64,15 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.calendar.FriendsView"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.calendar.FriendsView" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name="com.calendar.TodoList"
             android:label="@string/app_name" >
             <intent-filter>

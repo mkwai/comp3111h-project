@@ -121,8 +121,6 @@ public class Synchronous extends Activity implements OnItemClickListener{
         	
         });
         
-        
-        
         getFdFromDB();
         
         ShowFdList();
@@ -236,8 +234,6 @@ public class Synchronous extends Activity implements OnItemClickListener{
 		
        	        
 	}
-	
-	
 
 	public void ShowFdList(){
 		if(myFriends.length()==0) return;
@@ -268,6 +264,10 @@ public class Synchronous extends Activity implements OnItemClickListener{
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
+				Date d = new Date();
+				String time = d.getDate()+"/"+(d.getMonth()+1)+"/"+(d.getYear()+1900);
+				AndroidCalendar2Activity.getDB().update("FriendTable", downloadTarget,
+						new String [] {"lastUpdate"}, new String[] {time});
 			}
 			downloadcount--;
 		}
@@ -353,6 +353,13 @@ public class Synchronous extends Activity implements OnItemClickListener{
 			
 			holder.textLine.setOnClickListener(new OnClickListener(){
 				public void onClick(View v) {
+					try{
+						Intent myIntent = new Intent(getApplicationContext(), FriendsView.class);
+						myIntent.putExtra("targetfriend",myFriends.getJSONObject(position).getString("friendID"));
+						startActivity(myIntent);
+					}catch(Exception e){
+						Log.i("err",e.toString());
+					}
 				}
 				
 			});
