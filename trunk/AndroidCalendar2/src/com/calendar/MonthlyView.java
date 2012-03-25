@@ -30,7 +30,7 @@ import android.widget.CalendarView.OnDateChangeListener;
 public class MonthlyView extends Activity {
 
 	CalendarView calendarV;
-	Button bGoTo, bAddEvent, bSynchronous,bDaily,bMonthlyb,bTodoList;
+	Button bGoTo, bAddEvent, bSynchronous,bDaily,bMonthlyb,bTodoList,bGoogle;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//set to full screen
@@ -62,9 +62,7 @@ public class MonthlyView extends Activity {
 				startActivity(new Intent("com.calendar.SYNCHRONOUS"));
 			}
 		});
-
-
-		
+	
 		//button GoTo
 		bGoTo = (Button) findViewById(R.id.bGoTo);
 		bGoTo.setOnClickListener(new OnClickListener() {
@@ -98,6 +96,17 @@ public class MonthlyView extends Activity {
 			}
 		});
 		
+		//button Google
+		bGoogle = (Button) findViewById(R.id.bGoogle);
+		bGoogle.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				startActivity(new Intent("com.calendar.GOOGLESYNC"));
+			}
+		});
+			
 		
 		// calendar view
 		calendarV = (CalendarView) findViewById(R.id.calendarV);

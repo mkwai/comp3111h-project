@@ -14,7 +14,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:background="#111111"
-        android:orientation="horizontal" >
+        android:orientation="horizontal" android:gravity="center">
 
         <Button
             android:id="@+id/bSynchronous"
@@ -37,21 +37,41 @@
             android:text="@string/monthlyview_todoList" >
         </Button>
         
-        <Button
-            android:id="@+id/bAddEvent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/monthlyview_add_event" >
-        </Button>
+
     </LinearLayout>
 
-    <LinearLayout
+        <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/linear_top2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/linear_top"
+        android:background="#111111"
+        android:orientation="horizontal" android:gravity="center">
+                <Button
+            android:id="@+id/bGoogle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/monthlyview_google" >
+        </Button>
+        
+        <Button
+            android:id="@+id/bAddEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/monthlyview_add_event" >
+        </Button>
+            
+        </LinearLayout>
+    
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/linear_top3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/linear_top2"
         android:background="#111111"
         android:orientation="horizontal" >
 
@@ -69,7 +89,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/linear_top2" >
+        android:layout_below="@id/linear_top3" >
 
         <CalendarView
             xmlns:android="http://schemas.android.com/apk/res/android"

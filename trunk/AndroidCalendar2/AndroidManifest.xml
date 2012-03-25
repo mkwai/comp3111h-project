@@ -81,6 +81,15 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+                <activity
+            android:name="com.googlesync.GoogleSyncActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.calendar.GOOGLESYNC" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name="com.calendar.AddTask"
             android:label="@string/app_name" >
