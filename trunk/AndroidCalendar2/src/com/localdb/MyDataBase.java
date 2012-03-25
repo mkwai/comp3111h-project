@@ -28,6 +28,8 @@ public class MyDataBase {
     private static final FriendTable FriendT = new FriendTable();
     private static final OtherTable OtherT = new OtherTable();
     private static final FriendTimeTable FTimeT = new FriendTimeTable();
+
+    private static final TaskTable TaskT = new TaskTable();
     
     private static interface Table{
     	public String[] getFields();
@@ -47,6 +49,19 @@ public class MyDataBase {
     				"(eventID INT, title TEXT, startDate INT, endDate INT, startTime TEXT, endTime TEXT, private INT, location TEXT, reminder TEXT);";
     	}
     }
+
+    private static class TaskTable implements Table{
+    	public String[] getFields(){
+    		return new String[] {"taskID", "title","deadlineDate","deadlineDate","location","reminder"};
+    	}
+
+    	public String getName(){return "TaskTable";}
+    	public String getCreate(){
+    		return "create table TaskTable "+
+    				"(taskID INT, title TEXT, deadlineDate INT, deadlineTime TEXT, location TEXT, reminder TEXT);";
+    	}
+    }
+    
     
     private static class FriendTable implements Table{
 		public String[] getFields() {
@@ -117,7 +132,7 @@ public class MyDataBase {
 
 
     public MyDataBase(Context ctx) {
-    	Ts.add(TimeT); Ts.add(FriendT); Ts.add(OtherT); Ts.add(FTimeT);
+    	Ts.add(TimeT); Ts.add(FriendT); Ts.add(OtherT); Ts.add(FTimeT);Ts.add(TaskT);
         this.mCtx = ctx;      
         mDbHelper = new DatabaseHelper(mCtx);
         mDb = mDbHelper.getWritableDatabase();

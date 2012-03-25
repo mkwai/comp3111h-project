@@ -34,7 +34,7 @@
             </TextView>
 
             <EditText
-                android:id="@+id/addevent_title_edit"
+                android:id="@+id/addtask_title_edit"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -58,7 +58,7 @@
             </TextView>
 
             <EditText
-                android:id="@+id/addevent_location_edit"
+                android:id="@+id/addtask_location_edit"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"

@@ -1,6 +1,10 @@
 package com.calendar;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+
+import org.json.JSONArray;
 
 import com.test2.R;
 
@@ -13,21 +17,29 @@ import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 public class AddTask extends Activity {
 	private Button deadlineDateButton;
 	private Button deadlineTimeButton;
-	
-	
+	private Button cancelButton;
+	private Button confirmButton;
+	private EditText title_edit;
+	private EditText location;
+	private CheckBox reminder;
+
 	private Calendar currentDateCalendar = Calendar.getInstance();
 	private Calendar deadlineCalendar = Calendar.getInstance();
 
@@ -37,7 +49,7 @@ public class AddTask extends Activity {
 	private SeekBar progressBar;
 	private TextView progressPercent;
 	private int progress = 0;
-	
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// set to full screen
@@ -46,36 +58,40 @@ public class AddTask extends Activity {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 		
-		//progress setting
+		title_edit = (EditText) findViewById(R.id.addtask_title_edit);
+		location = (EditText) findViewById(R.id.addtask_location_edit);
+		reminder = (CheckBox) findViewById(R.id.addtask_reminder_checkBox);
+		
+		// progress setting
 		setContentView(R.layout.addtask);
-		progressPercent = (TextView)findViewById(R.id.addtask_progressPercent);
+		progressPercent = (TextView) findViewById(R.id.addtask_progressPercent);
 		progressBar = (SeekBar) findViewById(R.id.addtask_progressBar);
-		
-		progressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-			
-			@Override
-			public void onStopTrackingTouch(SeekBar seekBar) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onStartTrackingTouch(SeekBar seekBar) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onProgressChanged(SeekBar seekBar, int p,
-					boolean fromUser) {
-				// TODO Auto-generated method stub
-				progressPercent.setText(p + " % ");
-				progress = p;
-			}
-		});
-		
-		
-		//deadline setting
+
+		progressBar
+				.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+					@Override
+					public void onStopTrackingTouch(SeekBar seekBar) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onStartTrackingTouch(SeekBar seekBar) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onProgressChanged(SeekBar seekBar, int p,
+							boolean fromUser) {
+						// TODO Auto-generated method stub
+						progressPercent.setText(p + " % ");
+						progress = p;
+					}
+				});
+
+		// deadline setting
 		deadlineDateButton = (Button) findViewById(R.id.addtask_deadlinedate_button);
 		deadlineTimeButton = (Button) findViewById(R.id.addtask_deadlinetime_button);
 
@@ -116,7 +132,61 @@ public class AddTask extends Activity {
 				showDialog(DEADLINE_TIME_DIALOG);
 			}
 		});
+		
+		//cancel/confirm button
+		cancelButton = (Button) findViewById(R.id.addtask_cancel_button);
+		confirmButton = (Button) findViewById(R.id.addtask_confirm_button);
+		cancelButton.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+
+				finish();
+			}
+		});
+
+		confirmButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				// TODO Auto-generated method stub
+				// sent data to database
+			/*
+				String taskid = AndroidCalendar2Activity.getDB().GiveEventID();
+				String title = title_edit.getText().toString();
+				if(title.length()==0){
+					Toast.makeText(
+							AddTask.this,"You Should enter valid context/title",Toast.LENGTH_SHORT
+							).show();
+					return;
+				}
+				String deadlineTime = deadlineTimeButton.getText().toString();
+				
+				String deadlineDate="";
+
+				SimpleDateFormat df = new SimpleDateFormat("MMM dd , yyyy");
+				try{
+					Date ddate = df.parse(deadlineDateButton.getText().toString());
+					deadlineDate=DateFormat.format("yyyyMMdd",ddate)+"";
+				}catch(Exception e){
+					Log.i("error",e.toString());
+				}
+											
+				String locat = location.getText().toString();
+				String remind = reminder.isChecked()?"1":"0";
+				String args[] = {taskid,title,deadlineDate,deadlineTime,locat,remind};	
+
+				AndroidCalendar2Activity.getDB().insert("TaskTable", args);
+				JSONArray ja = AndroidCalendar2Activity.getDB().fetchAllNotes("TaskTable", null, null);								
+				Log.i("12312", ja.length() + "");
+			*/	finish();
+				
+			}
+
+		});
+		
 	}
 
 	// call when create dialog
