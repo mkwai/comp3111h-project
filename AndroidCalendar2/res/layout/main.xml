@@ -13,6 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="10dp"
         android:background="@color/background_color"
         android:gravity="center"
         android:orientation="horizontal" >
@@ -98,7 +100,8 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:focusedMonthDateColor="#FFFFFF"
-            android:selectedWeekBackgroundColor="@color/background_color" >
+            android:selectedWeekBackgroundColor="@color/background_color"
+            android:weekDayTextAppearance="@string/monthlyview_weekDay" >
         </CalendarView>
     </LinearLayout>
 
