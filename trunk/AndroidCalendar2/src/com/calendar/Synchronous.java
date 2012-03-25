@@ -45,7 +45,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class Synchronous extends Activity implements OnItemClickListener{
-   	
+	private Button mReset;
+
     private LoginButton mLoginButton;
     private Button mRefreshButton;
     private Button mShareButton;
@@ -66,7 +67,16 @@ public class Synchronous extends Activity implements OnItemClickListener{
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 		setContentView(R.layout.synchronous);
+		mReset = (Button) findViewById(R.id.share_reset_button);
+		mReset.setOnClickListener(new OnClickListener(){
 
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+		
+			}
+			
+		});
 		
         listLayout = (ListView) findViewById(R.id.fdlist);
         
