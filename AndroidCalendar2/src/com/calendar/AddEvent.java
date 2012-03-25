@@ -132,25 +132,7 @@ public class AddEvent extends Activity {
 				// TODO Auto-generated method stub
 
 				finish();
-				/*
-				 * content.setText(""); location.setText(""); Calendar calendar
-				 * = Calendar.getInstance();
-				 * 
-				 * startingDateButton.setText(DateFormat.format("MMM", calendar)
-				 * + " " + DateFormat.format("dd", calendar) + " , " +
-				 * DateFormat.format("yyyy", calendar));
-				 * startingTimeButton.setText(DateFormat.format("kk", calendar)
-				 * + ":" + DateFormat.format("mm", calendar));
-				 * endingDateButton.setText(DateFormat.format("MMM", calendar) +
-				 * " " + DateFormat.format("dd", calendar) + " , " +
-				 * DateFormat.format("yyyy", calendar));
-				 * endingTimeButton.setText(DateFormat.format("kk", calendar) +
-				 * ":" + DateFormat.format("mm", calendar));
-				 * 
-				 * contactPerson.setText(""); reminder.setChecked(false);
-				 * privateEvent.setChecked(false);
-				 * restrictFacebook.setChecked(false);
-				 */}
+				}
 
 		});
 
