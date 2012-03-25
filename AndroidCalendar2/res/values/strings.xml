@@ -37,6 +37,7 @@
     <string name="addtask_confirm">Confirm</string>
     <string name="addevent_addevent">Add Event</string>
     <string name="dailyview_addevent">+</string>
+    <string name="monthlyview_google">Google</string>
  
     <string name="gs_username">User Name: </string>
     <string name="gs_password">Password: </string>
