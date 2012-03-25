@@ -19,7 +19,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:text="@string/dailyview_addevent" >
-
     </Button>
 
     <ScrollView
@@ -33,6 +32,8 @@
             android:id="@+id/daily_relativelayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:background="@color/background_color"
             android:orientation="vertical" >
 
@@ -46,7 +47,7 @@
                 android:text="@string/twelve_am" >
             </TextView>
 
-            <!-- line in each xx:00 -->
+            <!-- line in 12:00 -->
 
 
             <!-- line in each xx:30 -->
