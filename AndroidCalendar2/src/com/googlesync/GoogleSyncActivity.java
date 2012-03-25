@@ -1,4 +1,4 @@
-package com.googlesync;
+package com.googlesync; 
 
 import com.test2.R;
 
