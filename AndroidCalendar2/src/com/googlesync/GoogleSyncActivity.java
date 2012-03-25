@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -57,11 +58,22 @@ public class GoogleSyncActivity extends Activity {
 					toast.show();
 				}
 				else{ 
-					temp.setUserInfo(username, password);
-					if (temp.GoogleLogin()== false)
-						ShowMsgDialog("System","User name and password not match.");	
-					else
-						ShowMsgDialog("System","Connected Successfully.");	
+					new Thread (new Runnable(){
+						public void run() {
+							temp.setUserInfo(username, password);
+							if (temp.GoogleLogin()== false){
+								Looper.prepare();
+								ShowMsgDialog("System","User name and password not match.");
+								Looper.loop();
+							}
+							else{
+								Looper.prepare();
+								ShowMsgDialog("System","Connected Successfully.");
+								Looper.loop();
+							}
+						}
+						
+					}).start();
 				}
 					
 			}
