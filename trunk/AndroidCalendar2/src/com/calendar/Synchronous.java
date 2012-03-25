@@ -257,7 +257,8 @@ public class Synchronous extends Activity implements OnItemClickListener{
 			if(!response.equals("null")){
 				JSONArray ja = new JSONArray();
 				try {
-					ja=new JSONObject().getJSONArray(response);
+					ja=new JSONArray(response);
+					System.out.println(ja.length());
 					for(int i = 0;i<ja.length();i++){
 						insert(ja.getJSONObject(i));
 					}
