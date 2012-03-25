@@ -24,9 +24,9 @@ public class CityListActivity extends Activity implements OnItemClickListener{
 
 	private final static String TAG = "CityListActivity";
 	
-	/*temporary use
+	//temporary use
 	private final double UST_LAT = 22.336659;
-	private final double UST_LNG = 114.266725;*/
+	private final double UST_LNG = 114.266725;
 	
 	private LocationManager locationManager;
 	private String bestProvider;
@@ -55,6 +55,7 @@ public class CityListActivity extends Activity implements OnItemClickListener{
 		
 		mListView.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, arrayList));
 		mListView.setOnItemClickListener(this);
+		
 	}
 
 	@Override
@@ -65,11 +66,11 @@ public class CityListActivity extends Activity implements OnItemClickListener{
 		bestProvider = locationManager.getBestProvider(criteria, false);
 		
 		Location location = locationManager.getLastKnownLocation(bestProvider);
-		Log.i("location!!!", location.getLatitude()+"");
+		
 		String latAndLng = list.get(position).getLat()+","+list.get(position).getLng();
 		String destination = list.get(position).getCityName();
 		String args = "http://maps.google.com/maps/api/directions/json?origin=" + latAndLng
-			+ "&destination=" + location.getLatitude() + "," + location.getLongitude() + "&sensor=false";
+			+ "&destination=" + UST_LAT/*location.getLatitude()*/ + "," + UST_LNG /*location.getLongitude()*/ + "&sensor=false";
 		
 		Intent intent = new Intent(this, LocationDurationActivity.class);
 		Bundle bundle = new Bundle();
@@ -78,5 +79,11 @@ public class CityListActivity extends Activity implements OnItemClickListener{
 		setResult(Activity.RESULT_OK, intent);
 		finish();
 	}
-
+	
+	@Override
+	public void onBackPressed(){
+		setResult(Activity.RESULT_CANCELED);
+		finish();
+	}
+	
 }

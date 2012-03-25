@@ -59,6 +59,17 @@ public class LocationDurationActivity extends Activity implements OnClickListene
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		
+		if (resultCode == Activity.RESULT_CANCELED){
+			
+			new AlertDialog.Builder(LocationDurationActivity.this).
+			setTitle("Return?").setMessage("Location has not save.").
+			  setPositiveButton( "OK" ,new DialogInterface.OnClickListener() {  
+				public void onClick(DialogInterface dialoginterface, int i){	}          
+			}).show();
+			
+			return;
+		}
+		
 		if (requestCode == CODE) {
 			TravelingDuration TD = (TravelingDuration)data.getSerializableExtra(DURATION_INFOS);
 			String message;
@@ -79,6 +90,7 @@ public class LocationDurationActivity extends Activity implements OnClickListene
 			}).show();    
 			
 		}
+
 	}
 	@Override
 	public void onClick(View v) {
