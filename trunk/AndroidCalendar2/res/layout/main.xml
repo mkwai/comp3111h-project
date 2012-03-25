@@ -74,7 +74,7 @@
         android:layout_below="@id/linear_top2"
         android:background="#111111"
         android:orientation="horizontal" >
-
+   
         <Button
             android:id="@+id/bDaily"
             android:layout_width="fill_parent"
