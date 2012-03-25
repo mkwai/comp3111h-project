@@ -120,8 +120,26 @@ public class DailyView extends Activity {
 			tv.setY(h);
 			relativeLayout.addView(tv);
 			relativeLayout.setMinimumHeight((int) (h+dp2px(t,61)));
+			
+			View v = new View(t);
+			v.setX(100);
+			v.setY(h + 15);
+			v.setBackgroundColor(Color.GRAY);
+		
+			v.setMinimumHeight(2);
+			v.setMinimumWidth(200);
+			relativeLayout.addView(v);
 		}
 		
+		//for the line @ 12:00 am
+		View v = new View(t);
+		v.setX(100);
+		v.setY(15);
+		v.setBackgroundColor(Color.GRAY);
+
+		v.setMinimumHeight(2);
+		v.setMinimumWidth(200);
+		relativeLayout.addView(v);
 	}
 
 	private class EventItem extends TextView{
