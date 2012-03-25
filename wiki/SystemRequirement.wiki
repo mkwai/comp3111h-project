@@ -19,32 +19,37 @@ The DailyAssistant needs to provide the following functionality.
 
 *1. Calendar and Scheduler *
 
-Calendar and scheduler are the basic features of the personal assistant. First of all, there is a monthly calendar, which the calendar of current month is the default showing page in users view. Furthermore, daily timetable can be viewed in the vertical interface, showing the detailed schedule of a day. Three-day calendar, including today, tomorrow and the day after tomorrow, can be shown in the horizontal interface. Users can scroll up and down the screen to view the timetable if it exceeds the height of the screen. Scrolling left and right, users can view the information of another day. For vertical daily timetable, the schedule of previous day will be shown if the user scrolls the screen to left; and, the schedule of next day can be viewed if the user scrolls it to right. For horizontal mode, three days are shown in a screen.
-Moreover, a user can input a date to see the schedule of that particular day (or three days in horizontal view) directly, instead of keep scrolling the screen. More functions and features requirement of the app will be discussed in the following.
+Calendar and scheduler are the basic features of the personal assistant. First of all, there is a monthly calendar. The default page shows the calendar of current month. By selecting a day in the monthly calendar, a daily timetable of that selected day can be viewed in the vertical interface, showing the detailed schedule of a day. Three-day calendar, including today, tomorrow and the day after tomorrow, can be shown in the horizontal interface. 
+
+For the monthly calendar view, user can scroll up to view the previous month calendar and scroll down to view the next month calendar.
+
+For the daily schedule view, users can scroll up and down the screen to view the schedule if it exceeds the height of the screen. Scrolling left and right, users can view the information of another day. Concerning the vertical daily timetable, the schedule of previous day will be shown if the user scrolls the screen to left; and, the schedule of next day can be viewed if the user scrolls it to right. In horizontal mode, three days are shown in a screen.
+
+Moreover, a user can select a date to see the monthly calendar of the month directly. More functions and features requirement of the app will be discussed in the following.
 
 The starting date of the calendar in DailyAssistant is 1/1/1950 and the last is 31/12/2050. 24 hours is available in the schedule in which each row represent 15 minutes.
 
 ----
 
-*2. Adding a event*
+*2. Adding an event*
 
-There is an “Add a Event” button, which allows users to add an event into the schedule/calendar. Adding a new event requires the following information entered by customer: title (maximum 30 characters), starting date and time, ending date and time, event location(detail in requirement 9), reminder setting, in addition to the following optional fields: contact person, private event, restrict facebook/twitter during event(detail in requirement 7).
+There is an “+” button, which allows users to add an event into the schedule. Adding an new event requires the following information entered by customer: title (maximum 30 characters), starting date and time, ending date and time, event location(detail in requirement 9), reminder setting, in addition to the following optional fields: contact person, private event, restrict facebook/twitter during event(detail in requirement 7).
 
-In entering the starting and ending date field, date format is used. A box will appear when inputting the date, which has the default starting and ending date be that of the day user originally viewing, allow user to add(+) or minus (-) the day, month, year respectively. Similar for the entering the starting and ending time field, hour and minutes will appear in the box for the user to add or minus. The default setting of starting time is coming hour, with one hour later is the default ending time.
+In entering the starting and ending date field, date format is used. A box will appear when inputting the date, which has the default starting and ending date be that of the day user originally viewing, allow user to select the day, month, year by scrolling up and down the scroll bars respectively. Similar for entering the time fields, hour and minutes scroll bars is there for user to select the time. The default setting of starting time is the coming hour, with one hour later is the default ending time.
 
-The following is the details of those optional fields. In contact person, user can choose the contact person of that event either from the contact list of the phone, or enter a name( maximum 20 characters). Besides, if private event is selected as true, then the exported time table will not show the details of the event such as the content and the location, but will only show the time slot not available. Otherwise, these will all be shown if private event is not selected (selected as false). 
+Tthe details of those optional fields are discussed in the following. In contact person, user can choose the contact person of that event either from the contact list of the phone, or enter a name( maximum 20 characters). Besides, if private event is selected as true, then the exported time table will not show the details of the event such as the content and the location, but will only show the time slot not available. Otherwise, these will all be shown if private event is not selected (selected as false). 
 
 ----
 
-*3. Importing and Exporting Timetable*
+*3. Synchronization with Google Calendar and Exporting*
 
 Some users are using other online calendars or timetable,including google calendar.  DailyAssistant provides the function of synchronizing the online google calendar with the one stored in the phone. To achieve this, a google account is required  and the google calendar has to be already started. At the first time this function is used, the user has to enter his/her google account id and password to create a linkage.
 
 The user has to click to synchronize the calendar under Internet connection. Hence, the information stored in the two calendars will be  synchronized. When the user edit his/her schedule online in google calendar, the change will be updated in the calendar of DailyAssistant. Similarly, when the schedule in our phone app is edited, the change can be seen in the user’s google calendar also. 
 
-Users can select the length of period, including both past day and future day, that they want to synchronize. The choices include: 7 days, 30 days, 60 days, 90 days, 180 days and 365 days, for both past day and future day selection.
+Users can select the number of days before and after the current day that they want to synchronize. The choices include: 7 days, 30 days, 60 days, 90 days, 180 days and 365 days, for both past day and future day selection.
 
-For exporting timetable, user can export their timetable in an image format(.jpg). When the users press “ Export”, the time table of that week will be export to the photo folder in “.jpg” format.
+For exporting timetable, user can export his/her timetable in an image format(.jpg). When the user press “ Export”, the time table of that week will be export to the photo folder in “.jpg” format.
 
 ----
 
@@ -88,11 +93,11 @@ When there is no common time slot, there would be an empty list. Whenever an emp
 
 *6. To-Do List*
 
-To-Do list page shows the lists of tasks or events. User can set and update their progress in percentage in order to keep track of the progress for completing that task. When adding a task/event into the list, user has to enter the title with limit of 30 characters and the default setting of the progress is 0%, while the title and progress field are required. User can also set optional information including location( maximum 100 characters) and deadline time ( date-time format) for an event. 
+To-Do list page shows the list of tasks. User can set and update their progress in percentage in order to keep track of the progress for completing that task. When adding a task/event into the list, user has to enter the title with limit of 30 characters and the default setting of the progress is 0%, while the title and progress field are required. User can also set optional information including location(maximum 100 characters) and deadline time (date-time format) for a task. 
 
-After a task is create, user can change the progress from 0%-100% (integer only) at any time  to indicate the percentage of completion.User can click an indicator, which is a tick, to indicate a particular event/task is already finished.  
+After a task is created, user can change the progress from 0%-100% (integer only) at any time  to indicate the percentage of completion.User can click an indicator, which is a tick, to indicate a particular event/task has already been finished.  
  
-If there is a deadline for a task, the user can enable the alarm reminder and set how long before the deadline to have alert when adding a new task. Options including 5 minutes, 30 minutes, 1 hour, 2 hours, 6 hours and 1 day before the deadline. The task is said to be not complete if the progress is not 100% when it reach the deadline.User should set the event to be finished state by setting the progress to 100%. If the task does not have a deadline, there is no alarm setting.
+If there is a deadline for a task, the user can enable the alarm reminder and set how long before the deadline to have alert when adding a new task. Options include 5 minutes, 30 minutes, 1 hour, 2 hours, 6 hours and 1 day before the deadline. The task is said to be not complete if the progress is not 100% when it reach the deadline.User should set the event to be finished state by setting the progress to 100%. If the task does not have a deadline, there is no alarm setting.
 
 The tasks with deadline in To-Do list can also be imported into the timetable, regardless of times of updates. When the To-Do tasks are imported into timetable, the title shown on the timetable is the same as the title in To-Do list by default. The timetable will show that there is a deadline in that certain time. The deadline of To-Do tasks can be overlapped with normal events. This information is not sharable in order to provide privacy.
 
@@ -114,7 +119,7 @@ When user take photos during an event arranged in timetable, they can choose to 
 
 People sometimes forget a meeting or failed to estimate travelling time. To prevent missing an appointment or being late, DailyAssistant provides location-based alarm function. If an event is set to require an alarm reminder, this function will be applied.
 
-If the user inputted the location of an event (by selecting existing location) when he/she added the event into schedule, the assistant will calculate the required traveling time from the previous event location to the next event location.
+If the user inputted the location of an event (by selecting existing location) when he/she added the event into schedule, the assistant will calculate the required traveling time from the previous event location to the next event location. In order to enter the location, user can type in the keywords of the venue and the search result of the location will be shown. User should select the right one from the result list.
 
 Using the GPS function of smart phones, DailyAssistant can get the current location of the user. The travelling time between current location and the next event location can be calculated and updated from time to time. A departure message will pop up to alert the user when the current time plus the travelling time equals to the starting time of the event. 
 
