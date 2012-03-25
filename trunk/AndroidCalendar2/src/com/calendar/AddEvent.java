@@ -10,12 +10,14 @@ import org.json.JSONArray;
 import com.test2.R;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -39,6 +41,7 @@ public class AddEvent extends Activity {
 	private Button endingDateButton;
 	private Button startingTimeButton;
 	private Button endingTimeButton;
+	private Button searchLoc;
 
 	// for date set dialog
 	public static final int STARTING_DATE_DIALOG = 0;
@@ -51,6 +54,13 @@ public class AddEvent extends Activity {
 	private Calendar startingCalendar = Calendar.getInstance();
 	private Calendar endingCalendar = Calendar.getInstance();
 
+
+	private final static String TAG = " LocationDurationActivity";
+	
+	final static String DURATION_INFOS="duration_infos";
+	final static String COUNTRY_CODE = "country_code";
+	private final static int CODE =3;
+	
 	// variable for storing data
 	private EditText content;
 	private EditText location;
@@ -82,6 +92,7 @@ public class AddEvent extends Activity {
 		startingTimeButton = (Button) findViewById(R.id.addevent_starting_time_button);
 		endingDateButton = (Button) findViewById(R.id.addevent_ending_date_button);
 		endingTimeButton = (Button) findViewById(R.id.addevent_ending_time_button);
+		searchLoc = (Button) findViewById(R.id.SearchLoc);
 
 		// setting up default starting/ending date/time
 
@@ -228,7 +239,30 @@ public class AddEvent extends Activity {
 				showDialog(ENDING_TIME_DIALOG);
 			}
 		});
+		
+		searchLoc.setOnClickListener(new OnClickListener(){
+			public void onClick(View arg0) {
+				if(location.getText().length()==0){
+					Toast.makeText(AddEvent.this, "No Place to search", Toast.LENGTH_SHORT).show();
+					return;
+				}
+				
+				String place = location.getText().toString();
+				
 
+				String temp = place.replace('\n', '+');
+				String args = "http://maps.googleapis.com/maps/api/geocode/json?address=" 
+						+ temp.replace(' ', '+') + "&sensor=false";
+				
+				Intent intent = new Intent(AddEvent.this, CityListActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putString(AddEvent.COUNTRY_CODE, args);
+				
+				intent.putExtras(bundle);
+			    startActivityForResult(intent, CODE);
+			}			
+		});
+		
 	}
 
 	// call when create dialog
@@ -415,6 +449,34 @@ public class AddEvent extends Activity {
 
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if(resultCode == Activity.RESULT_CANCELED){
+			
+			return;
+		}
+		
+		if (requestCode == CODE && resultCode == Activity.RESULT_OK) {
+			
+			String placename = data.getExtras().getString("placename");
+			String lat = data.getExtras().getString("placelat");
+			String lng = data.getExtras().getString("placelng");
+			
+			location.setText(placename);
+			
+			/*
+			new AlertDialog.Builder(AddEvent.this).
+			setTitle(title).setMessage(message).
+			  setPositiveButton( "OK" ,new DialogInterface.OnClickListener() {  
+				public void onClick(DialogInterface dialoginterface, int i){	}          
+			}).show();    
+			*/
+		}
+	}
+	
+	
 	// lower bound
 	private int restoreMinute(int minute) {
 		int intervals[] = new int[12];
