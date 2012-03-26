@@ -119,67 +119,18 @@ public class Share extends Activity{
 		    	progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 		    	progress.show();
 				
-		    	// thread for register the system
-				Thread t = new Thread(){
-					public void run(){
-						
-						if(checkIsFirst()){
-						
-						ArrayList<NameValuePair> input = new ArrayList<NameValuePair>();
-						input.add(new BasicNameValuePair("newbaby","1"));
-						input.add(new BasicNameValuePair("myid",myid));
-						response = RequestShare(input);
-						if(response.equals("-1")){
-							progress.cancel();
-							Looper.prepare();
-							Toast.makeText(Share.this, "Problem found! plz connect to server agent",
-									Toast.LENGTH_SHORT).show();
-							Looper.loop();
-							return ;
+		    	// thread to share
+		    	new Thread(new Runnable(){
+					public void run() {
+						try {
+							myid = FbHandler.getMine().getString("id");
+						} catch (JSONException e) {
+							e.printStackTrace();
+						} catch (Exception e) {
+							e.printStackTrace();
 						}
-
-						String ins[] = response.split(" ");
-						if(!ins[1].equals(myid)){
-							progress.cancel();
-							Looper.prepare();
-							Toast.makeText(Share.this, "ID Exist! plz connect to server agent",
-									Toast.LENGTH_SHORT).show();
-							Looper.loop();
-							return ;
-						}
-						
-						AndroidCalendar2Activity.getDB().insert("OtherTable",
-								new String [] {ins[1],ins[0]});
-						
-						}else{
-							JSONArray ja=AndroidCalendar2Activity.getDB().fetchConditional("OtherTable", " key ='"+myid+"'");
-							String pw="";
-							try{
-								pw=ja.getJSONObject(0).getString("value");
-							}catch(Exception e){
-								Log.i("error",e.toString());
-							}
-
-							ArrayList<NameValuePair> input = new ArrayList<NameValuePair>();
-							input.add(new BasicNameValuePair("oldbaby","1"));
-							input.add(new BasicNameValuePair("uid",myid));
-							input.add(new BasicNameValuePair("upw",pw));
-							response = RequestShare(input);
-							if(response=="-1"){
-								progress.cancel();
-								Looper.prepare();
-								Toast.makeText(Share.this, "Problem found! plz connect to server agent",
-									Toast.LENGTH_SHORT).show();
-								Looper.loop();
-								return ;
-							}
-							
-						}
-						
 						
 						progress.incrementProgressBy(10);
-						
-						// ready to share
 						
 						String startDate="";
 						String endDate="";
@@ -232,16 +183,27 @@ public class Share extends Activity{
 						progress.incrementProgressBy(10);
 
 						ArrayList<NameValuePair> input = new ArrayList<NameValuePair>();
+						input.add(new BasicNameValuePair("check","1"));
+						input.add(new BasicNameValuePair("myid",myid));
+						input.add(new BasicNameValuePair("token", FbHandler.mFacebook.getAccessToken()));
 						input.add(new BasicNameValuePair("readyshare","1"));
 						input.add(new BasicNameValuePair("namelist",namelist));
-						input.add(new BasicNameValuePair("myid",myid));
 						input.add(new BasicNameValuePair("eventlist",shareevents.toString()));
 						response = RequestShare(input);
+						if(response=="-1"){
+							progress.cancel();
+							Looper.prepare();
+							Toast.makeText(Share.this, "Problem found! plz connect to server agent",
+							Toast.LENGTH_SHORT).show();
+							Looper.loop();
+							return;	
+						}
 						
 						if(progress.isShowing()){
 							progress.setProgress(progress.getMax());
 							progress.cancel();
 						}
+						
 						Looper.prepare();
 						final Dialog s = new AlertDialog.Builder(Share.this)
 						.setTitle("Thanks for Sharing!")
@@ -254,32 +216,16 @@ public class Share extends Activity{
 						}).create();
 						s.show();
 						Looper.loop();
-						
 					}
-				};
-				t.start();
-				
+		    		
+		    	}).start();
+		    	
 			}
         	
         });
         
 	}
 	
-	public boolean checkIsFirst() {
-		try {
-			myid = FbHandler.getMine().getString("id");
-		} catch (JSONException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		JSONArray ja=AndroidCalendar2Activity.getDB().fetchConditional("OtherTable", " key ='"+myid+"'");
-		if (ja.length()==0) return true;
-		else {
-			return false;
-		}
-	}
 	
 	public static String RequestShare(ArrayList<NameValuePair> nameValuePairs){
 
@@ -310,7 +256,7 @@ public class Share extends Activity{
 	        Log.e("log_tag", "Error converting result "+e.toString());
 		}
 				
-		Log.i("response", result);
+		Log.i("response", result+" ");
 				
 		return result;
 	}

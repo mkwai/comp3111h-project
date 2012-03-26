@@ -38,10 +38,10 @@
             android:layout_height="wrap_content"
             android:text="Share" />
         <Button
-            android:id="@+id/share_reset_button"
+            android:id="@+id/share_download_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Reset" />
+            android:text="Download" />
         
     </LinearLayout>
 
