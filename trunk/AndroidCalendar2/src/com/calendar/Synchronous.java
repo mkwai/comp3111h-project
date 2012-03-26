@@ -45,7 +45,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class Synchronous extends Activity implements OnItemClickListener{
-	private Button mReset;
+	private Button mDownButton;
 
     private LoginButton mLoginButton;
     private Button mRefreshButton;
@@ -67,16 +67,7 @@ public class Synchronous extends Activity implements OnItemClickListener{
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 		setContentView(R.layout.synchronous);
-		mReset = (Button) findViewById(R.id.share_reset_button);
-		mReset.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
 		
-			}
-			
-		});
 		
         listLayout = (ListView) findViewById(R.id.fdlist);
         
@@ -85,6 +76,7 @@ public class Synchronous extends Activity implements OnItemClickListener{
         mLoginButton.init(this, FB.mFacebook);
         
         mRefreshButton = (Button) findViewById(R.id.refresh);
+        
         mRefreshButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
@@ -92,8 +84,8 @@ public class Synchronous extends Activity implements OnItemClickListener{
 					Toast.makeText(Synchronous.this, "Not Yet Login!", Toast.LENGTH_SHORT).show();
 					return;
 				}
-				
 				UpdateFdList();
+				ShowFdList();
 			}
         	
         });
@@ -128,121 +120,94 @@ public class Synchronous extends Activity implements OnItemClickListener{
                 startActivity(myIntent);
 				
 			}
-        	
+
+        });
+
+        mDownButton = (Button) findViewById(R.id.share_download_button);
+        mDownButton.setOnClickListener(new OnClickListener(){
+			public void onClick(View arg0) {					
+				progress = new ProgressDialog(Synchronous.this);
+			    progress.setMessage("Loading...");
+			    progress.show();
+				new Thread(new Runnable(){
+					public void run() {
+						if(checked==null || checked.length==0){
+							progress.cancel();
+							Looper.prepare();
+							Toast.makeText(Synchronous.this, "no target to download", Toast.LENGTH_SHORT).show();
+							Looper.loop();
+							return;
+						}
+						
+						try {
+							myid = FbHandler.getMine().getString("id");
+						} catch (JSONException e) {
+							e.printStackTrace();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						
+						JSONArray ja = new JSONArray();
+						
+						try{
+							for(int i = 0;i<checked.length;i++){
+								if(checked[i]==true)
+									ja.put(myFriends.getJSONObject(i));
+							}
+						}catch(Exception e){
+							e.printStackTrace();
+						}
+						try{
+							for(int i = 0;i<ja.length();i++){
+								final String sid = ja.getJSONObject(i).getString("id");
+								new DownloadThread(sid).start();
+							}
+						}catch(Exception e){
+							Log.i("err",e.toString());
+						}
+						while(downloadcount>0);
+						progress.cancel();
+					}				
+				}).start();
+			}
         });
         
-        getFdFromDB();
+        //UpdateFdList();
         
-        ShowFdList();
+        //ShowFdList();
         
 	}
 	
-	public void getFdFromDB(){
-		myFriends = AndroidCalendar2Activity.getDB().fetchConditional("FriendTable", null, "name");
-		if(myFriends.length()==0) return;
-		checked = new boolean[myFriends.length()];
-		for(int i = 0;i<checked.length;i++){
-			checked[i]=false;
-		}
-	}
-	
-	public boolean IsAllUnChecked(){
-		if(myFriends.length()==0) return true;
-		for(int i = 0;i<myFriends.length();i++){
-			if(checked[i])
-				return false;
-		}
-		return true;
-	}
 	
 	public void UpdateFdList(){
 		if(!FB.IsLogin())
-			return;
-
-		if(IsAllUnChecked()){
+			return;	
 			progress = new ProgressDialog(this);
 	    	progress.setMessage("Loading...");
 	    	progress.show();
 	    	new Thread (new Runnable(){
-
 				public void run() {
-					JSONArray temp = new JSONArray();
 					try{
-						temp=FbHandler.getFdList();
+						myFriends=FbHandler.getFdList();
 					}catch(Exception e){
-						Log.i("error",e.toString());	
+						e.printStackTrace();
 					}
-					
-					for(int i = 0;i<temp.length();i++){
-						String fid ="";
-						String fn = "";
-						String piclink = "";
-						try {
-							fid = temp.getJSONObject(i).getString("id");
-							fn = temp.getJSONObject(i).getString("name");
-							piclink = temp.getJSONObject(i).getString("picture");
-						} catch (JSONException e) {
-							Log.i("json",e.toString());
-						}
-						Date d = new Date();
-						String time = d.getDate()+"/"+(d.getMonth()+1)+"/"+(d.getYear()+1900);
-						
-						String condition = " friendID = '"+fid+"' ";
-						JSONArray ja = AndroidCalendar2Activity.getDB().fetchConditional("FriendTable", condition);
-						if(ja.length()==0){
-							AndroidCalendar2Activity.getDB().insert("FriendTable", 
-									new String[] {fid, fn, "0", time, piclink});
-						}
-						
-					}
-			        getFdFromDB();			        
+								        
 					runOnUiThread(new Runnable(){
 						public void run() {
 							ShowFdList();
 							progress.cancel();
 						}
 					});
+					
+					if(myFriends.length()==0) return;
+					checked = new boolean[myFriends.length()];
+					for(int i = 0;i<checked.length;i++){
+						checked[i]=false;
+					}
 				}
 	    	}).start();
-		}else{
-			progress = new ProgressDialog(this);
-	    	progress.setMessage("Loading...");
-	    	progress.show();
-			new Thread(new Runnable(){
-				public void run() {
-					try {
-						myid = FbHandler.getMine().getString("id");
-					} catch (JSONException e) {
-						e.printStackTrace();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					
-					JSONArray ja = new JSONArray();
-					try{
-						for(int i = 0;i<checked.length;i++){
-							if(checked[i]==true)
-								ja.put(myFriends.getJSONObject(i));
-						}
-					}catch(Exception e){
-						Log.i("js",e.toString());
-					}
-					try{
-						for(int i = 0;i<ja.length();i++){
-							final String sid = ja.getJSONObject(i).getString("friendID");
-							new DownloadThread(sid).start();
-						}
-					}catch(Exception e){
-						Log.i("err",e.toString());
-					}
-					while(downloadcount>0);
-					progress.cancel();
-				}				
-			}).start();
-			
-		}
-		
-       	        
+	    	    
 	}
 
 	public void ShowFdList(){
@@ -260,6 +225,8 @@ public class Synchronous extends Activity implements OnItemClickListener{
 		}
 		public void run(){
 			ArrayList<NameValuePair> input = new ArrayList<NameValuePair>();
+			input.add(new BasicNameValuePair("check","1"));
+			input.add(new BasicNameValuePair("token", FbHandler.mFacebook.getAccessToken()));
 			input.add(new BasicNameValuePair("readydown","1"));
 			input.add(new BasicNameValuePair("myid",myid));
 			input.add(new BasicNameValuePair("sid", downloadTarget));
@@ -268,17 +235,12 @@ public class Synchronous extends Activity implements OnItemClickListener{
 				JSONArray ja = new JSONArray();
 				try {
 					ja=new JSONArray(response);
-					System.out.println(ja.length());
 					for(int i = 0;i<ja.length();i++){
 						insert(ja.getJSONObject(i));
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-				Date d = new Date();
-				String time = d.getDate()+"/"+(d.getMonth()+1)+"/"+(d.getYear()+1900);
-				AndroidCalendar2Activity.getDB().update("FriendTable", downloadTarget,
-						new String [] {"lastUpdate"}, new String[] {time});
 			}
 			downloadcount--;
 		}
@@ -339,8 +301,7 @@ public class Synchronous extends Activity implements OnItemClickListener{
 			try {
 				aFriend = myFriends.getJSONObject(position);
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				Log.i("afd",e.toString());
+				e.printStackTrace();
 			}
 			
 			ViewHolder holder;
@@ -356,20 +317,19 @@ public class Synchronous extends Activity implements OnItemClickListener{
 			}
 			
 			try {
-				holder.textLine.setText(aFriend.getString("name")+ "\nLast updated: "+aFriend.getString("lastUpdate"));
+				holder.textLine.setText(aFriend.getString("name"));
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				Log.i("fd",e.toString());
+				e.printStackTrace();
 			}
 			
 			holder.textLine.setOnClickListener(new OnClickListener(){
 				public void onClick(View v) {
 					try{
 						Intent myIntent = new Intent(getApplicationContext(), FriendsView.class);
-						myIntent.putExtra("targetfriend",myFriends.getJSONObject(position).getString("friendID"));
+						myIntent.putExtra("targetfriend",myFriends.getJSONObject(position).getString("id"));
 						startActivity(myIntent);
 					}catch(Exception e){
-						Log.i("err",e.toString());
+						e.printStackTrace();
 					}
 				}
 				
