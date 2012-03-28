@@ -173,7 +173,7 @@ public class Share extends Activity{
 						String namelist = ""; //string of idlist
 						try{
 							for(int i = 0;i<shareFriends.length();i++){
-								namelist += shareFriends.getJSONObject(i).getString("friendID");
+								namelist += shareFriends.getJSONObject(i).getString("id");
 								if(i!=shareFriends.length()-1)
 									namelist+="*";
 							}	
