@@ -57,13 +57,13 @@ public class AddTask extends Activity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+		setContentView(R.layout.addtask);
 		
 		title_edit = (EditText) findViewById(R.id.addtask_title_edit);
 		location = (EditText) findViewById(R.id.addtask_location_edit);
 		reminder = (CheckBox) findViewById(R.id.addtask_reminder_checkBox);
 		
 		// progress setting
-		setContentView(R.layout.addtask);
 		progressPercent = (TextView) findViewById(R.id.addtask_progressPercent);
 		progressBar = (SeekBar) findViewById(R.id.addtask_progressBar);
 
@@ -153,8 +153,9 @@ public class AddTask extends Activity {
 
 				// TODO Auto-generated method stub
 				// sent data to database
-			/*
+			
 				String taskid = AndroidCalendar2Activity.getDB().GiveEventID();
+				
 				String title = title_edit.getText().toString();
 				if(title.length()==0){
 					Toast.makeText(
@@ -162,6 +163,7 @@ public class AddTask extends Activity {
 							).show();
 					return;
 				}
+				
 				String deadlineTime = deadlineTimeButton.getText().toString();
 				
 				String deadlineDate="";
@@ -177,11 +179,12 @@ public class AddTask extends Activity {
 				String locat = location.getText().toString();
 				String remind = reminder.isChecked()?"1":"0";
 				String args[] = {taskid,title,deadlineDate,deadlineTime,locat,remind};	
-
+				
 				AndroidCalendar2Activity.getDB().insert("TaskTable", args);
 				JSONArray ja = AndroidCalendar2Activity.getDB().fetchAllNotes("TaskTable", null, null);								
-				Log.i("12312", ja.length() + "");
-			*/	finish();
+				
+				finish();
+				
 				
 			}
 

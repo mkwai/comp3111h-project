@@ -189,7 +189,8 @@ public class Synchronous extends Activity implements OnItemClickListener{
 				public void run() {
 					try{
 						myFriends=FbHandler.getFdList();
-						myFriends = sortJA(0,myFriends.length()-1,myFriends,"name");
+						if(myFriends.length()!=0)
+							myFriends = sortJA(0,myFriends.length()-1,myFriends,"name");
 					}catch(Exception e){
 						e.printStackTrace();
 					}
