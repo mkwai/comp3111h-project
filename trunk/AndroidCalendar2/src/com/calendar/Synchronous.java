@@ -189,6 +189,7 @@ public class Synchronous extends Activity implements OnItemClickListener{
 				public void run() {
 					try{
 						myFriends=FbHandler.getFdList();
+						myFriends = sortJA(0,myFriends.length()-1,myFriends,"name");
 					}catch(Exception e){
 						e.printStackTrace();
 					}
@@ -367,7 +368,60 @@ public class Synchronous extends Activity implements OnItemClickListener{
 		return (dp*scale +0.5f);
 	}
 
-
+	// sort a jsonarray base on attr
+	// start <= end, init: start is 0, end is length-1
+	public static JSONArray sortJA(int start, int end, JSONArray ja, String attr) throws Exception{
+		JSONArray output = new JSONArray();
+		if((end-start)<1){
+			output.put(ja.getJSONObject(end));
+			return output;
+		}
+		if((end-start)==1) {
+			String zero = ja.getJSONObject(start).getString(attr);
+			String one = ja.getJSONObject(end).getString(attr);
+			if(zero.compareTo(one)<0){
+				output.put(ja.getJSONObject(start));
+				output.put(ja.getJSONObject(end));
+				return output;
+			}
+			else{
+				output.put(ja.getJSONObject(end));
+				output.put(ja.getJSONObject(start));
+				return output;
+			}
+		}
+		int mid = (end-start)/2+start;
+		JSONArray first = sortJA(start, mid, ja, attr);
+		JSONArray sec = sortJA(mid+1, end, ja, attr);
+		
+		int i =0; //first
+		int j = 0; //sec
+		while(i<first.length() && j<sec.length()){
+			String fir = first.getJSONObject(i).getString(attr);
+			String se = sec.getJSONObject(j).getString(attr);
+			if(fir.compareTo(se)<0){
+				output.put(first.getJSONObject(i));
+				i++;
+			}else{
+				output.put(sec.getJSONObject(j));
+				j++;
+			}
+		}
+		
+		if(j<sec.length()){
+			for(int k = j;k<sec.length();k++){
+				output.put(sec.getJSONObject(k));
+			}
+		}
+		if(i<first.length()){
+			for(int k = i;k<first.length();k++){
+				output.put(first.getJSONObject(k));
+			}
+		}
+		
+		return output;
+	}
+	
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
 		// TODO Auto-generated method stub
