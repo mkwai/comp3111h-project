@@ -1,5 +1,6 @@
 package com.calendar;
 
+import com.googlesync.GoogleSync;
 import com.localdb.*;
 
 import com.test2.R;
@@ -15,11 +16,20 @@ public class AndroidCalendar2Activity extends Activity {
 	// CalendarView calendarV;
 	// Button bGoToToday, bAddEvent;
 	private static MyDataBase mdb;
-
+	private static GoogleSync mgs;
+	
 	public static MyDataBase getDB() {
 		return mdb;
 	}
 
+	public static GoogleSync getGS() {
+		return mgs;
+	}
+	public static void clearGS() {
+		mgs= new GoogleSync();;
+	}
+	
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -30,6 +40,9 @@ public class AndroidCalendar2Activity extends Activity {
 
 		// create or connect database
 		mdb = new MyDataBase(this);
+		
+		// get an instance of GoogleSync, username and password will be set later
+		mgs = new GoogleSync();
 	}
 
 	@Override

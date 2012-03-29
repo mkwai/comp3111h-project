@@ -2,6 +2,7 @@ package com.googlesync;
 
 import java.util.Calendar;
 
+import com.calendar.AndroidCalendar2Activity;
 import com.test2.R;
 
 import android.app.Activity;
@@ -32,13 +33,10 @@ public class GoogleSyncActivity extends Activity {
 	private String year;
 	private String month;
 	private String date;
-	private GoogleSync temp;
 	
 	private String username;
 	private String password;
 	static protected Calendar currentDateCalendar = Calendar.getInstance();
-
-	private boolean isGoogleConnected= false;
 
 	private Button sync;
 	private Button disconnect;
@@ -58,8 +56,6 @@ public class GoogleSyncActivity extends Activity {
 		findViews();
 		setListeners();
 		
-		temp = new GoogleSync();
-
 		sync.setOnClickListener(sync_listener);
 		disconnect.setOnClickListener(disconnect_listener);
 		
@@ -83,8 +79,8 @@ public class GoogleSyncActivity extends Activity {
 	
 	private OnClickListener disconnect_listener = new OnClickListener(){
 		public void onClick(View v) {
-			ET_password.clearComposingText();
-			temp= new GoogleSync();
+			ET_password.setText("");
+			AndroidCalendar2Activity.clearGS();
 		}
 	};
 	
@@ -115,7 +111,7 @@ public class GoogleSyncActivity extends Activity {
 				new Thread(new Runnable() {
 					public void run() {
 
-						temp.setUserInfo(username, password);
+						AndroidCalendar2Activity.getGS().setUserInfo(username, password);
 						pastdayID = rgpast.getCheckedRadioButtonId();
 
 						if (pastdayID == R.id.gs_past7)
@@ -146,16 +142,16 @@ public class GoogleSyncActivity extends Activity {
 						if (futuredayID == R.id.gs_future365)
 							future = 365;
 
-						if (temp.GoogleLogin() == false) {
-							isGoogleConnected=false;
+						if (AndroidCalendar2Activity.getGS().GoogleLogin() == false) {
+							AndroidCalendar2Activity.getGS().isGoogleConnected(false);
 							Looper.prepare();
 							ShowMsgDialog("System","User name and pastword not match.");
 							Looper.loop();
 						} else {
-							isGoogleConnected=true;
+							AndroidCalendar2Activity.getGS().isGoogleConnected(true);
 							Looper.prepare();
 							ShowMsgDialog("System","Connected Successfully.");
-							temp.getRangeEvents2((year + "-" + month + "-" + date), past, future);
+							AndroidCalendar2Activity.getGS().getRangeEvents2((year + "-" + month + "-" + date), past, future);
 							Looper.loop();
 						}
 					}
@@ -164,9 +160,6 @@ public class GoogleSyncActivity extends Activity {
 		}
 	};
 
-	public boolean isGoogleConnected(){
-		return isGoogleConnected;
-	}
 	
 	private void ShowMsgDialog(String title, String msg) {
 		AlertDialog.Builder MyAlertDialog = new AlertDialog.Builder(this);
