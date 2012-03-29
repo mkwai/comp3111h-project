@@ -65,12 +65,12 @@ public class MyDataBase {
     
     private static class FriendTable implements Table{
 		public String[] getFields() {
-			return new String[] {"friendID","name","isShare","lastUpdate", "picLink"};
+			return new String[] {"id","name","lastUpdate", "picLink"};
 		}
 		public String getName() {return "FriendTable";}
 		public String getCreate() {
 			return "create table FriendTable "+
-					"(friendID TEXT, name TEXT, isShare TEXT, lastUpdate TEXT, picLink TEXT);";
+					"(id TEXT, name TEXT, lastUpdate TEXT, picLink TEXT);";
 		}
     	
     }
@@ -109,7 +109,7 @@ public class MyDataBase {
             // **************************************
             // delete database every time for testing
             // **************************************
-            //context.deleteDatabase(DATABASE_NAME);
+            // context.deleteDatabase(DATABASE_NAME);
         }
 
         @Override
@@ -160,7 +160,6 @@ public class MyDataBase {
         for(int i = 0;i<T.getFields().length;i++){
         	Values.put(T.getFields()[i], args[i]);
         }
-        
         return mDb.insert(T.getName(), null, Values);
     }
 
@@ -168,7 +167,10 @@ public class MyDataBase {
 
     	Table T = getTable(tableName);
     	String key = T.getFields()[0];
-        return mDb.delete(T.getName(), key + "=" + id, null) > 0;
+    	String k = id;
+    	if(id!=null)
+    		k = key+"="+id;
+        return mDb.delete(T.getName(), k, null) > 0;
     }
 
     // fields specify what field of table is used. args specify where cause
@@ -231,7 +233,7 @@ public class MyDataBase {
     // generate 36chars random event id
     public String GiveEventID(){
     	Random x = new Random();
-    	String pool = "abcdefghijklmnopqrstuvwxyz0123456789";
+    	String pool = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     	String newid = "";
     	for(int i = 0;i<36;i++){
     		newid+=pool.charAt(x.nextInt(36));
@@ -261,5 +263,18 @@ public class MyDataBase {
     	}
     	
         return mDb.update(tableName, args, T.getFields()[0]+" = "+id, null) > 0;
+    }
+    
+    public void Query(String cmd, Object[] o){
+    	mDb.execSQL(cmd, o);
+    }
+    
+    public int updateConditional(String tableName, String condition, String[] fields, String[] params) {
+        Table T = getTable(tableName);
+        ContentValues args = new ContentValues();
+    	for(int i = 0;i<fields.length;i++){
+    		args.put(fields[i], params[i]);
+    	}
+        return mDb.update(tableName, args, condition, null) ;
     }
 }

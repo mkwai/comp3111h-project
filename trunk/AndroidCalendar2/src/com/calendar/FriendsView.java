@@ -1,5 +1,6 @@
 package com.calendar;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -104,10 +105,18 @@ public class FriendsView extends Activity{
 		
 		//compute before calculate
 		if(today!=null){
+			try {
+				Date d = new Date();
+				SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+				d = df.parse(today);
+				friendview.setText(getZero(d.getDate())+"/"+getZero(d.getMonth()+1)+"/"+(d.getYear()+1900));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 		}else{
 			getToday();
 		}
-		
+
 		
 		//set
 		setbackground(this);
