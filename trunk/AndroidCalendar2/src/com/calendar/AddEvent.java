@@ -148,7 +148,7 @@ public class AddEvent extends Activity {
 				// sent data to database
 			
 				String eventid = AndroidCalendar2Activity.getDB().GiveEventID();
-				String title = content.getText().toString();
+				final String title = content.getText().toString();
 				if(title.length()==0){
 					Toast.makeText(
 							AddEvent.this,"You Should enter valid context/title",Toast.LENGTH_SHORT
@@ -193,29 +193,34 @@ public class AddEvent extends Activity {
 				AndroidCalendar2Activity.getDB().insert("TimeTable", args);
 				
 				//"2012-03-01T22:40:00"
-				String sdt= startDate2+ "T"+ startTime.substring(0, 1) + ":" + startTime.substring(2, 3)+ ":00";
-				String edt= endDate2+ "T"+ endTime.substring(0, 1) + ":" + endTime.substring(2, 3)+ ":00" ;
+				final String sdt= startDate2+ "T"+ startTime.substring(0, 2) + ":" + startTime.substring(3, 5)+ ":00";
+				final String edt= endDate2+ "T"+ endTime.substring(0, 2) + ":" + endTime.substring(3, 5)+ ":00" ;
 				
 				if (AndroidCalendar2Activity.getGS().isGoogleConnected()){
-					
-					try {
-						AndroidCalendar2Activity.getGS().insert(title,DateTime.parseDateTime(sdt), 
-								DateTime.parseDateTime(edt));
-					} catch (NumberFormatException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (ServiceException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
+
+					new Thread(new Runnable() {
+						public void run() {
+							try {
+								AndroidCalendar2Activity.getGS().insert(title,DateTime.parseDateTime(sdt), 
+										DateTime.parseDateTime(edt));
+							} catch (NumberFormatException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (ServiceException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} 
+						}
+							
+					}).start();
+				}	
 				
 				finish();
+			
 			}
-
 		});
 
 		startingDateButton.setOnClickListener(new OnClickListener() {
