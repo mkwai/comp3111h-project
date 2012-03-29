@@ -116,6 +116,15 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+                <activity
+            android:name="com.calendar.CommTime"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.calendar.COMMTIME" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 

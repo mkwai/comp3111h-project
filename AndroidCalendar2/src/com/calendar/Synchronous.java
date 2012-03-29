@@ -1,7 +1,6 @@
 package com.calendar;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -10,7 +9,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.facebook.LoginButton;
-import com.facebook.DoTask;
 import com.facebook.FbHandler;
 import com.test2.R;
 
@@ -18,7 +16,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
@@ -30,17 +27,11 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,10 +41,12 @@ public class Synchronous extends Activity implements OnItemClickListener{
     private LoginButton mLoginButton;
     private Button mRefreshButton;
     private Button mShareButton;
+    private Button mReset;
+    private Button mComm;
     private FbHandler FB;
 	private String myid;
 	private ListView listLayout;
-	private JSONArray myFriends = new JSONArray();
+	private JSONArray myFriends = new JSONArray(); // jsonarray obtained object has id, name
 	private boolean checked[];
 	private ProgressDialog progress;
 	private static int downloadcount=0;
@@ -125,19 +118,22 @@ public class Synchronous extends Activity implements OnItemClickListener{
 
         mDownButton = (Button) findViewById(R.id.share_download_button);
         mDownButton.setOnClickListener(new OnClickListener(){
-			public void onClick(View arg0) {					
+			public void onClick(View arg0) {
+				
+				if(!FB.IsLogin()){
+					Toast.makeText(Synchronous.this, "Not Yet Login!", Toast.LENGTH_SHORT).show();
+					return;
+				}
+				if(checked==null || checked.length==0){
+					Toast.makeText(Synchronous.this, "no target to download", Toast.LENGTH_SHORT).show();
+					return;
+				}
+				
 				progress = new ProgressDialog(Synchronous.this);
 			    progress.setMessage("Loading...");
 			    progress.show();
 				new Thread(new Runnable(){
 					public void run() {
-						if(checked==null || checked.length==0){
-							progress.cancel();
-							Looper.prepare();
-							Toast.makeText(Synchronous.this, "no target to download", Toast.LENGTH_SHORT).show();
-							Looper.loop();
-							return;
-						}
 						
 						try {
 							myid = FbHandler.getMine().getString("id");
@@ -163,7 +159,7 @@ public class Synchronous extends Activity implements OnItemClickListener{
 								new DownloadThread(sid).start();
 							}
 						}catch(Exception e){
-							Log.i("err",e.toString());
+							e.printStackTrace();
 						}
 						while(downloadcount>0);
 						progress.cancel();
@@ -171,13 +167,67 @@ public class Synchronous extends Activity implements OnItemClickListener{
 				}).start();
 			}
         });
+
+        mReset = (Button) findViewById(R.id.share_reset_button);
+        mReset.setOnClickListener(new OnClickListener(){
+			public void onClick(View v) {
+				System.out.println("delete FriendTable: "+
+						AndroidCalendar2Activity.getDB().delete("FriendTable", null)
+						);
+				System.out.println("delete FriendTimeTable: "+
+						AndroidCalendar2Activity.getDB().delete("FriendTimeTable", null)
+						);
+				myFriends = new JSONArray();
+				checked = null;
+				listLayout.setAdapter(null);
+			}
+        });
         
-        //UpdateFdList();
+        mComm = (Button) findViewById(R.id.share_comm_button);
+        mComm.setOnClickListener(new OnClickListener(){
+			public void onClick(View arg0) {
+				JSONArray ja = new JSONArray();
+				try{
+					for(int i = 0;i<checked.length;i++){
+						if(checked[i]==true)
+							ja.put(myFriends.getJSONObject(i));
+					}
+				}catch(Exception e){
+					Log.i("js",e.toString());
+				}
+				
+				if(ja.length()==0){
+					Toast.makeText(Synchronous.this, "no target! ", Toast.LENGTH_SHORT).show();
+					return;
+				}
+
+                Intent myIntent = new Intent(getApplicationContext(), CommTime.class);
+                myIntent.putExtra("findfriends", ja.toString());
+                startActivity(myIntent);
+				
+				
+			}
+        });
         
-        //ShowFdList();
+        showFdListFromDB();
         
 	}
 	
+	public void showFdListFromDB(){
+		try{
+			JSONArray ja = AndroidCalendar2Activity.getDB().fetchAllNotes("FriendTable", null, null);
+			if(ja.length()!=0){
+				myFriends=sortJA(0,ja.length()-1,ja,"name");
+				checked = new boolean[myFriends.length()];
+				for(int i = 0;i<checked.length;i++){
+					checked[i]=false;
+				}
+				ShowFdList();
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 	
 	public void UpdateFdList(){
 		if(!FB.IsLogin())
@@ -189,8 +239,19 @@ public class Synchronous extends Activity implements OnItemClickListener{
 				public void run() {
 					try{
 						myFriends=FbHandler.getFdList();
+						myid = FbHandler.getMine().getString("id");
 						if(myFriends.length()!=0)
 							myFriends = sortJA(0,myFriends.length()-1,myFriends,"name");
+					
+						for(int i = 0;i<myFriends.length();i++){
+							JSONObject jo = myFriends.getJSONObject(i);
+							JSONArray getja = AndroidCalendar2Activity.getDB().fetchAllNotes("FriendTable", 
+									new String[] {"id"}, new String[]{jo.getString("id")});
+							if(getja.length()==0){
+								AndroidCalendar2Activity.getDB().insert("FriendTable", 
+										new String[]{jo.getString("id"), jo.getString("name"), "-1", jo.getString("picture")});
+							}
+						}
 					}catch(Exception e){
 						e.printStackTrace();
 					}
@@ -238,6 +299,10 @@ public class Synchronous extends Activity implements OnItemClickListener{
 				try {
 					ja=new JSONArray(response);
 					for(int i = 0;i<ja.length();i++){
+						AndroidCalendar2Activity.getDB().delete("FriendTimeTable", ja.getJSONObject(i).getString("friendID"));
+					}
+					
+					for(int i = 0;i<ja.length();i++){
 						insert(ja.getJSONObject(i));
 					}
 				} catch (JSONException e) {
@@ -258,7 +323,7 @@ public class Synchronous extends Activity implements OnItemClickListener{
 				String ins[]={fid, tit, sdate, edate, stime, etime, locat};
 				AndroidCalendar2Activity.getDB().insert("FriendTimeTable", ins);
 			}catch(Exception e){
-				Log.i("err",e.toString());
+				e.printStackTrace();
 			}
 		}
 	}
@@ -317,6 +382,7 @@ public class Synchronous extends Activity implements OnItemClickListener{
 			}else {
 				holder = (ViewHolder) convertView.getTag();
 			}
+			
 			
 			try {
 				holder.textLine.setText(aFriend.getString("name"));

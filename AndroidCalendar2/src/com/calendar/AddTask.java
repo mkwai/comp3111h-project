@@ -181,10 +181,7 @@ public class AddTask extends Activity {
 				String args[] = {taskid,title,deadlineDate,deadlineTime,locat,remind};	
 				
 				AndroidCalendar2Activity.getDB().insert("TaskTable", args);
-				JSONArray ja = AndroidCalendar2Activity.getDB().fetchAllNotes("TaskTable", null, null);								
-				
 				finish();
-				
 				
 			}
 

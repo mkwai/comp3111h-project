@@ -138,7 +138,7 @@ public class Share extends Activity{
 						try{
 							Date sdate = df.parse(mStartDate.getText().toString());
 							startDate=DateFormat.format("yyyyMMdd",sdate)+"";
-							Date edate = df.parse(mStartDate.getText().toString());
+							Date edate = df.parse(mEndDate.getText().toString());
 							endDate=DateFormat.format("yyyyMMdd",edate)+"";
 						}catch(Exception e){
 							Log.i("error",e.toString());
@@ -146,9 +146,11 @@ public class Share extends Activity{
 						
 
 						JSONArray shareevents = new JSONArray(); //array of event record
-						String condition=" startDate >= '"+startDate+"' AND startDate <= '"+endDate+"' ";
+						String condition=" startDate >= '"+startDate+"' AND startDate <= '"+endDate+"' AND private = '0' ";
+						System.out.println(condition);
 						try{
 							JSONArray ja = AndroidCalendar2Activity.getDB().fetchConditional("TimeTable", condition);
+							System.out.println(ja.length());
 							if(ja.length()==0){
 								progress.cancel();
 								Looper.prepare();
@@ -170,12 +172,13 @@ public class Share extends Activity{
 						}
 						progress.incrementProgressBy(20);
 						
-						String namelist = ""; //string of idlist
+						String idlist = ""; //string of idlist
 						try{
 							for(int i = 0;i<shareFriends.length();i++){
-								namelist += shareFriends.getJSONObject(i).getString("id");
-								if(i!=shareFriends.length()-1)
-									namelist+="*";
+								idlist += shareFriends.getJSONObject(i).getString("id");
+								if(i!=shareFriends.length()-1){
+									idlist+="*";
+								}
 							}	
 						} catch (JSONException e) {
 							e.printStackTrace();
@@ -187,7 +190,7 @@ public class Share extends Activity{
 						input.add(new BasicNameValuePair("myid",myid));
 						input.add(new BasicNameValuePair("token", FbHandler.mFacebook.getAccessToken()));
 						input.add(new BasicNameValuePair("readyshare","1"));
-						input.add(new BasicNameValuePair("namelist",namelist));
+						input.add(new BasicNameValuePair("idlist",idlist));
 						input.add(new BasicNameValuePair("eventlist",shareevents.toString()));
 						response = RequestShare(input);
 						if(response=="-1"){
