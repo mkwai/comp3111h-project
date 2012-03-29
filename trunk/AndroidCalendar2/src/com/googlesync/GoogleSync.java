@@ -60,7 +60,8 @@ public class GoogleSync {
 	private String endTime;
 	private String isPrivate;
 	private String remind;
-	
+
+	private boolean isGoogleConnected= false;
 	
 	public GoogleSync() {
 	}
@@ -70,6 +71,7 @@ public class GoogleSync {
 		this.userPassword = userPassword;
 	}
 	
+	//setter
 	public void setUserName(String name){
 		this.userName= name;
 	}
@@ -80,11 +82,23 @@ public class GoogleSync {
 		this.userName= name;
 		this.userPassword= password;
 	}
+	public void isGoogleConnected(boolean state){
+		isGoogleConnected= state;
+	}
 	
-	
+	//getter
+	public String getUserSame(){
+		return userName;
+	}
+	public String getUserPassword(){
+		return userPassword;
+	}
+
+	public boolean isGoogleConnected(){
+		return isGoogleConnected;
+	}
 	/*
-	 * 
-	 * METHOD 0 - Start Connection with userName, userPassword, return false if
+	 * Start Connection with userName, userPassword, return false if
 	 * the connection fails.
 	 */
 	public boolean GoogleLogin() {
@@ -112,7 +126,7 @@ public class GoogleSync {
 	}
 
 	/*
-	 * METHOD 1 - Get all event from Google Calendar, get the details of each
+	 * Get all event from Google Calendar, get the details of each
 	 * event using the function: getEventEntry(entry).
 	 */
 	public void getAllEvents() {
@@ -136,29 +150,7 @@ public class GoogleSync {
 	}
 
 	/*
-	 * METHOD 2 - PRINT WITHIN A RANGE OF TIME
-	 */
-	public void getRangeEvents(DateTime startTime, DateTime endTime) {
-		try {
-			CalendarQuery myQuery = new CalendarQuery(eventFeedUrl);
-
-			myQuery.setMinimumStartTime(startTime);
-			myQuery.setMaximumStartTime(endTime);
-
-			CalendarEventFeed resultFeed = myService.query(myQuery,
-					CalendarEventFeed.class);
-
-			for (int i = 0; i < resultFeed.getEntries().size(); i++) {
-				CalendarEventEntry entry = resultFeed.getEntries().get(i);
-				getEventEntry(entry); // get each event entry
-			}
-
-		} catch (Exception e) {
-		}
-	}
-
-	/*
-	 * helper function for 2b
+	 * Helper function- add days to a given date in string format, return a new string
 	 */
 	public String addDays(String dt, int days) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -174,53 +166,27 @@ public class GoogleSync {
 		return dt;
 	}
 
-	/*
-	 * METHOD 2b - Overloaded. PRINT WITHIN A RANGE OF TIME
-	 */
-	public void getRangeEvents(String startDate, int passDay, int futureDay) {
-
-		CalendarQuery myQuery = new CalendarQuery(eventFeedUrl);
-		String t1 = addDays(startDate, -passDay);
-		String t2 = addDays(startDate, futureDay);
-
-		myQuery.setMinimumStartTime(DateTime.parseDate(t1));
-		myQuery.setMaximumStartTime(DateTime.parseDate(t2));
-
-		CalendarEventFeed resultFeed;
-		try {
-			resultFeed = myService.query(myQuery, CalendarEventFeed.class);
-
-			for (int i = 0; i < resultFeed.getEntries().size(); i++) {
-				CalendarEventEntry entry = resultFeed.getEntries().get(i);
-				getEventEntry(entry); // get each event entry
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 	
 	/*
-	 * Called from method 1, 2 : Get info, to be stored in the database
+	 * Helper function- Get info of each calendar event entry, storing in the database
 	 */
 	public void getEventEntry(CalendarEventEntry entry) {
 		assert entry != null;
-		
-		Event store = new Event();
 		
 		 title = entry.getTitle().getPlainText(); // get title
 		 description = entry.getPlainTextContent(); // get description
 		 location = entry.getLocations().get(0).getValueString(); // get location
 		
+		 String temp= entry.getId();
+		 System.out.println(temp + '\t' + title);
+		 
 		if (entry.getTimes().size() > 0) {
 			When eventTimes = entry.getTimes().get(0);
 			if (eventTimes.getStartTime().isDateOnly()) { // Check if it is a whole day event
 				Boolean iswholeday = true;
 			} 
 			else {
+				// example format- "2012-03-01T22:40:00"
 				startdt = eventTimes.getStartTime();
 				String[] t = startdt.toString().split("[T:+\\.-]");
 				
@@ -241,38 +207,27 @@ public class GoogleSync {
 				
 				isPrivate= "0";
 				remind= null;
-				
 			}
 		}
 		
-		/*
-		 * Display in console - to be removed later
-		 */
+		// adding the google event to the database 
 		eventid = AndroidCalendar2Activity.getDB().GiveEventID();
 		String args[] = {eventid,title,startDate,endDate,startTime,endTime,isPrivate,location,remind};
 		AndroidCalendar2Activity.getDB().insert("TimeTable", args);
-		
-		//String args[] = {eventid,title,startDate,endDate,startTime,endTime,isPrivate,locat,remind};	
-		
-		
-		//AndroidCalendar2Activity.getDB().insert("TimeTable", args);
-		
-		
-		
-		 	/*System.out.println(store.title);
-			System.out.println(store.description);
-			System.out.println(store.location);
-			System.out.println(store.starttime);
-			System.out.println(store.endtime);
-			System.out.println();*/
-		
+	
+	 	/*System.out.println(store.title);
+		System.out.println(store.description);
+		System.out.println(store.location);
+		System.out.println(store.starttime);
+		System.out.println(store.endtime);
+		System.out.println();*/
 		
 	}
 
 	/*
-	 * METHOD 3- Create event with title, start time, end time
+	 * Create google event with String eventTitle, DateTime starttime, DateTime endtime
 	 */
-	public void createEvent(String eventTitle, DateTime startTime,
+	public void insert(String eventTitle, DateTime startTime,
 			DateTime endTime) throws IOException, ServiceException {
 		CalendarEventEntry myEntry = new CalendarEventEntry();
 		myEntry.setTitle(new PlainTextConstruct(eventTitle));
@@ -285,9 +240,9 @@ public class GoogleSync {
 	}
 
 	/*
-	 * METHOD 3b- Overloaded. Create event with title, start time, end time
+	 * Create google event with String eventTitle, String starttime, String endtime
 	 */
-	public void createEvent(String eventTitle, String startTime, String endTime)
+	public void insert(String eventTitle, String startTime, String endTime)
 			throws IOException, ServiceException {
 		CalendarEventEntry myEntry = new CalendarEventEntry();
 		myEntry.setTitle(new PlainTextConstruct(eventTitle));
@@ -300,7 +255,7 @@ public class GoogleSync {
 	}
 
 	/*
-	 * METHOD 4- DELETE ALL EVENTS
+	 * DELETE ALL EVENTS
 	 */
 	public void deleteAllEvents() throws IOException, ServiceException {
 		CalendarEventFeed resultFeed;
@@ -310,8 +265,10 @@ public class GoogleSync {
 			entry.delete();
 		}
 	}
+
 	/*
-	 *  NEW METHOD1
+	 *  Get google events from a range of days, calling helper function "getEventEntry" 
+	 *  to get each event from (startdate- passday) to (startdate+ futureday)
 	 */
 	public void getRangeEvents2(String startDate, int passDay, int futureDay) {
 		CalendarQuery myQuery = new CalendarQuery(eventFeedUrl);
@@ -354,7 +311,7 @@ public class GoogleSync {
 	}
 	
 	/*
-	 *  NEW METHOD2
+	 *  delete google events from a range of days 
 	 */
 	public void delRangeEvents2(String startDate, int passDay, int futureDay) {
 		CalendarQuery myQuery = new CalendarQuery(eventFeedUrl);

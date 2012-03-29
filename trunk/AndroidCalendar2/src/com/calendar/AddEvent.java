@@ -1,5 +1,6 @@
 package com.calendar;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 
 import java.util.Calendar;
@@ -7,6 +8,8 @@ import java.util.Date;
 
 import org.json.JSONArray;
 
+import com.google.gdata.data.DateTime;
+import com.google.gdata.util.ServiceException;
 import com.test2.R;
 
 import android.app.Activity;
@@ -154,17 +157,20 @@ public class AddEvent extends Activity {
 				}
 				String startTime = startingTimeButton.getText().toString();
 				String endTime = endingTimeButton.getText().toString();
-				
-				
 
-				String startDate="";
-				String endDate="";
+				String startDate=""; String startDate2 = "";
+				String endDate=""; String endDate2 = "";
+				
 				SimpleDateFormat df = new SimpleDateFormat("MMM dd , yyyy");
 				try{
 					Date sdate = df.parse(startingDateButton.getText().toString());
 					startDate=DateFormat.format("yyyyMMdd",sdate)+"";
+					startDate2=DateFormat.format("yyyy-MM-dd",sdate)+"";
+					
 					Date edate = df.parse(endingDateButton.getText().toString());
 					endDate=DateFormat.format("yyyyMMdd",edate)+"";
+					endDate2=DateFormat.format("yyyy-MM-dd",edate)+"";
+				
 				}catch(Exception e){
 					Log.i("error",e.toString());
 				}
@@ -186,7 +192,26 @@ public class AddEvent extends Activity {
 				
 				AndroidCalendar2Activity.getDB().insert("TimeTable", args);
 				
+				//"2012-03-01T22:40:00"
+				String sdt= startDate2+ "T"+ startTime.substring(0, 1) + ":" + startTime.substring(2, 3)+ ":00";
+				String edt= endDate2+ "T"+ endTime.substring(0, 1) + ":" + endTime.substring(2, 3)+ ":00" ;
 				
+				if (AndroidCalendar2Activity.getGS().isGoogleConnected()){
+					
+					try {
+						AndroidCalendar2Activity.getGS().insert(title,DateTime.parseDateTime(sdt), 
+								DateTime.parseDateTime(edt));
+					} catch (NumberFormatException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ServiceException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 				
 				finish();
 			}
