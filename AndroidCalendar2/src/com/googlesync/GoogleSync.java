@@ -29,15 +29,7 @@ import java.util.regex.Pattern;
 import org.json.JSONArray;
 
 public class GoogleSync {
-	public class Event {
-		public String title;
-		public String description;
-		public String location;
-		public DateTime starttime;
-		public DateTime endtime;
-		public boolean iswholeday;
-	}
-
+	
 	private static final String METAFEED_URL_BASE = "https://www.google.com/calendar/feeds/";
 	private static final String EVENT_FEED_URL_SUFFIX = "/private/full";
 	private CalendarService myService;
