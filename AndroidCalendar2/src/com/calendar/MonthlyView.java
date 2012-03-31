@@ -27,10 +27,12 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.CalendarView.OnDateChangeListener;
+import android.widget.LinearLayout;
 
 public class MonthlyView extends Activity {
 
 	CalendarView calendarV;
+	LinearLayout calendarL;
 	Button bGoTo, bAddEvent, bSynchronous, bDaily, bMonthlyb, bTodoList,
 			bGoogle;
 	public static final int SET_DATE_DIALOG = 0;
@@ -44,6 +46,7 @@ public class MonthlyView extends Activity {
 
 		setContentView(R.layout.main);
 
+		calendarL = (LinearLayout) findViewById(R.id.linear_calendar);
 		// button AddEvent
 		bAddEvent = (Button) findViewById(R.id.bAddEvent);
 		bAddEvent.setOnClickListener(new OnClickListener() {
@@ -165,7 +168,9 @@ public class MonthlyView extends Activity {
 					Calendar date = Calendar.getInstance();
 					date.set(year, monthOfYear, dayOfMonth);
 					calendarV.setDate(date.getTimeInMillis());
-					calendarV.recomputeViewAttributes(calendarV);
+					//calendarL.recomputeViewAttributes(calendarV);
+					calendarV.refreshDrawableState();
+					
 				}
 			}
 		};
