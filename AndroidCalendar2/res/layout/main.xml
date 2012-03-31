@@ -67,13 +67,22 @@
         </Button>
     </LinearLayout>
 
+    <View
+        android:id="@+id/view"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/linear_top2"
+        android:layout_marginTop="5dp"
+        android:background="@color/view_color" >
+    </View>
+
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/linear_top3"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/linear_top2"
+        android:layout_below="@id/view"
         android:background="@color/background_color"
         android:orientation="horizontal" >
 

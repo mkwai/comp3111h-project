@@ -54,5 +54,6 @@
     <string name="gs_gs">Sign in to Google</string>
     <string name="addtask_progress_percent">0 % </string>
     <string name="monthlyview_weekDay"></string>
+    <color name="view_color">#660099</color>
     
 </resources>
