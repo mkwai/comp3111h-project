@@ -50,7 +50,7 @@ public class AndroidCalendar2Activity extends Activity {
 		// TODO Auto-generated method stub
 		super.onResume();
 
-		//startActivity(new Intent("com.calendar.MONTHLYVIEW"));
+		startActivity(new Intent("com.calendar.MONTHLYVIEW"));
 
 	}
 
