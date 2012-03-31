@@ -112,7 +112,7 @@ public class AddEvent extends Activity {
 		currentDateCalendar.set(Calendar.MINUTE, currentMinute);
 		startingCalendar = (Calendar) currentDateCalendar.clone();
 		endingCalendar = (Calendar) currentDateCalendar.clone();
-
+		endingCalendar.set(Calendar.HOUR_OF_DAY, currentDateCalendar.get(Calendar.HOUR_OF_DAY)+1);
 		CharSequence currentMinuteConverted = currentMinute <= 5 ? "0"
 				+ Integer.toString(currentMinute) : Integer
 				.toString(currentMinute);
@@ -125,7 +125,7 @@ public class AddEvent extends Activity {
 		endingDateButton.setText(currentMonth + " " + currentDate + " , "
 				+ currentYear);
 
-		endingTimeButton.setText(currentHour + ":" + currentMinuteConverted);
+		endingTimeButton.setText(endingCalendar.get(Calendar.HOUR_OF_DAY) + ":" + currentMinuteConverted);
 
 		// setting up onClickListener for each button
 
