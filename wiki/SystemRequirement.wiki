@@ -59,35 +59,34 @@ The basic function of the timetable management is using local machine (android p
 
 Apart from those basic time management function, an advanced function of the app is provided, which is featured as a social interaction system, requiring Internet connection. It allows users to share their time table to their friends via Internet.  As the system requires account to access the server, users can use Facebook account to log in. If the user does not have an existing account, there is a button to create an account, which will refer to the page of Facebook registration. 
 
-When a user wants to share his timetable to others, he can press the share button. Then the friend list of the user is shown, which is same as that of Facebook. The user can choose who can browse his/her timetable in options: to specific friends or to all friends, where all events in the timetable are supposed to be previously set to either private or able to share.
+When a user wants to share his timetable to others, he can press the share button after checking some checkboxes in the list of the user, which is same as that of Facebook, to choose who can browse his/her timetable. All events are supposed to be previously set to either private or able to share.
  
-If specific friends’ option is selected, then user can pick friends to have permission in viewing his/her time table. And all of the people in user’s contact list will able to view his/her time table if to all friends’ option is selected.
+If friend's checkbox is selected, then user can pick the friend to open permission in viewing his/her time table. And all of the people in user’s contact list will able to view his/her time table if to all friends' checked is checked.
 
 After pressing the share button, the records of authorized users’ permission are saved into system and the shared timetable is updated in a remote server and other users can only browse the latest version of timetable, but not the deleted previous one. 
 
-Another button is a download button. It is to get information of other users from the server. It is supposed that the user has already gotten the permission. Then, timetable information is got and saved into user system and would show up after pressing download button. There is also a load button to load saved timetables of friends, then the user can view his/her friends’ time table.
+Another button is a download button. It is to get information of other users from the server. It is supposed that the user has already gotten the permission. When download  button is pressed with some checked checkbox in friend list, timetable information is got and saved into user system and would show up after pressing download button. User can click on the friend's name to load and view saved timetables.
 
 ----
 
 *5. Finding Common Free Time*
 
-More than that, there is a feature in DailyAssistant that user can find out the common available time slots among friends in one month, as the schedule is likely to have changes if it is too far way from today. User can select a group of people, whose timetables are already downloaded, to list out all common available time slots, in the format of “day/month starting time-ending time”, such as 29/2 8:00-10:00”. The result is in chronological order.
+More than that, there is a feature in DailyAssistant that user can find out the common available time slots among friends in a certain period as the schedule is likely to have changes if it is too far way from today. User can select a group of people, whose timetables are already downloaded, to list out all common available time slots, in the format of “day/month starting time-ending time”, such as 29/2 8:00-10:00”. The result is in chronological order.
  
 Additionally, there is a filter function to set constrains on the resulting list. Different option is provided to facilitate the function, including filter out which day of the week, or time period, which shown in a list and user can cross out those he want to filter out.
 
+e.g.
 Time period that can be filter out include:
 
 0:00-06:00
 
-06:01-12:00
+06:00-12:00
 
-12:01-18:00
+12:00-18:00
 
-18:01-23:59
+18:00-0:00
 
-For instant, user can get the result not showing time slots on Sunday. The available time slots that have the maximum number of people available in the selected group can also be shown, by pressing “show more result” button at the end of the list. Then the list will append to show all available time slots in descending order of the  number of available people.
-
-When there is no common time slot, there would be an empty list. Whenever an empty list appears, there is another button to for the user to re-select the group of people. 
+For instant, user can get the result not showing time slots on Sunday. The available time slots that have all people available in the selected group can also be shown.  When there is no common time slot, there would be an empty list. Whenever an empty list appears, there is another way to for the user to re-select the group of people such that user can select specific group of friends by clicking their name in the list. 
 
 ----
 
