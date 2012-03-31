@@ -1,4 +1,4 @@
-=Demostration Scenario=
+=Demostration Scenarios=
 
 ===Demo1: Calendar View===
 (1)	Launch “Daily Assistant” app on Android emulator
