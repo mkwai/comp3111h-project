@@ -38,7 +38,7 @@
     <string name="addevent_addevent">Add Event</string>
     <string name="dailyview_addevent">+</string>
     
- 
+ 	<string name="pl_total1">"Total: "</string>
     <string name="gs_username">User Name: </string>
     <string name="gs_password">Password: </string>
     <string name="gs_fromthepast">From the past </string>
