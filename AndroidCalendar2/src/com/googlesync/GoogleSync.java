@@ -79,7 +79,7 @@ public class GoogleSync {
 	}
 	
 	//getter
-	public String getUserSame(){
+	public String getUserName(){
 		return userName;
 	}
 	public String getUserPassword(){

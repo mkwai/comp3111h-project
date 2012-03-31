@@ -25,7 +25,6 @@ import android.view.View.OnClickListener;
 
 public class GoogleSyncActivity extends Activity {
 
-	
 	private int pastdayID;
 	private int past;
 	private int futuredayID;
@@ -33,9 +32,9 @@ public class GoogleSyncActivity extends Activity {
 	private String year;
 	private String month;
 	private String date;
-	
-	private String username;
-	private String password;
+
+	private String username = "";
+	private String password = "";
 	static protected Calendar currentDateCalendar = Calendar.getInstance();
 
 	private Button sync;
@@ -55,10 +54,15 @@ public class GoogleSyncActivity extends Activity {
 		setContentView(R.layout.googlesync);
 		findViews();
 		setListeners();
-		
+
+		if (AndroidCalendar2Activity.getGS() != null) {
+			ET_username.setText(AndroidCalendar2Activity.getGS().getUserName());
+			ET_password.setText(AndroidCalendar2Activity.getGS()
+					.getUserPassword());
+		}
 		sync.setOnClickListener(sync_listener);
 		disconnect.setOnClickListener(disconnect_listener);
-		
+
 	}
 
 	private void findViews() {
@@ -71,28 +75,27 @@ public class GoogleSyncActivity extends Activity {
 
 	}
 
-	//Listen for button clicks
+	// Listen for button clicks
 	private void setListeners() {
 		sync.setOnClickListener(sync_listener);
 		disconnect.setOnClickListener(disconnect_listener);
-    }
-	
-	private OnClickListener disconnect_listener = new OnClickListener(){
+	}
+
+	private OnClickListener disconnect_listener = new OnClickListener() {
 		public void onClick(View v) {
 			ET_password.setText("");
 			AndroidCalendar2Activity.clearGS();
+			ShowMsgDialog("System", "Disconnected.");
 		}
 	};
-	
-	private OnClickListener sync_listener = new OnClickListener(){
+
+	private OnClickListener sync_listener = new OnClickListener() {
 		public void onClick(View v) {
 			username = ET_username.getText().toString();
 			password = ET_password.getText().toString();
 
-			year = DateFormat.format("yyyy", currentDateCalendar)
-					.toString();
-			month = DateFormat.format("MMM", currentDateCalendar)
-					.toString();
+			year = DateFormat.format("yyyy", currentDateCalendar).toString();
+			month = DateFormat.format("MMM", currentDateCalendar).toString();
 			date = DateFormat.format("dd", currentDateCalendar).toString();
 
 			if (username.length() == 0) {
@@ -103,7 +106,7 @@ public class GoogleSyncActivity extends Activity {
 				toast.show();
 			} else if (password.length() == 0) {
 				Context context = getApplicationContext();
-				CharSequence text = "Please fill in pastword.";
+				CharSequence text = "Please fill in password.";
 				int duration = Toast.LENGTH_SHORT;
 				Toast toast = Toast.makeText(context, text, duration);
 				toast.show();
@@ -111,7 +114,8 @@ public class GoogleSyncActivity extends Activity {
 				new Thread(new Runnable() {
 					public void run() {
 
-						AndroidCalendar2Activity.getGS().setUserInfo(username, password);
+						AndroidCalendar2Activity.getGS().setUserInfo(username,
+								password);
 						pastdayID = rgpast.getCheckedRadioButtonId();
 
 						if (pastdayID == R.id.gs_past7)
@@ -143,15 +147,20 @@ public class GoogleSyncActivity extends Activity {
 							future = 365;
 
 						if (AndroidCalendar2Activity.getGS().GoogleLogin() == false) {
-							AndroidCalendar2Activity.getGS().isGoogleConnected(false);
+							AndroidCalendar2Activity.getGS().isGoogleConnected(
+									false);
 							Looper.prepare();
-							ShowMsgDialog("System","User name and pastword not match.");
+							ShowMsgDialog("System",
+									"User name and password not match.");
 							Looper.loop();
 						} else {
-							AndroidCalendar2Activity.getGS().isGoogleConnected(true);
+							AndroidCalendar2Activity.getGS().isGoogleConnected(
+									true);
 							Looper.prepare();
-							ShowMsgDialog("System","Connected Successfully.");
-							AndroidCalendar2Activity.getGS().getRangeEvents2((year + "-" + month + "-" + date), past, future);
+							ShowMsgDialog("System", "Connected Successfully.");
+							AndroidCalendar2Activity.getGS().getRangeEvents2(
+									(year + "-" + month + "-" + date), past,
+									future);
 							Looper.loop();
 						}
 					}
@@ -160,7 +169,6 @@ public class GoogleSyncActivity extends Activity {
 		}
 	};
 
-	
 	private void ShowMsgDialog(String title, String msg) {
 		AlertDialog.Builder MyAlertDialog = new AlertDialog.Builder(this);
 		MyAlertDialog.setTitle(title);
@@ -175,5 +183,3 @@ public class GoogleSyncActivity extends Activity {
 	}
 
 }
-
-
