@@ -30,8 +30,20 @@ public class TimeCal {
 	 * 
 	 * */
 	
-
 	
+	// output time diff in term of how many 5 mins, a<b
+	// a/b : HH:mm
+	public static int diffTime(String a, String b){
+		a=a.replace(":", "");
+		b=b.replace(":", "");
+		while(a.charAt(0)=='0'){
+			a=a.substring(1);
+		}
+		while(b.charAt(0)=='0'){
+			b=b.substring(1);
+		}
+		return (Integer.parseInt(b)-Integer.parseInt(a))/5;
+	}
 	
 	// input array of time, e.g. args = {"10:23","12:23",...} 
 	// first time period is first two strings, second time period is second two strings, ...
