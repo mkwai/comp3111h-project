@@ -112,7 +112,8 @@ public class AddEvent extends Activity {
 		currentDateCalendar.set(Calendar.MINUTE, currentMinute);
 		startingCalendar = (Calendar) currentDateCalendar.clone();
 		endingCalendar = (Calendar) currentDateCalendar.clone();
-		endingCalendar.set(Calendar.HOUR_OF_DAY, currentDateCalendar.get(Calendar.HOUR_OF_DAY)+1);
+		endingCalendar.set(Calendar.HOUR_OF_DAY,
+				currentDateCalendar.get(Calendar.HOUR_OF_DAY) + 1);
 		CharSequence currentMinuteConverted = currentMinute <= 5 ? "0"
 				+ Integer.toString(currentMinute) : Integer
 				.toString(currentMinute);
@@ -125,7 +126,8 @@ public class AddEvent extends Activity {
 		endingDateButton.setText(currentMonth + " " + currentDate + " , "
 				+ currentYear);
 
-		endingTimeButton.setText(endingCalendar.get(Calendar.HOUR_OF_DAY) + ":" + currentMinuteConverted);
+		endingTimeButton.setText(endingCalendar.get(Calendar.HOUR_OF_DAY) + ":"
+				+ currentMinuteConverted);
 
 		// setting up onClickListener for each button
 
@@ -175,23 +177,25 @@ public class AddEvent extends Activity {
 				String endDate2 = DateFormat.format("yyyy-MM-dd",
 						endingCalendar) + "";
 
-				/*
-				 * String startDate = ""; String startDate2 = ""; String endDate
-				 * = ""; String endDate2 = "";
-				 * 
-				 * SimpleDateFormat df = new SimpleDateFormat("MMM dd , yyyy");
-				 * try { Date sdate = df.parse(startingDateButton.getText()
-				 * .toString()); startDate = DateFormat.format("yyyyMMdd",
-				 * sdate) + ""; startDate2 = DateFormat.format("yyyy-MM-dd",
-				 * sdate) + "";
-				 * 
-				 * Date edate = df
-				 * .parse(endingDateButton.getText().toString()); endDate =
-				 * DateFormat.format("yyyyMMdd", edate) + ""; endDate2 =
-				 * DateFormat.format("yyyy-MM-dd", edate) + "";
-				 * 
-				 * } catch (Exception e) { Log.i("error", e.toString()); }
-				 */
+				// String startDate = ""; String startDate2 = ""; String endDate
+				// = ""; String endDate2 = "";
+
+				SimpleDateFormat df = new SimpleDateFormat("MMM dd , yyyy");
+				try {
+					Date sdate = df.parse(startingDateButton.getText()
+							.toString());
+					startDate = DateFormat.format("yyyyMMdd", sdate) + "";
+					startDate2 = DateFormat.format("yyyy-MM-dd", sdate) + "";
+
+					Date edate = df
+							.parse(endingDateButton.getText().toString());
+					endDate = DateFormat.format("yyyyMMdd", edate) + "";
+					endDate2 = DateFormat.format("yyyy-MM-dd", edate) + "";
+
+				} catch (Exception e) {
+					Log.i("error", e.toString());
+				}
+
 				Log.i("not yet done", startDate + " " + startTime + " "
 						+ endDate + endTime);
 
@@ -215,25 +219,36 @@ public class AddEvent extends Activity {
 				AndroidCalendar2Activity.getDB().insert("TimeTable", args);
 
 				// "2012-03-01T22:40:00"
-				/*
-				 * final String sdt = startDate2 + "T" + startTime.substring(0,
-				 * 2) + ":" + startTime.substring(3, 5) + ":00"; final String
-				 * edt = endDate2 + "T" + endTime.substring(0, 2) + ":" +
-				 * endTime.substring(3, 5) + ":00";
-				 * 
-				 * if (AndroidCalendar2Activity.getGS().isGoogleConnected()) {
-				 * 
-				 * new Thread(new Runnable() { public void run() { try {
-				 * AndroidCalendar2Activity.getGS().insert(title,
-				 * DateTime.parseDateTime(sdt), DateTime.parseDateTime(edt)); }
-				 * catch (NumberFormatException e) { // TODO Auto-generated
-				 * catch block e.printStackTrace(); } catch (IOException e) { //
-				 * TODO Auto-generated catch block e.printStackTrace(); } catch
-				 * (ServiceException e) { // TODO Auto-generated catch block
-				 * e.printStackTrace(); } }
-				 * 
-				 * }).start(); }
-				 */
+
+				final String sdt = startDate2 + "T" + startTime.substring(0, 2)
+						+ ":" + startTime.substring(3, 5) + ":00";
+				final String edt = endDate2 + "T" + endTime.substring(0, 2)
+						+ ":" + endTime.substring(3, 5) + ":00";
+
+				if (AndroidCalendar2Activity.getGS().isGoogleConnected()) {
+
+					new Thread(new Runnable() {
+						public void run() {
+							try {
+								AndroidCalendar2Activity.getGS().insert(title,
+										DateTime.parseDateTime(sdt),
+										DateTime.parseDateTime(edt));
+							} catch (NumberFormatException e) {
+								// TODO Auto-generatedcatch block
+								e.printStackTrace();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (ServiceException e) { // TODO
+															// Auto-generated
+															// catch block
+								e.printStackTrace();
+							}
+						}
+
+					}).start();
+				}
+
 				finish();
 
 			}
@@ -454,7 +469,7 @@ public class AddEvent extends Activity {
 
 		private void updateDisplay(TimePicker timePicker, int hourOfDay,
 				int minute) {
-		
+
 			// change the next number to +/- 5 minute
 			if (currentMinute == 0 && minute == 59) {
 				currentMinute = 55;

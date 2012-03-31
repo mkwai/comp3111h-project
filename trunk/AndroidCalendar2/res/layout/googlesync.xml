@@ -42,7 +42,9 @@
         android:id="@+id/gs_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPassword" />
+        android:inputType="textPassword" >
+        <requestFocus />
+    </EditText>
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

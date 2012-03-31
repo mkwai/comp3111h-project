@@ -26,7 +26,7 @@ public class AndroidCalendar2Activity extends Activity {
 		return mgs;
 	}
 	public static void clearGS() {
-		mgs= new GoogleSync();;
+		mgs= new GoogleSync();
 	}
 	
 	
@@ -42,7 +42,7 @@ public class AndroidCalendar2Activity extends Activity {
 		mdb = new MyDataBase(this);
 		
 		// get an instance of GoogleSync, username and password will be set later
-		//mgs = new GoogleSync();
+		mgs = new GoogleSync();
 	}
 
 	@Override
