@@ -33,7 +33,7 @@ import android.util.Log;
 
 public class BrowserHistoryActivity extends Activity {
 	
-	static ArrayList<String> blockWebsites = new ArrayList<String>();
+	static private ArrayList<String> blockWebsites = new ArrayList<String>();
 	private Intent testing = new Intent();
 	private int numOfLoop = 0;
    	Timer timer = new Timer();  
@@ -42,7 +42,7 @@ public class BrowserHistoryActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        blockWebsites.add("ust.hk");
+        blockWebsites.add("facebook.com");
         
         testing.setAction("PopupMessage");
         Log.i("start", "start");
@@ -51,51 +51,7 @@ public class BrowserHistoryActivity extends Activity {
         
 
     }
-/*
-    public boolean loop(){
-    	
-    	if(!blockWebsites.isEmpty()){
-			String stringURL = null; 
-			String stringTitle = null; 
-			long stringDate = 0;
-			
-			long within = System.currentTimeMillis() - 11000L;
-			
-			ContentResolver contentResolver = getContentResolver(); 
-			Cursor cursor = contentResolver.query(Uri.parse("content://browser/bookmarks"), 
-					new String[]{"title","url","date"}, "date >"+ within, null, null);
-	
-			while (cursor != null && cursor.moveToNext() && !hindering) { 
-				stringTitle = cursor.getString(cursor.getColumnIndex("title")); 
-				stringURL = cursor.getString(cursor.getColumnIndex("url")); 
-				stringDate = cursor.getLong(cursor.getColumnIndex("date")); 
-			    Log.d("debug",  stringDate + " : " + stringTitle+"  ~~~  "+stringURL);
-			    for(int i = 0; (i < blockWebsites.size() ) && !hindering; i++){
-			    	
-			    	if(stringURL.contains(blockWebsites.get(i))) {
-			    		//hindering = true;
-			    		Log.i("conflict", blockWebsites.get(i));
-			    		PopupMessage.setSite(blockWebsites.get(i));
-			    		return false;
-			    	}
-			    }	
-			    
-			}
-    	}
-    	
-
-        try{
-        	Log.i("sleep","sleep");
-        	Thread.sleep(10000);
-            Log.i("wake","up");
-
-        }catch(Exception e){}
-
-        //stopService(new Intent(this, PopupMessage.class)); 
-        Log.i("end", "end");
-        return true;
-    }
-*/  
+    
     static public void addBlockWebsite(String address){
 		if(!blockWebsites.contains(address)){
 			blockWebsites.add(address);
@@ -104,6 +60,10 @@ public class BrowserHistoryActivity extends Activity {
     
     static public void clearList(){
     	blockWebsites.clear();
+    }
+    
+    static public void removeItem(int i){
+    	if (i<blockWebsites.size()) blockWebsites.remove(i);
     }
     
     private class CheckWeb extends TimerTask{
