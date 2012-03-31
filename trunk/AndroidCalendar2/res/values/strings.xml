@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Daily Assistant</string>
     
-    <string name="addevent_content">Content</string>
+    <string name="addevent_content">Title</string>
     <string name="addevent_content_hint">Enter event content</string>
     <string name="addevent_starting_time">Starting</string>
     <string name="addevent_ending_time">Ending</string>

@@ -57,13 +57,12 @@ public class AddEvent extends Activity {
 	private Calendar startingCalendar = Calendar.getInstance();
 	private Calendar endingCalendar = Calendar.getInstance();
 
-
 	private final static String TAG = " LocationDurationActivity";
-	
-	final static String DURATION_INFOS="duration_infos";
+
+	final static String DURATION_INFOS = "duration_infos";
 	final static String COUNTRY_CODE = "country_code";
-	private final static int CODE =3;
-	
+	private final static int CODE = 3;
+
 	// variable for storing data
 	private EditText content;
 	private EditText location;
@@ -99,8 +98,10 @@ public class AddEvent extends Activity {
 
 		// setting up default starting/ending date/time
 
-		CharSequence currentYear = DateFormat.format("yyyy", currentDateCalendar);
-		CharSequence currentMonth = DateFormat.format("MMM", currentDateCalendar);
+		CharSequence currentYear = DateFormat.format("yyyy",
+				currentDateCalendar);
+		CharSequence currentMonth = DateFormat.format("MMM",
+				currentDateCalendar);
 		CharSequence currentDate = DateFormat.format("dd", currentDateCalendar);
 		CharSequence currentHour = DateFormat.format("kk", currentDateCalendar);
 		int currentMinute = Integer.parseInt((String) (DateFormat.format("mm",
@@ -109,8 +110,8 @@ public class AddEvent extends Activity {
 
 		// convert the minutes in current calendar to 5 minute interval
 		currentDateCalendar.set(Calendar.MINUTE, currentMinute);
-		startingCalendar = currentDateCalendar;
-		endingCalendar = currentDateCalendar;
+		startingCalendar = (Calendar) currentDateCalendar.clone();
+		endingCalendar = (Calendar) currentDateCalendar.clone();
 
 		CharSequence currentMinuteConverted = currentMinute <= 5 ? "0"
 				+ Integer.toString(currentMinute) : Integer
@@ -135,7 +136,7 @@ public class AddEvent extends Activity {
 				// TODO Auto-generated method stub
 
 				finish();
-				}
+			}
 
 		});
 
@@ -146,80 +147,95 @@ public class AddEvent extends Activity {
 
 				// TODO Auto-generated method stub
 				// sent data to database
-			
+
 				String eventid = AndroidCalendar2Activity.getDB().GiveEventID();
 				final String title = content.getText().toString();
-				if(title.length()==0){
-					Toast.makeText(
-							AddEvent.this,"You Should enter valid context/title",Toast.LENGTH_SHORT
-							).show();
+				if (title.length() == 0) {
+					Toast.makeText(AddEvent.this,
+							"You should enter a valid title",
+							Toast.LENGTH_SHORT).show();
+					return;
+				}
+				// length of title must < 30
+				if (title.length() > 30) {
+					Toast.makeText(AddEvent.this,
+							"Maximum 30 characters in title",
+							Toast.LENGTH_SHORT).show();
 					return;
 				}
 				String startTime = startingTimeButton.getText().toString();
 				String endTime = endingTimeButton.getText().toString();
 
-				String startDate=""; String startDate2 = "";
-				String endDate=""; String endDate2 = "";
-				
-				SimpleDateFormat df = new SimpleDateFormat("MMM dd , yyyy");
-				try{
-					Date sdate = df.parse(startingDateButton.getText().toString());
-					startDate=DateFormat.format("yyyyMMdd",sdate)+"";
-					startDate2=DateFormat.format("yyyy-MM-dd",sdate)+"";
-					
-					Date edate = df.parse(endingDateButton.getText().toString());
-					endDate=DateFormat.format("yyyyMMdd",edate)+"";
-					endDate2=DateFormat.format("yyyy-MM-dd",edate)+"";
-				
-				}catch(Exception e){
-					Log.i("error",e.toString());
-				}
-				
-				if(startDate.endsWith(endDate) && startTime.equals(endTime)){
-					Toast.makeText(
-							AddEvent.this,"Event should not have zero duration",Toast.LENGTH_SHORT
-							).show();
+				String startDate = DateFormat.format("yyyyMMdd",
+						startingCalendar) + "";
+				String endDate = DateFormat.format("yyyyMMdd", endingCalendar)
+						+ "";
+				String startDate2 = DateFormat.format("yyyy-MM-dd",
+						startingCalendar) + "";
+				String endDate2 = DateFormat.format("yyyy-MM-dd",
+						endingCalendar) + "";
+
+				/*
+				 * String startDate = ""; String startDate2 = ""; String endDate
+				 * = ""; String endDate2 = "";
+				 * 
+				 * SimpleDateFormat df = new SimpleDateFormat("MMM dd , yyyy");
+				 * try { Date sdate = df.parse(startingDateButton.getText()
+				 * .toString()); startDate = DateFormat.format("yyyyMMdd",
+				 * sdate) + ""; startDate2 = DateFormat.format("yyyy-MM-dd",
+				 * sdate) + "";
+				 * 
+				 * Date edate = df
+				 * .parse(endingDateButton.getText().toString()); endDate =
+				 * DateFormat.format("yyyyMMdd", edate) + ""; endDate2 =
+				 * DateFormat.format("yyyy-MM-dd", edate) + "";
+				 * 
+				 * } catch (Exception e) { Log.i("error", e.toString()); }
+				 */
+				Log.i("not yet done", startDate + " " + startTime + " "
+						+ endDate + endTime);
+
+				// check if the duration is 0
+				if (startingCalendar.equals(endingCalendar)) {
+					Toast.makeText(AddEvent.this,
+							"A event should not has zero duration",
+							Toast.LENGTH_SHORT).show();
 					return;
 				}
-				
-				
-				String isPrivate = privateEvent.isChecked()?"1":"0";
-				String locat = location.getText().toString();
-				String remind = reminder.isChecked()?"1":"0";
-				String args[] = {eventid,title,startDate,endDate,startTime,endTime,isPrivate,locat,remind};	
-			
-				Log.i("done",startDate+" "+endDate);
-				
-				AndroidCalendar2Activity.getDB().insert("TimeTable", args);
-				
-				//"2012-03-01T22:40:00"
-				final String sdt= startDate2+ "T"+ startTime.substring(0, 2) + ":" + startTime.substring(3, 5)+ ":00";
-				final String edt= endDate2+ "T"+ endTime.substring(0, 2) + ":" + endTime.substring(3, 5)+ ":00" ;
-				
-				if (AndroidCalendar2Activity.getGS().isGoogleConnected()){
 
-					new Thread(new Runnable() {
-						public void run() {
-							try {
-								AndroidCalendar2Activity.getGS().insert(title,DateTime.parseDateTime(sdt), 
-										DateTime.parseDateTime(edt));
-							} catch (NumberFormatException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							} catch (ServiceException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							} 
-						}
-							
-					}).start();
-				}	
-				
+				String isPrivate = privateEvent.isChecked() ? "1" : "0";
+				String locat = location.getText().toString();
+				String remind = reminder.isChecked() ? "1" : "0";
+				String args[] = { eventid, title, startDate, endDate,
+						startTime, endTime, isPrivate, locat, remind };
+
+				Log.i("done", startDate + " " + startTime + " " + endDate
+						+ endTime);
+
+				AndroidCalendar2Activity.getDB().insert("TimeTable", args);
+
+				// "2012-03-01T22:40:00"
+				/*
+				 * final String sdt = startDate2 + "T" + startTime.substring(0,
+				 * 2) + ":" + startTime.substring(3, 5) + ":00"; final String
+				 * edt = endDate2 + "T" + endTime.substring(0, 2) + ":" +
+				 * endTime.substring(3, 5) + ":00";
+				 * 
+				 * if (AndroidCalendar2Activity.getGS().isGoogleConnected()) {
+				 * 
+				 * new Thread(new Runnable() { public void run() { try {
+				 * AndroidCalendar2Activity.getGS().insert(title,
+				 * DateTime.parseDateTime(sdt), DateTime.parseDateTime(edt)); }
+				 * catch (NumberFormatException e) { // TODO Auto-generated
+				 * catch block e.printStackTrace(); } catch (IOException e) { //
+				 * TODO Auto-generated catch block e.printStackTrace(); } catch
+				 * (ServiceException e) { // TODO Auto-generated catch block
+				 * e.printStackTrace(); } }
+				 * 
+				 * }).start(); }
+				 */
 				finish();
-			
+
 			}
 		});
 
@@ -251,30 +267,31 @@ public class AddEvent extends Activity {
 				showDialog(ENDING_TIME_DIALOG);
 			}
 		});
-		
-		searchLoc.setOnClickListener(new OnClickListener(){
+
+		searchLoc.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
-				if(location.getText().length()==0){
-					Toast.makeText(AddEvent.this, "No Place to search", Toast.LENGTH_SHORT).show();
+				if (location.getText().length() == 0) {
+					Toast.makeText(AddEvent.this, "No Place to search",
+							Toast.LENGTH_SHORT).show();
 					return;
 				}
-				
+
 				String place = location.getText().toString();
-				
 
 				String temp = place.replace('\n', '+');
-				String args = "http://maps.googleapis.com/maps/api/geocode/json?address=" 
+				String args = "http://maps.googleapis.com/maps/api/geocode/json?address="
 						+ temp.replace(' ', '+') + "&sensor=false";
-				
-				Intent intent = new Intent(AddEvent.this, CityListActivity.class);
+
+				Intent intent = new Intent(AddEvent.this,
+						CityListActivity.class);
 				Bundle bundle = new Bundle();
 				bundle.putString(AddEvent.COUNTRY_CODE, args);
-				
+
 				intent.putExtras(bundle);
-			    startActivityForResult(intent, CODE);
-			}			
+				startActivityForResult(intent, CODE);
+			}
 		});
-		
+
 	}
 
 	// call when create dialog
@@ -286,10 +303,13 @@ public class AddEvent extends Activity {
 			// use when "set" press
 			public void onDateSet(DatePicker view, int year, int monthOfYear,
 					int dayOfMonth) {
+
 				// store the date set by the dialog to startingCalendar variable
 				startingCalendar.set(year, monthOfYear, dayOfMonth);
+
 				// renew endingCalendar (ending > starting)
-				if (startingCalendar.after(endingCalendar)) {
+				if (startingCalendar.getTimeInMillis() > endingCalendar
+						.getTimeInMillis()) {
 					endingCalendar.set(year, monthOfYear, dayOfMonth);
 					endingDateButton.setText(DateFormat.format("MMM",
 							startingCalendar)
@@ -306,6 +326,7 @@ public class AddEvent extends Activity {
 						+ DateFormat.format("yyyy", startingCalendar));
 
 			}
+
 		};
 
 		// listener for setting date in ending date dialog
@@ -314,8 +335,10 @@ public class AddEvent extends Activity {
 			// use when "set" press
 			public void onDateSet(DatePicker view, int year, int monthOfYear,
 					int dayOfMonth) {
+
 				// compareCalendar is temp, if valid input then compare ->
 				// ending
+
 				Calendar compareCalendar = Calendar.getInstance();
 				compareCalendar.set(year, monthOfYear, dayOfMonth);
 				compareCalendar.set(Calendar.HOUR_OF_DAY,
@@ -325,15 +348,16 @@ public class AddEvent extends Activity {
 
 				// store the date set by the dialog to endingCalendar variable
 				// renew endingCalendar (ending > starting)
-				if (compareCalendar.after(startingCalendar)) {
+				if (compareCalendar.getTimeInMillis() >= startingCalendar
+						.getTimeInMillis()) {
 
 					endingCalendar.set(year, monthOfYear, dayOfMonth);
 					endingDateButton.setText(DateFormat.format("MMM",
-							startingCalendar)
+							endingCalendar)
 							+ " "
-							+ DateFormat.format("dd", startingCalendar)
+							+ DateFormat.format("dd", endingCalendar)
 							+ " , "
-							+ DateFormat.format("yyyy", startingCalendar));
+							+ DateFormat.format("yyyy", endingCalendar));
 				}
 
 			}
@@ -414,12 +438,14 @@ public class AddEvent extends Activity {
 	private class MyTimePickerDialog extends TimePickerDialog {
 
 		private int currentMinute = 0;
+		private int currentHour = 0;
 
 		public MyTimePickerDialog(Context context, OnTimeSetListener callBack,
 				int hourOfDay, int minute, boolean is24HourView) {
 			super(context, callBack, hourOfDay, minute, is24HourView);
 			// TODO Auto-generated constructor stub
 			currentMinute = restoreMinute(minute);
+			currentHour = hourOfDay;
 		}
 
 		public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
@@ -428,13 +454,14 @@ public class AddEvent extends Activity {
 
 		private void updateDisplay(TimePicker timePicker, int hourOfDay,
 				int minute) {
-
-			// do calculation of next time
+		
+			// change the next number to +/- 5 minute
 			if (currentMinute == 0 && minute == 59) {
 				currentMinute = 55;
 			} else
 				currentMinute = ((currentMinute - minute) > 0) ? currentMinute - 5
-						: currentMinute + 5;
+						: ((currentMinute - minute) < 0 ? currentMinute + 5
+								: currentMinute);
 
 			timePicker
 					.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
@@ -464,49 +491,48 @@ public class AddEvent extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		
-		if(resultCode == Activity.RESULT_CANCELED){
-			
+
+		if (resultCode == Activity.RESULT_CANCELED) {
+
 			return;
 		}
-		
+
 		if (requestCode == CODE && resultCode == Activity.RESULT_OK) {
-			
+
 			String placename = data.getExtras().getString("placename");
 			String lat = data.getExtras().getString("placelat");
 			String lng = data.getExtras().getString("placelng");
-			
+
 			location.setText(placename);
-			
+
 			/*
-			new AlertDialog.Builder(AddEvent.this).
-			setTitle(title).setMessage(message).
-			  setPositiveButton( "OK" ,new DialogInterface.OnClickListener() {  
-				public void onClick(DialogInterface dialoginterface, int i){	}          
-			}).show();    
-			*/
+			 * new AlertDialog.Builder(AddEvent.this).
+			 * setTitle(title).setMessage(message). setPositiveButton( "OK" ,new
+			 * DialogInterface.OnClickListener() { public void
+			 * onClick(DialogInterface dialoginterface, int i){ } }).show();
+			 */
 		}
 	}
-	
-	
+
 	// lower bound
 	private int restoreMinute(int minute) {
+		// initialize intervals[] to {0,5,10,...,55}
 		int intervals[] = new int[12];
 		int startmin = 0;
-		for (int i = 0; i < 11; i++) {
+		for (int i = 0; i < 12; i++) {
 			intervals[i] = startmin;
-			startmin += 5;
+			startmin = startmin + 5;
 		}
 
-		int nextMinute = 0;
+		// find closest & smaller value of minute in interval
+
 		for (int i = 11; i >= 0; i--) {
 			if (minute > intervals[i]) {
-				nextMinute = intervals[i];
-				break;
+				return intervals[i];
+
 			}
 		}
-
-		return nextMinute;
+		return 0;
 	}
 
 	// the following is get function for getting data
