@@ -84,7 +84,9 @@ public class GoogleSyncActivity extends Activity {
 	private OnClickListener disconnect_listener = new OnClickListener() {
 		public void onClick(View v) {
 			ET_password.setText("");
-			AndroidCalendar2Activity.clearGS();
+			if (AndroidCalendar2Activity.getGS() != null) {
+				AndroidCalendar2Activity.clearGS();
+			}
 			ShowMsgDialog("System", "Disconnected.");
 		}
 	};
@@ -111,60 +113,71 @@ public class GoogleSyncActivity extends Activity {
 				Toast toast = Toast.makeText(context, text, duration);
 				toast.show();
 			} else {
-				new Thread(new Runnable() {
-					public void run() {
+				if (AndroidCalendar2Activity.getGS() == null) {
+					Context context = getApplicationContext();
+					CharSequence text = "Connection Unavailable";
+					int duration = Toast.LENGTH_SHORT;
+					Toast toast = Toast.makeText(context, text, duration);
+					toast.show();
+				} else {
+					new Thread(new Runnable() {
+						public void run() {
 
-						AndroidCalendar2Activity.getGS().setUserInfo(username,
-								password);
-						pastdayID = rgpast.getCheckedRadioButtonId();
+							AndroidCalendar2Activity.getGS().setUserInfo(
+									username, password);
+							pastdayID = rgpast.getCheckedRadioButtonId();
 
-						if (pastdayID == R.id.gs_past7)
-							past = 7;
-						if (pastdayID == R.id.gs_past30)
-							past = 30;
-						if (pastdayID == R.id.gs_past60)
-							past = 60;
-						if (pastdayID == R.id.gs_past90)
-							past = 90;
-						if (pastdayID == R.id.gs_past180)
-							past = 180;
-						if (pastdayID == R.id.gs_past365)
-							past = 365;
+							if (pastdayID == R.id.gs_past7)
+								past = 7;
+							if (pastdayID == R.id.gs_past30)
+								past = 30;
+							if (pastdayID == R.id.gs_past60)
+								past = 60;
+							if (pastdayID == R.id.gs_past90)
+								past = 90;
+							if (pastdayID == R.id.gs_past180)
+								past = 180;
+							if (pastdayID == R.id.gs_past365)
+								past = 365;
 
-						futuredayID = rgfuture.getCheckedRadioButtonId();
+							futuredayID = rgfuture.getCheckedRadioButtonId();
 
-						if (futuredayID == R.id.gs_future7)
-							future = 7;
-						if (futuredayID == R.id.gs_future30)
-							future = 30;
-						if (futuredayID == R.id.gs_future60)
-							future = 60;
-						if (futuredayID == R.id.gs_future90)
-							future = 90;
-						if (futuredayID == R.id.gs_future180)
-							future = 180;
-						if (futuredayID == R.id.gs_future365)
-							future = 365;
+							if (futuredayID == R.id.gs_future7)
+								future = 7;
+							if (futuredayID == R.id.gs_future30)
+								future = 30;
+							if (futuredayID == R.id.gs_future60)
+								future = 60;
+							if (futuredayID == R.id.gs_future90)
+								future = 90;
+							if (futuredayID == R.id.gs_future180)
+								future = 180;
+							if (futuredayID == R.id.gs_future365)
+								future = 365;
 
-						if (AndroidCalendar2Activity.getGS().GoogleLogin() == false) {
-							AndroidCalendar2Activity.getGS().isGoogleConnected(
-									false);
-							Looper.prepare();
-							ShowMsgDialog("System",
-									"User name and password not match.");
-							Looper.loop();
-						} else {
-							AndroidCalendar2Activity.getGS().isGoogleConnected(
-									true);
-							Looper.prepare();
-							ShowMsgDialog("System", "Connected Successfully.");
-							AndroidCalendar2Activity.getGS().getRangeEvents2(
-									(year + "-" + month + "-" + date), past,
-									future);
-							Looper.loop();
+							if (AndroidCalendar2Activity.getGS().GoogleLogin() == false) {
+								AndroidCalendar2Activity.getGS()
+										.isGoogleConnected(false);
+								Looper.prepare();
+								ShowMsgDialog("System",
+										"User name and password not match.");
+								Looper.loop();
+							} else {
+								AndroidCalendar2Activity.getGS()
+										.isGoogleConnected(true);
+								Looper.prepare();
+								ShowMsgDialog("System",
+										"Connected Successfully.");
+								AndroidCalendar2Activity
+										.getGS()
+										.getRangeEvents2(
+												(year + "-" + month + "-" + date),
+												past, future);
+								Looper.loop();
+							}
 						}
-					}
-				}).start();
+					}).start();
+				}
 			}
 		}
 	};
