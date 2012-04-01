@@ -65,13 +65,25 @@ public class FriendsView extends Activity{
 
 		mNext.setOnClickListener(new OnClickListener(){
 			public void onClick(View v) {
-				String condition =" friendID = '"+myfriendid+"' AND startDate > "+today+" ";
+				String condition =" friendID = '"+myfriendid
+						+"' AND ( startDate > "+today+" OR ( startDate < endDate AND "+today+" < endDate) ) ";
 				JSONArray ja = AndroidCalendar2Activity.getDB().fetchConditional("FriendTimeTable", condition, "startDate");
 				if(ja.length()==0){
 					Toast.makeText(FriendsView.this, "no more record", Toast.LENGTH_SHORT).show();
 				}else{
 					try{
-						today = ja.getJSONObject(0).getString("startDate");
+						JSONObject jo = ja.getJSONObject(0);
+						if(jo.getString("endDate").compareTo(jo.getString("startDate"))>0){
+							Date t = nextDay(TheDate(today));
+							today = extractDay(t,Calendar.YEAR)+getZero(extractDay(t,Calendar.MONTH)+1)+
+									getZero(extractDay(t,Calendar.DAY_OF_MONTH));
+						}
+						else{
+							today = jo.getString("startDate");
+						}
+						
+						System.out.println(today);
+							
 						Intent t = getIntent();
 						t.putExtra("today", today);
 						finish();
@@ -91,7 +103,17 @@ public class FriendsView extends Activity{
 					Toast.makeText(FriendsView.this, "no more record", Toast.LENGTH_SHORT).show();
 				}else{
 					try{
-						today = ja.getJSONObject(ja.length()-1).getString("startDate");
+						JSONObject jo = ja.getJSONObject(ja.length()-1);
+						if(jo.getString("endDate").compareTo(jo.getString("startDate"))>0){
+							Date t = prevDay(TheDate(today));
+							today = extractDay(t,Calendar.YEAR)+getZero(extractDay(t,Calendar.MONTH)+1)+
+									getZero(extractDay(t,Calendar.DAY_OF_MONTH));
+						}
+						else{
+							today = jo.getString("startDate");
+						}
+						
+						
 						Intent t = getIntent();
 						t.putExtra("today", today);
 						finish();
@@ -127,46 +149,44 @@ public class FriendsView extends Activity{
 		
 	}
 	
+	public int extractDay(Date d, int field){
+		Calendar temp = Calendar.getInstance();
+		temp.setTime(d);
+		return temp.get(field);
+	}
+	
+	
 	public void testAddLabels(Context t){
 		JSONArray x = new JSONArray();
 		
-		JSONArray ja; 
 		String condition=" friendID = '"+myfriendid+"' AND startDate <= '"+today+"' AND endDate >= '"+today+"' ";
 		
 		
 		try{
-			ja = AndroidCalendar2Activity.getDB().fetchConditional("FriendTimeTable", condition);
+			JSONArray ja = AndroidCalendar2Activity.getDB().fetchConditional("FriendTimeTable", condition);
 			for(int i = 0;i<ja.length();i++){
-				String eid, sd,ed,st,et,stime, len;
-				sd = ja.getJSONObject(i).getString("startDate");
-				st = ja.getJSONObject(i).getString("startTime");
-				if(Integer.parseInt(sd)<Integer.parseInt(today)){
-					stime = "0";
-					st = "00:00"; //for later compare
-				}
-				else{
-					stime = st;
-				}
-				
-
-				ed = ja.getJSONObject(i).getString("endDate");
-				et = ja.getJSONObject(i).getString("endTime");
-				
-				if(Integer.parseInt(ed)>Integer.parseInt(today))
-					len=String.valueOf(24*5);
-				else{
-					Date sx = new SimpleDateFormat("HH:mm").parse(st);
-					Date ex = new SimpleDateFormat("HH:mm").parse(et);
-					len = String.valueOf(TimeUnit.MILLISECONDS.toMinutes((ex.getTime()-sx.getTime())/5));
-				}
-
-				Date sx = new SimpleDateFormat("HH:mm").parse(st);
-				Date sx2 = new SimpleDateFormat("HH:mm").parse("00:00");
-				stime =  String.valueOf(TimeUnit.MILLISECONDS.toMinutes((sx.getTime()-sx2.getTime())/5));
-				
 				JSONObject jo = ja.getJSONObject(i);
-				jo.put("len", len);
-				jo.put("stime", stime);
+				Date initPoint = TheActDate(today,"00:00");
+				Date startPoint;
+				Date endPoint;
+					
+				if(jo.getString("startDate").compareTo(today)<0){
+					startPoint = TheActDate(today,"00:00");
+				}else{
+					startPoint = TheActDate(today, jo.getString("startTime"));
+				}
+				if(jo.getString("endDate").compareTo(today)>0){
+					endPoint = TheActDate(today,"00:00");
+					endPoint = nextDay(endPoint);
+				}else{
+					endPoint = TheActDate(today, jo.getString("endTime"));
+				}
+				
+				long slen = timeLength(initPoint,startPoint);
+				long elen = timeLength(startPoint,endPoint);
+				
+				jo.put("len", String.valueOf(elen));
+				jo.put("stime", String.valueOf(slen));
 				x.put(jo);
 			}
 			
@@ -216,6 +236,31 @@ public class FriendsView extends Activity{
 		}
 		
 	}
+		
+	public long timeLength(Date actsdate, Date actedate) throws Exception{
+		return (actedate.getTime()-actsdate.getTime())/1000/60/5;
+	}
+		
+	public Date nextDay(Date a){
+		Date output = new Date();
+		output.setTime(a.getTime()+1000*60*60*24);
+		return output;
+	}
+		
+	public Date prevDay(Date a){
+		Date output = new Date();
+		output.setTime(a.getTime()-1000*60*60*24);
+		return output;
+	}
+		
+	public Date TheActDate(String d, String hm) throws Exception{
+		Date sd = new Date();
+		String []HourMin = hm.split(":");
+		long thetime = new SimpleDateFormat("yyyyMMdd").parse(d).getTime()+Integer.parseInt(HourMin[0])*60*60*1000+Integer.parseInt(HourMin[1])*60*1000;
+		sd.setTime(thetime);
+		return sd;
+	}
+	
 	
 	public void setbackground(Context t){
 		DayLayout = new RelativeLayout(t);
@@ -270,7 +315,10 @@ public class FriendsView extends Activity{
 							new Random().nextInt(255));
 		}
 	}
-	
+	// convert to date format
+		public Date TheDate(String d) throws ParseException{
+			return new SimpleDateFormat("yyyyMMdd").parse(d);
+		}
 	
 	// setup daily view
 	public void setupDailyTimes(Context t){
