@@ -11,11 +11,5 @@
 	<classpathentry kind="lib" path="lib/gdata-core-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/google-collections-1.0-rc5.jar"/>
 	<classpathentry kind="lib" path="lib/gdataplugin.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Dickson/Desktop/gdata-samples.java-1.46.0/gdata/java/lib/gdata-calendar-2.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Dickson/Desktop/gdata-samples.java-1.46.0/gdata/java/lib/gdata-calendar-meta-2.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Dickson/Desktop/gdata-samples.java-1.46.0/gdata/java/lib/gdata-client-1.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Dickson/Desktop/gdata-samples.java-1.46.0/gdata/java/lib/gdata-client-meta-1.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Dickson/Desktop/gdata-samples.java-1.46.0/gdata/java/lib/gdata-core-1.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Dickson/Desktop/google-collections-1.0-rc5.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
