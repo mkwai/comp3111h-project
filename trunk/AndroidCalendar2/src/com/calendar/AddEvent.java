@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.concurrent.TimeUnit;
 
 import org.json.JSONArray;
 
@@ -126,7 +128,7 @@ public class AddEvent extends Activity {
 		endingDateButton.setText(currentMonth + " " + currentDate + " , "
 				+ currentYear);
 
-		endingTimeButton.setText(endingCalendar.get(Calendar.HOUR_OF_DAY) + ":"
+		endingTimeButton.setText(getZero(endingCalendar.get(Calendar.HOUR_OF_DAY)) + ":"
 				+ currentMinuteConverted);
 
 		// setting up onClickListener for each button
@@ -197,7 +199,7 @@ public class AddEvent extends Activity {
 				}
 
 				Log.i("not yet done", startDate + " " + startTime + " "
-						+ endDate + endTime);
+						+ endDate + " "+endTime);
 
 				// check if the duration is 0
 				if (startingCalendar.equals(endingCalendar)) {
@@ -213,7 +215,7 @@ public class AddEvent extends Activity {
 				String args[] = { eventid, title, startDate, endDate,
 						startTime, endTime, isPrivate, locat, remind };
 
-				Log.i("done", startDate + " " + startTime + " " + endDate
+				Log.i("done", startDate + " " + startTime + " " + endDate+" "
 						+ endTime);
 
 				AndroidCalendar2Activity.getDB().insert("TimeTable", args);
@@ -309,6 +311,14 @@ public class AddEvent extends Activity {
 
 	}
 
+	// convert month or day
+	private String getZero(int x){
+		if(String.valueOf(x).length()<2){
+			return "0"+String.valueOf(x);
+		}
+		return String.valueOf(x);
+	}
+	
 	// call when create dialog
 	protected Dialog onCreateDialog(int id) {
 
