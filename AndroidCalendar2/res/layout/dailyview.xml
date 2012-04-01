@@ -3,7 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:background="@color/background_color"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:id="@+id/daily_linearlayout">
 
     <TextView
         android:id="@+id/dailyview_today"
@@ -12,37 +13,43 @@
         android:gravity="center"
         android:textSize="20dp" >
     </TextView>
-    <LinearLayout 
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal" >
-    
-    <Button
-        android:id="@+id/dailyview_bPrevious"
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/dailyview_previous" >
-    </Button>
+        android:gravity="center"
+        android:orientation="horizontal" >
+
         <Button
-        android:id="@+id/dailyview_bNext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/dailyview_next" >
-    </Button>
-    <Button
-        android:id="@+id/dailyview_bAddEvent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:text="@string/dailyview_addevent" >
-    </Button>
+            android:id="@+id/dailyview_bPrevious"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dailyview_previous" >
+        </Button>
+
+        <Button
+            android:id="@+id/dailyview_bNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dailyview_next" >
+        </Button>
+
+        <Button
+            android:id="@+id/dailyview_bAddEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="@string/dailyview_addevent" >
+        </Button>
     </LinearLayout>
+
     <View
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:layout_marginTop="5dp"
         android:background="@color/view_color" >
     </View>
+
     <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"

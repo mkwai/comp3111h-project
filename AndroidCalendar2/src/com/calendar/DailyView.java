@@ -23,11 +23,14 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.Display;
+import android.view.Surface;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -44,6 +47,10 @@ public class DailyView extends Activity {
 	TextView twelve_am;
 	RelativeLayout relativeLayout;
 	Button bAddEvent, bPrevious, bNext;
+	LinearLayout linearLayout;
+
+	Calendar calendar = Calendar.getInstance();
+	int hView = 1;
 
 	protected static void setDailyYear(int year) {
 		dailyYear = year;
@@ -66,6 +73,10 @@ public class DailyView extends Activity {
 
 		setContentView(R.layout.dailyview);
 		relativeLayout = (RelativeLayout) findViewById(R.id.daily_relativelayout);
+		linearLayout = (LinearLayout) findViewById(R.id.daily_linearlayout);
+		calendar.set(dailyYear, dailyMonth - 1, dailyDayOfMonth);
+
+		Log.i("on create", "@@@");
 
 		// button AddEvent
 		bAddEvent = (Button) findViewById(R.id.dailyview_bAddEvent);
@@ -92,6 +103,45 @@ public class DailyView extends Activity {
 
 		testAddLabels(this);
 
+		// implement horizontal view ( 3 days to be shown)
+		Display display = ((WindowManager) this
+				.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+		int rotation = display.getRotation();
+
+		if (rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270) {
+			Calendar temp;
+			//first day
+			testAddLabels(this);
+			//second day
+			hView = 2;
+			calendar.add(Calendar.DATE, 1);
+			dailyYear = calendar.get(Calendar.YEAR);
+			dailyMonth = calendar.get(Calendar.MONTH) + 1;
+			dailyDayOfMonth = calendar.get(Calendar.DATE);
+			testAddLabels(this);
+			//third day
+			hView = 3;
+			calendar.add(Calendar.DATE, 1);
+			temp = (Calendar) calendar.clone();
+			dailyYear = calendar.get(Calendar.YEAR);
+			dailyMonth = calendar.get(Calendar.MONTH) + 1;
+			dailyDayOfMonth = calendar.get(Calendar.DATE);
+			testAddLabels(this);
+			hView = 1;
+			
+			//reset variable 
+			calendar.add(Calendar.DATE, -2);
+			dailyYear = calendar.get(Calendar.YEAR);
+			dailyMonth = calendar.get(Calendar.MONTH) + 1;
+			dailyDayOfMonth = calendar.get(Calendar.DATE);
+
+			//text view at the top
+			dailyview_today.setText("Date: from " + dailyDayOfMonth + "/"
+					+ dailyMonth + "/" + dailyYear + " to "
+					+ DateFormat.format("dd/MM/yyyy", temp));
+
+		}
+
 		// button previous
 		bPrevious = (Button) findViewById(R.id.dailyview_bPrevious);
 		bPrevious.setOnClickListener(new OnClickListener() {
@@ -100,12 +150,12 @@ public class DailyView extends Activity {
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				// setContentView(R.layout.addevent);
-				Calendar temp = Calendar.getInstance();
-				temp.set(dailyYear, dailyMonth, dailyDayOfMonth);
-				temp.add(Calendar.DATE, -1);
-				dailyYear = temp.get(Calendar.YEAR);
-				dailyMonth = temp.get(Calendar.MONTH);
-				dailyDayOfMonth = temp.get(Calendar.DATE);
+				calendar.set(dailyYear, dailyMonth - 1, dailyDayOfMonth);
+
+				calendar.add(Calendar.DATE, -1);
+				dailyYear = calendar.get(Calendar.YEAR);
+				dailyMonth = calendar.get(Calendar.MONTH) + 1;
+				dailyDayOfMonth = calendar.get(Calendar.DATE);
 				finish();
 				startActivity(new Intent("com.calendar.DAILYVIEW"));
 
@@ -121,12 +171,12 @@ public class DailyView extends Activity {
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				// setContentView(R.layout.addevent);
-				Calendar temp = Calendar.getInstance();
-				temp.set(dailyYear, dailyMonth, dailyDayOfMonth);
-				temp.add(Calendar.DATE, 1);
-				dailyYear = temp.get(Calendar.YEAR);
-				dailyMonth = temp.get(Calendar.MONTH);
-				dailyDayOfMonth = temp.get(Calendar.DATE);
+				calendar.set(dailyYear, dailyMonth - 1, dailyDayOfMonth);
+
+				calendar.add(Calendar.DATE, 1);
+				dailyYear = calendar.get(Calendar.YEAR);
+				dailyMonth = calendar.get(Calendar.MONTH) + 1;
+				dailyDayOfMonth = calendar.get(Calendar.DATE);
 
 				finish();
 				startActivity(new Intent("com.calendar.DAILYVIEW"));
@@ -134,9 +184,7 @@ public class DailyView extends Activity {
 			}
 
 		});
-		// change orientation
 
-		
 	}
 
 	public void testAddLabels(Context t) {
@@ -233,25 +281,42 @@ public class DailyView extends Activity {
 			relativeLayout.addView(tv);
 			relativeLayout.setMinimumHeight((int) (h + dp2px(t, 61)));
 
-			View v = new View(t);
-			v.setX(100);
-			v.setY(h + 15);
-			v.setBackgroundColor(Color.GRAY);
-
-			v.setMinimumHeight(2);
-			v.setMinimumWidth(200);
-			relativeLayout.addView(v);
+			//horizontal line
+			View v1 = new View(t);
+			View v2 = new View(t);
+			v1.setX(100);
+			v2.setX(100);
+			v1.setY(h + 15);
+			v2.setY(h+ 60);
+			v1.setBackgroundColor(Color.GRAY);
+			v2.setBackgroundColor(Color.DKGRAY);
+			v1.setMinimumHeight(2);
+			v2.setMinimumHeight(2);
+			v1.setMinimumWidth(200);
+			v2.setMinimumWidth(200);
+			relativeLayout.addView(v1);
+			relativeLayout.addView(v2);
 		}
 
-		// for the line @ 12:00 am
-		View v = new View(t);
-		v.setX(100);
-		v.setY(15);
-		v.setBackgroundColor(Color.GRAY);
+		// for the line @ 12:00 am 
+		View v1 = new View(t);
+		v1.setX(100);
+		v1.setY(15);
+		v1.setBackgroundColor(Color.GRAY);
 
-		v.setMinimumHeight(2);
-		v.setMinimumWidth(200);
-		relativeLayout.addView(v);
+		v1.setMinimumHeight(2);
+		v1.setMinimumWidth(200);
+		relativeLayout.addView(v1);
+		
+		// for the line @ 12:30 am 
+		View v2 = new View(t);
+		v2.setX(100);
+		v2.setY(60);
+		v2.setBackgroundColor(Color.DKGRAY);
+
+		v2.setMinimumHeight(2);
+		v2.setMinimumWidth(200);
+		relativeLayout.addView(v2);
 	}
 
 	private class EventItem extends TextView {
@@ -269,9 +334,15 @@ public class DailyView extends Activity {
 			} catch (Exception e) {
 				Log.i("not get JO", e.toString());
 			}
-			setX(100);
+
+			if (hView == 2)
+				setX(325);
+			else if (hView == 3)
+				setX(550);
+			else
+				setX(100);
 			setY(twelve_am.getY() + dp2px(t, (stime * 5)));
-			super.setWidth(300);
+			super.setWidth(200);
 
 			super.setOnClickListener(new OnClickListener() {
 
