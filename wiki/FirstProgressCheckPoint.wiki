@@ -53,8 +53,6 @@
 
 4.     Change the friend’s schedule in another device. Tick the friend and click “Download” again, is his/her updated daily schedule shown instead of the old one?
 
-5.	  Add two event, one with private and another one is not private. Tick a friend in list then Click “Share”, select a period and click “share”. Can friend view non-private event only?
-
 ----
 
 *Finding Common Free Time (requirement 5)*
