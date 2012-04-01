@@ -1,9 +1,12 @@
 package com.calendar;
 
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -90,7 +93,7 @@ public class DailyView extends Activity {
 	
 	public void testAddLabels(Context t){
 		String sdate = dailyYear + "" + getZero(dailyMonth) + "" +getZero(dailyDayOfMonth);
-		String output[] = TimeCal.getInterval(sdate);
+		String output[] = getInterval(sdate);
 		if(output.length!=0){
 			EventItem events[] = new EventItem[output.length/3];
 			for(int i = 0;i<output.length;i+=3){
@@ -100,6 +103,67 @@ public class DailyView extends Activity {
 				relativeLayout.addView(events[i/3]);
 			}
 		}
+	}
+	
+	// input a day e.g. yyyyMMdd
+	// return {eventID, start time, length, .. .. ..}
+	public String[] getInterval(String sDate){
+		LinkedList<String> x = new LinkedList<String>();
+		JSONArray ja; 
+		String condition=" startDate <= '"+sDate+"' AND endDate >= '"+sDate+"' ";
+			
+		
+		try{
+			ja = AndroidCalendar2Activity.getDB().fetchConditional("TimeTable", condition);
+			for(int i = 0;i<ja.length();i++){
+				JSONObject jo = ja.getJSONObject(i);
+				Date initPoint = TheActDate(sDate,"00:00");
+				Date startPoint;
+				Date endPoint;
+				
+				if(jo.getString("startDate").compareTo(sDate)<0){
+					startPoint = TheActDate(sDate,"00:00");
+				}else{
+					startPoint = TheActDate(sDate, jo.getString("startTime"));
+				}
+				if(jo.getString("endDate").compareTo(sDate)>0){
+					endPoint = TheActDate(sDate,"00:00");
+					endPoint = nextDay(endPoint);
+				}else{
+					endPoint = TheActDate(sDate, jo.getString("endTime"));
+				}
+				
+				long slen = timeLength(initPoint,startPoint);
+				long elen = timeLength(startPoint,endPoint);
+				x.add(jo.getString("eventID"));
+				x.add(String.valueOf(slen));
+				x.add(String.valueOf(elen));
+			}
+			
+			}catch(Exception e){
+				Log.i("error",e.toString()); 
+			}
+	
+		return x.toArray(new String[x.size()]);
+	}
+		
+	public long timeLength(Date actsdate, Date actedate) throws Exception{
+		return (actedate.getTime()-actsdate.getTime())/1000/60/5;
+	}
+		
+	public Date nextDay(Date a){
+		Date output = new Date();
+		output.setTime(a.getTime()+1000*60*60*24);
+		return output;
+	}
+		
+		
+	public Date TheActDate(String d, String hm) throws Exception{
+		Date sd = new Date();
+		String []HourMin = hm.split(":");
+		long thetime = new SimpleDateFormat("yyyyMMdd").parse(d).getTime()+Integer.parseInt(HourMin[0])*60*60*1000+Integer.parseInt(HourMin[1])*60*1000;
+		sd.setTime(thetime);
+		return sd;
 	}
 	
 	// setup daily view
@@ -161,7 +225,7 @@ public class DailyView extends Activity {
 			super.setWidth(300);
 			
 			super.setOnClickListener(new OnClickListener(){
-
+				
 				@Override
 				public void onClick(View arg0) {
 					// TODO Auto-generated method stub
