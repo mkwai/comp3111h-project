@@ -23,11 +23,11 @@ Calendar and scheduler are the basic features of the personal assistant. First o
 
 For the monthly calendar view, user can scroll up to view the previous month calendar and scroll down to view the next month calendar.
 
-For the daily schedule view, users can scroll up and down the screen to view the schedule if it exceeds the height of the screen. Scrolling left and right, users can view the information of another day. Concerning the vertical daily timetable, the schedule of previous day will be shown if the user scrolls the screen to left; and, the schedule of next day can be viewed if the user scrolls it to right. In horizontal mode, three days are shown in a screen.
+For the daily schedule view, users can scroll up and down the screen to view the schedule if it exceeds the height of the screen. Pressing "previous" and "next" button, users can view the information of another day. Concerning the vertical daily timetable, the schedule of previous day will be shown if the user presses the "previous" button; and, the schedule of next day can be viewed if the user presses the "next" button. In horizontal mode, three days are shown in a screen.
 
 Moreover, a user can select a date to see the monthly calendar of the month directly. More functions and features requirement of the app will be discussed in the following.
 
-The starting date of the calendar in DailyAssistant is 1/1/1950 and the last is 31/12/2050. 24 hours is available in the schedule in which each row represent 15 minutes.
+The starting date of the calendar in DailyAssistant is 1/1/1950 and the last is 31/12/2050. 24 hours is available in the schedule in which each row represent 30 minutes.
 
 ----
 
@@ -35,9 +35,9 @@ The starting date of the calendar in DailyAssistant is 1/1/1950 and the last is 
 
 There is an “+” button, which allows users to add an event into the schedule. Adding an new event requires the following information entered by customer: title (maximum 30 characters), starting date and time, ending date and time, event location(detail in requirement 9), reminder setting, in addition to the following optional fields: contact person, private event, restrict facebook/twitter during event(detail in requirement 7).
 
-In entering the starting and ending date field, date format is used. A box will appear when inputting the date, which has the default starting and ending date be that of the day user originally viewing, allow user to select the day, month, year by scrolling up and down the scroll bars respectively. Similar for entering the time fields, hour and minutes scroll bars is there for user to select the time. The default setting of starting time is the coming hour, with one hour later is the default ending time.
+In entering the starting and ending date field, date format is used. A box will appear when inputting the date, which has the default starting and ending date be that of the day user originally viewing, allow user to select the day, month, year by scrolling up and down the scroll bars respectively. Similar for entering the time fields, hour and minutes scroll bars is there for user to select the time. The default setting of the starting time is the closest time in the 5-minutes intervals, with one hour later is the default ending time.
 
-Tthe details of those optional fields are discussed in the following. In contact person, user can choose the contact person of that event either from the contact list of the phone, or enter a name( maximum 20 characters). Besides, if private event is selected as true, then the exported time table will not show the details of the event such as the content and the location, but will only show the time slot not available. Otherwise, these will all be shown if private event is not selected (selected as false). 
+The details of those optional fields are discussed in the following. In contact person, user can choose the contact person of that event either from the contact list of the phone, or enter a name( maximum 20 characters). Besides, if private event is selected as true, then the exported time table will not show the details of the event such as the content and the location, but will only show the time slot not available. Otherwise, these will all be shown if private event is not selected (selected as false). 
 
 ----
 
