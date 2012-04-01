@@ -174,31 +174,53 @@ public class CommTime extends Activity{
 			Toast.makeText(this, "all days free !", Toast.LENGTH_SHORT).show();
 			return null;
 		}
-			
+		String buttons = dateFromButton(mStartPeriod.getText().toString(),"dd/MM/yyyy");
+		String buttone = dateFromButton(mEndPeriod.getText().toString(),"dd/MM/yyyy");
+		
 		String minsd = ja.getJSONObject(0).getString("startDate");
 		for(int i = 0;i<ja.length();i++){
 			String temp = ja.getJSONObject(i).getString("startDate");
 			if(temp.compareTo(minsd) < 0)
 				minsd = temp;
+			/*if(minsd.compareTo(buttons)<0){
+				minsd = buttons;
+				break;
+			}*/
 		}
 		String maxed = ja.getJSONObject(0).getString("endDate");
 		for(int i = 0;i<ja.length();i++){
 			String temp = ja.getJSONObject(i).getString("endDate");
-			if(temp.compareTo(minsd) > 0)
+			if(temp.compareTo(maxed) > 0)
 				maxed = temp;
+			/*if(maxed.compareTo(buttone)>0){
+				maxed = buttone;
+				break;
+			}*/
 		}
 		
 		int numDays = HowManyDays(TheDate(minsd), TheDate(maxed));
 		timeBoard TheDays = new timeBoard(TheDate(minsd),numDays+1);
 		for(int i = 0;i<ja.length();i++){
-			Date s = TheActDate(ja.getJSONObject(i).getString("startDate"),ja.getJSONObject(i).getString("startTime"));
-			Date e = TheActDate(ja.getJSONObject(i).getString("endDate"),ja.getJSONObject(i).getString("endTime"));
+			String jasdate = ja.getJSONObject(i).getString("startDate");
+			String jastime = ja.getJSONObject(i).getString("startTime");
+			String jaedate = ja.getJSONObject(i).getString("endDate");
+			String jaetime = ja.getJSONObject(i).getString("endTime");
+			
+			Date s = TheActDate(jasdate,jastime);
+			Date e = TheActDate(jaedate,jaetime);
+
 			TheDays.addTime(s, timeLength(s,e));
 		}
 		
+		if(minsd.compareTo(buttons)<0)
+			minsd = buttons;
+		if(maxed.compareTo(buttone)>0)
+			maxed = buttone;
+		
 		Date sd = TheDate(minsd);
-		int temp = numDays+1;
-		while(temp>0){
+		Date ed = TheDate(maxed);
+		while(sd.compareTo(ed)<=0){
+			
 			String [] result = TheDays.getFreeTime(sd);
 			String thisd = extractDay(sd,Calendar.DATE)+"/"+(extractDay(sd,Calendar.MONTH)+1)
 					+"/"+extractDay(sd, Calendar.YEAR);
@@ -208,8 +230,6 @@ public class CommTime extends Activity{
 			}
 			
 			sd = nextDay(sd);
-			
-			temp--;
 		}
 		
 		
@@ -299,17 +319,20 @@ public class CommTime extends Activity{
 	}
 	
 	public boolean getAllTimeRecord(String sd, String ed) throws Exception{
-		String sdate = dateFromButton(sd,"dd/MM/yyyy");
-		String edate = dateFromButton(ed,"dd/MM/yyyy");
-		String condition=" startDate >= '"+sdate+"' AND startDate <= '"+edate+"' AND ";
-		
-		String allnamesCondi = " ( ";
 		JSONArray fns = getCheckedFriend();
 		if(fns.length()==0){
 			Toast.makeText(this, "whose common time?", Toast.LENGTH_SHORT).show();
 			return false;
 		}
 		
+		String sdate = dateFromButton(sd,"dd/MM/yyyy");
+		String edate = dateFromButton(ed,"dd/MM/yyyy");
+		String condition=" ( startDate between '"+sdate+"' and '"+edate+"' ) " 
+						+" OR ( endDate between '"+sdate+"' and '"+edate+"' ) "
+						+" OR ( startDate <= '"+sdate+"' AND endDate >= '"+edate+"' ) "
+						+" AND ";
+		
+		String allnamesCondi = " ( ";
 		for(int i = 0;i<fns.length();i++){
 			allnamesCondi +=" friendID ='"+fns.getJSONObject(i).getString("id")+"'";
 			if(i!=(fns.length()-1))
