@@ -182,20 +182,12 @@ public class CommTime extends Activity{
 			String temp = ja.getJSONObject(i).getString("startDate");
 			if(temp.compareTo(minsd) < 0)
 				minsd = temp;
-			/*if(minsd.compareTo(buttons)<0){
-				minsd = buttons;
-				break;
-			}*/
 		}
 		String maxed = ja.getJSONObject(0).getString("endDate");
 		for(int i = 0;i<ja.length();i++){
 			String temp = ja.getJSONObject(i).getString("endDate");
 			if(temp.compareTo(maxed) > 0)
 				maxed = temp;
-			/*if(maxed.compareTo(buttone)>0){
-				maxed = buttone;
-				break;
-			}*/
 		}
 		
 		int numDays = HowManyDays(TheDate(minsd), TheDate(maxed));
@@ -217,14 +209,23 @@ public class CommTime extends Activity{
 		if(maxed.compareTo(buttone)>0)
 			maxed = buttone;
 		
-		Date sd = TheDate(minsd);
-		Date ed = TheDate(maxed);
+		Date sd = TheDate(buttons);
+		Date ed = TheDate(buttone);
 		while(sd.compareTo(ed)<=0){
-			
-			String [] result = TheDays.getFreeTime(sd);
 			String thisd = extractDay(sd,Calendar.DATE)+"/"+(extractDay(sd,Calendar.MONTH)+1)
 					+"/"+extractDay(sd, Calendar.YEAR);
 			new FreeSlot(this, thisd).randomColor();
+			if(sd.compareTo(TheDays.initDay)<0){
+				sd = nextDay(sd);
+				new FreeSlot(this,"00:00 to 00:00");
+				continue;
+			}
+			if(sd.compareTo(TheDate(maxed))>0){
+				sd = nextDay(sd);
+				new FreeSlot(this,"00:00 to 00:00");
+				continue;
+			}
+			String [] result = TheDays.getFreeTime(sd);
 			for(int i = 0;i<result.length;i+=2){
 				new FreeSlot(this, result[i]+" to "+result[i+1]);
 			}
