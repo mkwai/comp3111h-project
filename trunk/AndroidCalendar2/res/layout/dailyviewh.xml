@@ -20,44 +20,83 @@
         android:layout_gravity="right"
         android:text="@string/dailyview_addevent" >
     </Button>
+
     <View
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:layout_marginTop="5dp"
         android:background="@color/view_color" >
     </View>
+
     <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none" >
 
-        <RelativeLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/dailyh_relativelayout"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:background="@color/background_color"
-            android:orientation="vertical" >
- 
-            <!-- time text from 12am to 12pm -->
+            android:orientation="horizontal" >
 
-            <TextView
-                android:id="@+id/twelve_am"
+            <!-- time show in the left side -->
+
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_alignParentLeft="true"
-                android:text="@string/twelve_am" >
-            </TextView>
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
 
-            <!-- line in 12:00 -->
+                <TextView
+                    android:id="@+id/twelve_am"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/twelve_am" >
+                </TextView>
+            </LinearLayout>
 
+            <!-- right side of the screen -->
 
-            <!-- line in each xx:30 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
 
-        </RelativeLayout>
+                <!-- day1 -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="50"
+                    android:orientation="vertical" >
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/view_color" >
+                    </View>
+                </LinearLayout>
+
+                <!-- day2 -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="50"
+                    android:orientation="vertical" >
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/view_color" >
+                    </View>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
     </ScrollView>
 
 </LinearLayout>

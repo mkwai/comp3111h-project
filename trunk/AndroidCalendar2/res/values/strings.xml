@@ -55,5 +55,7 @@
     <string name="addtask_progress_percent">0 % </string>
     <string name="monthlyview_weekDay"></string>
     <color name="view_color">#660099</color>
+    <string name="dailyview_previous">&lt;- previous</string>
+    <string name="dailyview_next">next -&gt;</string>
     
 </resources>
