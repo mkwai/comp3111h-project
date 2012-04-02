@@ -231,21 +231,11 @@ public class AddEvent extends Activity {
 
 					new Thread(new Runnable() {
 						public void run() {
-							try {
+							
 								AndroidCalendar2Activity.getGS().insert(title,
 										DateTime.parseDateTime(sdt),
 										DateTime.parseDateTime(edt));
-							} catch (NumberFormatException e) {
-								// TODO Auto-generatedcatch block
-								e.printStackTrace();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							} catch (ServiceException e) { // TODO
-															// Auto-generated
-															// catch block
-								e.printStackTrace();
-							}
+	
 						}
 
 					}).start();
