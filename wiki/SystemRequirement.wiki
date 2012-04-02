@@ -37,7 +37,7 @@ There is an “+” button, which allows users to add an event into the schedule
 
 In entering the starting and ending date field, date format is used. A box will appear when inputting the date, which has the default starting and ending date be that of the day user originally viewing, allow user to select the day, month, year by scrolling up and down the scroll bars respectively. Similar for entering the time fields, hour and minutes scroll bars is there for user to select the time. The default setting of the starting time is the closest time in the 5-minutes intervals, with one hour later is the default ending time.
 
-The details of those optional fields are discussed in the following. In contact person, user can choose the contact person of that event either from the contact list of the phone, or enter a name( maximum 20 characters). Besides, if private event is selected as true, then the exported time table will not show the details of the event such as the content and the location, but will only show the time slot not available. Otherwise, these will all be shown if private event is not selected (selected as false). 
+The details of those optional fields are discussed in the following. In contact person, user can choose the contact person of that event either from the contact list of the phone, or enter a name( maximum 20 characters). Besides, if private event is selected as true, then the exported time table will not show the event. Otherwise, it will be shown if private event is not selected (selected as false). 
 
 ----
 
