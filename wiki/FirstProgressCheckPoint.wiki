@@ -47,13 +47,13 @@
 
 2.     Login with an existing Facebook account and then click “Refresh”, is the account’s friend list, which include all friends, showed in the page?
 
-3.     Tick a friend in list, who has shared his/her schedule to you (controlled by another device), and then click “Download”. Click the friend, is his/her daily schedule displayed?
+3.     Tick a friend in list, who has shared his/her schedule to you (controlled by another device), and then click “Down”. Click the friend, is his/her daily schedule displayed?
 
 4.    Click another friend in the list, who has not share his/her schedule to you, is there any record displayed ?
 
-5.     Change the friend’s schedule in another device. Tick the friend and click “Download” again, is his/her updated daily schedule shown instead of the old one?
+5.     Change the friend’s schedule in another device and share again. Then tick the friend and click “Down” , is his/her updated daily schedule shown instead of the old one?
 
-6.      Add two event, one with private and another one is not private. Tick a friend in list then Click “Share”, select a period and click “share”. Can friend view non-private event only?
+6.      Add a private event. Tick a friend in list then Click “Share”, select a period and click “share”. Can the friend view non-private event only?
 
 
 ----
