@@ -224,8 +224,8 @@ public class GoogleSync {
 
 		if (entry.getTimes().size() > 0) {
 			When eventTimes = entry.getTimes().get(0);
-			if (eventTimes.getStartTime().isDateOnly()) { // Check if it is a
-															// whole day event
+			// Check if it is a whole day event
+			if (eventTimes.getStartTime().isDateOnly()) { 			
 				Boolean iswholeday = true;
 			} else {
 				// example format- "2012-03-01T22:40:00"
@@ -256,6 +256,8 @@ public class GoogleSync {
 		eventid = AndroidCalendar2Activity.getDB().GiveEventID();
 		String args[] = { eventid, title, startDate, endDate, startTime,
 				endTime, isPrivate, location, remind };
+		
+		
 		AndroidCalendar2Activity.getDB().insert("TimeTable", args);
 
 		/*

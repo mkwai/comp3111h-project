@@ -57,8 +57,7 @@ public class GoogleSyncActivity extends Activity {
 
 		if (AndroidCalendar2Activity.getGS() != null) {
 			ET_username.setText(AndroidCalendar2Activity.getGS().getUserName());
-			ET_password.setText(AndroidCalendar2Activity.getGS()
-					.getUserPassword());
+			ET_password.setText(AndroidCalendar2Activity.getGS().getUserPassword());
 		}
 		sync.setOnClickListener(sync_listener);
 		disconnect.setOnClickListener(disconnect_listener);
@@ -122,9 +121,7 @@ public class GoogleSyncActivity extends Activity {
 				} else {
 					new Thread(new Runnable() {
 						public void run() {
-
-							AndroidCalendar2Activity.getGS().setUserInfo(
-									username, password);
+							AndroidCalendar2Activity.getGS().setUserInfo(username, password);
 							pastdayID = rgpast.getCheckedRadioButtonId();
 
 							if (pastdayID == R.id.gs_past7)
@@ -156,23 +153,16 @@ public class GoogleSyncActivity extends Activity {
 								future = 365;
 
 							if (AndroidCalendar2Activity.getGS().GoogleLogin() == false) {
-								AndroidCalendar2Activity.getGS()
-										.isGoogleConnected(false);
+								AndroidCalendar2Activity.getGS().isGoogleConnected(false);
 								Looper.prepare();
-								ShowMsgDialog("System",
-										"User name and password not match.");
+								ShowMsgDialog("System","User name and password not match.");
 								Looper.loop();
 							} else {
-								AndroidCalendar2Activity.getGS()
-										.isGoogleConnected(true);
+								AndroidCalendar2Activity.getGS().isGoogleConnected(true);
 								Looper.prepare();
-								ShowMsgDialog("System",
-										"Connected Successfully.");
-								AndroidCalendar2Activity
-										.getGS()
-										.getRangeEvents2(
-												(year + "-" + month + "-" + date),
-												past, future);
+								ShowMsgDialog("System","Connected Successfully.");
+								AndroidCalendar2Activity.getGS().getRangeEvents2(
+												(year + "-" + month + "-" + date),past, future);
 								Looper.loop();
 							}
 						}
