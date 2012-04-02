@@ -35,7 +35,7 @@
 
 2.     Login with an existing Google account which has one event on the seventh day later in its Google calendar. Then, select 7 days before and 7 days after and click “synchronize”. Go to the daily schedule page of 7 days after. Is the event appear on the schedule after the synchronization?
 
-3.     Go to Google Calendar with that account. Has the event in the device synchronized to Google?
+3.     Add a new event. Then go to Google Calendar with that account. Is the new event in the device synchronized to Google calendar?
 
 
 ----
