@@ -128,8 +128,8 @@ public class AddEvent extends Activity {
 		endingDateButton.setText(currentMonth + " " + currentDate + " , "
 				+ currentYear);
 
-		endingTimeButton.setText(getZero(endingCalendar.get(Calendar.HOUR_OF_DAY)) + ":"
-				+ currentMinuteConverted);
+		endingTimeButton.setText(getZero(endingCalendar
+				.get(Calendar.HOUR_OF_DAY)) + ":" + currentMinuteConverted);
 
 		// setting up onClickListener for each button
 
@@ -199,7 +199,7 @@ public class AddEvent extends Activity {
 				}
 
 				Log.i("not yet done", startDate + " " + startTime + " "
-						+ endDate + " "+endTime);
+						+ endDate + " " + endTime);
 
 				// check if the duration is 0
 				if (startingCalendar.equals(endingCalendar)) {
@@ -215,34 +215,37 @@ public class AddEvent extends Activity {
 				String args[] = { eventid, title, startDate, endDate,
 						startTime, endTime, isPrivate, locat, remind };
 
-				Log.i("done", startDate + " " + startTime + " " + endDate+" "
+				Log.i("done", startDate + " " + startTime + " " + endDate + " "
 						+ endTime);
 
 				AndroidCalendar2Activity.getDB().insert("TimeTable", args);
 
 				// "2012-03-01T22:40:00"
-
 				final String sdt = startDate2 + "T" + startTime.substring(0, 2)
 						+ ":" + startTime.substring(3, 5) + ":00";
 				final String edt = endDate2 + "T" + endTime.substring(0, 2)
 						+ ":" + endTime.substring(3, 5) + ":00";
 
-				if (AndroidCalendar2Activity.getGS().isGoogleConnected()) {
+				// sync to google calendar, if the connection with google is started 
+				if (AndroidCalendar2Activity.getGS() != null
+						&& AndroidCalendar2Activity.getGS().isGoogleConnected()) {
 
+//					String[] args2= new String [args.length+1];
+//					for (int i=0;i< args.length; i++)
+//							args2[i]= args[i];
+//					args2[args2.length-1]= "1"; 
+//					
+//					AndroidCalendar2Activity.getDB().insert("GoogleTable", args2);
+					
 					new Thread(new Runnable() {
 						public void run() {
-							
-								AndroidCalendar2Activity.getGS().insert(title,
-										DateTime.parseDateTime(sdt),
-										DateTime.parseDateTime(edt));
-	
+							AndroidCalendar2Activity.getGS().insert(title,
+									DateTime.parseDateTime(sdt),
+									DateTime.parseDateTime(edt));
 						}
-
 					}).start();
 				}
-
 				finish();
-
 			}
 		});
 
@@ -302,13 +305,13 @@ public class AddEvent extends Activity {
 	}
 
 	// convert month or day
-	private String getZero(int x){
-		if(String.valueOf(x).length()<2){
-			return "0"+String.valueOf(x);
+	private String getZero(int x) {
+		if (String.valueOf(x).length() < 2) {
+			return "0" + String.valueOf(x);
 		}
 		return String.valueOf(x);
 	}
-	
+
 	// call when create dialog
 	protected Dialog onCreateDialog(int id) {
 
