@@ -28,6 +28,7 @@ public class MyDataBase {
     private static final FriendTable FriendT = new FriendTable();
     private static final OtherTable OtherT = new OtherTable();
     private static final FriendTimeTable FTimeT = new FriendTimeTable();
+    private static final GoogleTable GoogleT= new GoogleTable();
 
     private static final TaskTable TaskT = new TaskTable();
     
@@ -37,6 +38,19 @@ public class MyDataBase {
     	public String getCreate();
     }
     
+    private static class GoogleTable implements Table{
+    	public String[] getFields(){
+    		return new String[] {"eventID", "title","startDate","endDate", "startTime",
+    				"endTime", "private", "location","reminder", "googled"};
+    	}
+
+    	public String getName(){return "GoogleTable";}
+    	public String getCreate(){
+    		return "create table GoogleTable "+
+    				"(eventID INT, title TEXT, startDate INT, endDate INT, startTime TEXT, endTime TEXT, private INT, location TEXT, reminder TEXT, googled TEXT);";
+    	}
+    }
+
     private static class TimeTable implements Table{
     	public String[] getFields(){
     		return new String[] {"eventID", "title","startDate","endDate", "startTime",
@@ -132,7 +146,7 @@ public class MyDataBase {
 
 
     public MyDataBase(Context ctx) {
-    	Ts.add(TimeT); Ts.add(FriendT); Ts.add(OtherT); Ts.add(FTimeT);Ts.add(TaskT);
+    	Ts.add(TimeT); Ts.add(FriendT); Ts.add(OtherT); Ts.add(FTimeT);Ts.add(TaskT);Ts.add(GoogleT);
         this.mCtx = ctx;      
         mDbHelper = new DatabaseHelper(mCtx);
         mDb = mDbHelper.getWritableDatabase();
