@@ -252,14 +252,21 @@ public class GoogleSync {
 			}
 		}
 
+		JSONArray temp2= AndroidCalendar2Activity.getDB().fetchAllNotes(
+				"TimeTable",
+				new String[]{"title","startDate","endDate", "startTime","endTime"}, 
+				new String[] {title,startDate,endDate,startTime,endTime} 
+				) ;
+		
 		// adding the google event to the database
-		eventid = AndroidCalendar2Activity.getDB().GiveEventID();
-		String args[] = { eventid, title, startDate, endDate, startTime,
-				endTime, isPrivate, location, remind };
+		if (temp2.length()== 0){
+			eventid = AndroidCalendar2Activity.getDB().GiveEventID();
+			String args[] = { eventid, title, startDate, endDate, startTime,
+					endTime, isPrivate, location, remind };
+			
+			AndroidCalendar2Activity.getDB().insert("TimeTable", args);
+			}
 		
-		
-		AndroidCalendar2Activity.getDB().insert("TimeTable", args);
-
 		/*
 		 * System.out.println(store.title);
 		 * System.out.println(store.description);
