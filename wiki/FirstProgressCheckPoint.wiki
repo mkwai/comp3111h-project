@@ -1,16 +1,14 @@
 *Calendar and Scheduler (requirement 1)*
 
-1.     Open the app, can you see a page showing the monthly calendar of this month?
+1.     Open the app, can you see a page showing the monthly calendar of this month? Then scroll down the page, can you see a page showing the monthly calendar of the previous month?
 
-2.     Scroll down the page, can you see a page showing the monthly calendar of the previous month?
+2.     Click a day in the calendar and click Daily Schedule, can you see a page showing the daily schedule of the day you selected with each row represent 30 minutes?
 
-3.     Click a day in the calendar and click Daily Schedule, can you see a page showing the daily schedule of the day you selected with each row represent 30 minutes?
+3.     Click "previous" and “next” button, can you see your daily schedule of yesterday and tomorrow corrspondingly?
 
-4.     Click “next” button, can you see your daily schedule of tomorrow?
+4.     Rotate the phone to view horizontally, can you see the interface with three daily schedule?
 
-5.     Rotate the phone to view horizontally, can you see the interface with three daily schedule?
-
-6.     Back to the monthly calendar, click “Go to” and set the date to 31/12/1949 and click set, can you successfully go to the calendar page of December, 1949? Are there any pop out message box?
+5.     Back to the monthly calendar, click “Go to” and set the date to 31/12/1949 and click set, can you successfully go to the calendar page of December, 1949? Are there any pop out message box?
  
 ----
 
@@ -45,20 +43,22 @@
 *Timetable Sharing Social Interaction System (requirement 4)*
 
 
-1.     Click “Sharing” button and click “login”. Login with an existing Facebook account and then click “Refresh”, is the account’s friend list, which include all friends, showed in the page?
+1.     Click “Sharing” button and click “login”. Is an facebook login box pop up? Click the button "Sign up here", is an facebook registration page displayed ?
 
-2.     Tick a friend in list, who has shared his/her schedule to you (controlled by another device), and then click “Download”. Click the friend, is his/her daily schedule  displayed?
+2.     Login with an existing Facebook account and then click “Refresh”, is the account’s friend list, which include all friends, showed in the page?
 
-3.    Click another friend in the list, who has not share his/her schedule to you, is there any record displayed ?
+3.     Tick a friend in list, who has shared his/her schedule to you (controlled by another device), and then click “Download”. Click the friend, is his/her daily schedule displayed?
 
-4.     Change the friend’s schedule in another device. Tick the friend and click “Download” again, is his/her updated daily schedule shown instead of the old one?
+4.    Click another friend in the list, who has not share his/her schedule to you, is there any record displayed ?
+
+5.     Change the friend’s schedule in another device. Tick the friend and click “Download” again, is his/her updated daily schedule shown instead of the old one?
 
 ----
 
 *Finding Common Free Time (requirement 5)*
 
-1.	  Tick a friend in list with downloaded timetables. Click “Common” and then select a certain period. Then click “cal !”. Is the list of common free time correct?
+1.	  Tick a friend in list with downloaded timetables. Click “Common” and then select a certain period. Then click “cal !”. Is the list of common free time correct and in chronological order?
 
-2.	  Tick a group of friends in list with downloaded timetables.  Click “Common” and then select a certain period. Then click “cal !”. Is the list of common free time correct?
+2.	  Tick a group of friends in list with downloaded timetables.  Click “Common” and then select a certain period. Then click “cal !”. Is the list of common free time correct and in chronological order?
 
 3.	  Tick a friend who is busy in this period in the left sub list. Click “cal !” again. Is the list of common free time changed accordingly?
