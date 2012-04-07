@@ -54,7 +54,7 @@ public class AddEvent extends Activity {
 	public static final int ENDING_DATE_DIALOG = 2;
 	public static final int ENDING_TIME_DIALOG = 3;
 
-	static protected Calendar currentDateCalendar = Calendar.getInstance();
+	public static Calendar currentDateCalendar = Calendar.getInstance();
 	// storing the event starting/ending calendar(date+time)
 	private Calendar startingCalendar = Calendar.getInstance();
 	private Calendar endingCalendar = Calendar.getInstance();

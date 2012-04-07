@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
@@ -52,15 +53,15 @@ public class DailyView extends Activity {
 	Calendar calendar = Calendar.getInstance();
 	int hView = 1;
 
-	protected static void setDailyYear(int year) {
+	public static void setDailyYear(int year) {
 		dailyYear = year;
 	}
 
-	protected static void setDailyMonth(int month) {
+	public static void setDailyMonth(int month) {
 		dailyMonth = month + 1;
 	}
 
-	protected static void setDailyDayOfMonth(int dayOfMonth) {
+	public static void setDailyDayOfMonth(int dayOfMonth) {
 		dailyDayOfMonth = dayOfMonth;
 	}
 
@@ -197,7 +198,7 @@ public class DailyView extends Activity {
 				long stime = Long.parseLong(output[i + 1]);
 				long etime = Long.parseLong(output[i + 2]);
 				events[i / 3] = new EventItem(t, stime, etime, output[i]);
-				relativeLayout.addView(events[i / 3]);
+//				relativeLayout.addView(events[i / 3]);
 			}
 		}
 	}
@@ -273,50 +274,68 @@ public class DailyView extends Activity {
 				"6:00pm", "7:00pm", "8:00pm", "9:00pm", "10:00pm", "11:00pm" };
 
 		for (int i = 0; i < times.length; i++) {
-			TextView tv = new TextView(t);
+			 TextView tv = new TextView(t);
 			tv.setText(times[i]);
-			tv.setX(0);
-			float h = twelve_am.getY() + dp2px(t, 60 * (i + 1));
-			tv.setY(h);
-			relativeLayout.addView(tv);
+			float h = twelve_am.getBottom() + dp2px(t, 60 * (i + 1));
+
+			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+			params.topMargin = (int)h;
+			params.leftMargin=0;
+			relativeLayout.addView(tv,params);			
 			relativeLayout.setMinimumHeight((int) (h + dp2px(t, 61)));
 
 			//horizontal line
 			View v1 = new View(t);
 			View v2 = new View(t);
+			RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+			params1.leftMargin=100;
+
+			params1.topMargin = (int)h + 15;
+				
+			RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+			params2.leftMargin=100;
+			params2.topMargin = (int)h + 60;
+
+/*
 			v1.setX(100);
 			v2.setX(100);
 			v1.setY(h + 15);
 			v2.setY(h+ 60);
+		*/	
 			v1.setBackgroundColor(Color.GRAY);
 			v2.setBackgroundColor(Color.DKGRAY);
 			v1.setMinimumHeight(2);
 			v2.setMinimumHeight(2);
 			v1.setMinimumWidth(200);
 			v2.setMinimumWidth(200);
-			relativeLayout.addView(v1);
-			relativeLayout.addView(v2);
+			relativeLayout.addView(v1,params1);
+			relativeLayout.addView(v2,params2);
 		}
 
 		// for the line @ 12:00 am 
 		View v1 = new View(t);
-		v1.setX(100);
-		v1.setY(15);
+		
+		RelativeLayout.LayoutParams params3 = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+		params3.leftMargin=100;
+		params3.topMargin = 15;
+
 		v1.setBackgroundColor(Color.GRAY);
 
 		v1.setMinimumHeight(2);
 		v1.setMinimumWidth(200);
-		relativeLayout.addView(v1);
+		relativeLayout.addView(v1,params3);
 		
 		// for the line @ 12:30 am 
 		View v2 = new View(t);
-		v2.setX(100);
-		v2.setY(60);
+		RelativeLayout.LayoutParams params4 = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+		params4.leftMargin=100;
+		params4.topMargin = 60;
+		
 		v2.setBackgroundColor(Color.DKGRAY);
 
 		v2.setMinimumHeight(2);
 		v2.setMinimumWidth(200);
-		relativeLayout.addView(v2);
+		relativeLayout.addView(v2,params4);
 	}
 
 	private class EventItem extends TextView {
@@ -335,15 +354,30 @@ public class DailyView extends Activity {
 				Log.i("not get JO", e.toString());
 			}
 
+			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+			
+			if (hView == 2)
+				params.leftMargin=325;
+			else if (hView == 3)
+				params.leftMargin=550;
+			else
+				params.leftMargin=100;
+			
+			params.topMargin = (int) (twelve_am.getBottom() + dp2px(t, (stime * 5)));
+	/*		
 			if (hView == 2)
 				setX(325);
 			else if (hView == 3)
 				setX(550);
 			else
 				setX(100);
-			setY(twelve_am.getY() + dp2px(t, (stime * 5)));
+			setY(twelve_am.getBottom() + dp2px(t, (stime * 5)));
+*/
 			super.setWidth(200);
 
+			relativeLayout.addView(this,params);
+
+			 
 			super.setOnClickListener(new OnClickListener() {
 
 				@Override

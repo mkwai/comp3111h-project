@@ -57,5 +57,7 @@
     <color name="view_color">#660099</color>
     <string name="dailyview_previous">&lt;- previous</string>
     <string name="dailyview_next">next -&gt;</string>
+    <string name="monthlyview_previous">&lt;-previous</string>
+    <string name="monthlyview_next">next-&gt;</string>
     
 </resources>
