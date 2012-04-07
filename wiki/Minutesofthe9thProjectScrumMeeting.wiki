@@ -22,7 +22,7 @@ Recorder: Cheuk Hoi Yan
 ||Name||   	Tasks worked on in the past week|| 	Total hours||
 ||Chan Kai Ho|| Debugging, revising to-do list function || 16||
 ||Cheuk Hoi Yan 	|| Writing Minutes, writing test cases for the inner test ||7.5||
-||Ho Kin Long|| ebugging, Linkage between Photos Taken and Events 	|| 16||
+||Ho Kin Long|| Debugging, Linkage between Photos Taken and Events 	|| 16||
 ||Hon Kwun Wing|| Debugging, Implementing finding common time interface and function ||15.5 ||
 ||Wong Kwok Wai|| Debugging, Implementing the restricting access of websites function	||15.5 ||
 -------------------------------------------------------------------------------------
