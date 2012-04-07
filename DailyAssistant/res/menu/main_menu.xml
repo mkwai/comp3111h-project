@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_addEvent"
+        android:title="add new event">
+    </item>
+    <item
+        android:id="@+id/menu_synchronous"
+        android:title="synchronous">
+    </item>
+    <item
+        android:id="@+id/menu_import"
+        android:title="import from Google">
+    </item>
+    <item
+        android:id="@+id/menu_export"
+        android:title="export to photo">
+    </item>    
+    
+</menu>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/background_color"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/todolist_todolist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp"
+        android:text="@string/todolist_todolist"
+        android:textSize="35dp" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/todolist_today"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/todolist_todolist"
+        android:layout_margin="10dp"
+        android:text="@string/todolist_todolist"
+        android:textSize="25dp" >
+    </TextView>
+
+    <Button
+        android:id="@+id/todolist_addTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp"
+        android:textSize="25dp" 
+        android:text="@string/todolist_addtask"/>
+
+    <Button
+        android:id="@+id/todolist_sorting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/todolist_addTask"
+        android:layout_below="@id/todolist_addTask"
+        android:textSize="25dp" 
+        android:text="@string/todolist_sorting"/>
+
+    <View
+        android:id="@+id/middle_view"
+        android:layout_height="2dp"
+        android:layout_below="@id/todolist_today"
+        android:layout_alignParentLeft="true"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="5dp"
+        android:background="#FF9090" >
+    </View>
+
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/middle_view"
+        android:layout_marginTop="5dp"
+        android:scrollbars="none" >
+    </ScrollView>
+
+</RelativeLayout>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.test2"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk android:minSdkVersion="10" />
+
+    
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" >
+    </uses-permission>
+    
+    <application
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name" >
+        <activity
+            android:name="com.calendar.AndroidCalendar2Activity"
+            android:label="@string/app_name" 
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+ <!--         <activity
+            android:name="com.calendar.MonthlyView"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.calendar.MONTHLYVIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>-->
+        <activity
+            android:name="com.calendar.AddEvent"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.calendar.ADDEVENT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.calendar.DailyView"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.calendar.DAILYVIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.calendar.Synchronous"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.calendar.SYNCHRONOUS" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.calendar.Share"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.calendar.SHARE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.calendar.FriendsView"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.calendar.FriendsView" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.calendar.TodoList"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.calendar.TODOLIST" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+                <activity
+            android:name="com.googlesync.GoogleSyncActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.calendar.GOOGLESYNC" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.calendar.AddTask"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.calendar.ADDTASK" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.calendar.CityListActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.calendar.CITYLIST" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+                <activity
+            android:name="com.calendar.CommTime"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.calendar.COMMTIME" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.exina.android.calendar.CalendarActivity">
+    
+    <intent-filter>
+        <action android:name="android.intent.action.PICK" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <data android:mimeType="vnd.android.cursor.dir/vnd.exina.android.calendar.date" />
+    </intent-filter>
+    <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <data android:mimeType="vnd.android.cursor.dir/vnd.exina.android.calendar.date" />
+    </intent-filter>
+</activity>
+                
+    </application>
+
+
+</manifest>
