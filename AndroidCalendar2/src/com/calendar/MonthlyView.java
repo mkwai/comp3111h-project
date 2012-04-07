@@ -2,6 +2,7 @@ package com.calendar;
 
 import java.util.Calendar;
 
+
 import com.test2.R;
 
 import android.app.Activity;
@@ -14,7 +15,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
-import android.view.DragEvent;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,16 +23,16 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
-import android.view.View.OnDragListener;
+
 import android.widget.Button;
-import android.widget.CalendarView;
+
 import android.widget.DatePicker;
-import android.widget.CalendarView.OnDateChangeListener;
+
 import android.widget.LinearLayout;
 
 public class MonthlyView extends Activity {
 
-	CalendarView calendarV;
+	//CalendarView calendarV;
 	LinearLayout calendarL;
 	Button bGoTo, bAddEvent, bSynchronous, bDaily, bMonthlyb, bTodoList,
 			bGoogle;
@@ -44,7 +45,7 @@ public class MonthlyView extends Activity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-		setContentView(R.layout.main);
+		setContentView(R.layout.monthlyview);
 
 		calendarL = (LinearLayout) findViewById(R.id.linear_calendar);
 		// button AddEvent
@@ -114,7 +115,7 @@ public class MonthlyView extends Activity {
 				startActivity(new Intent("com.calendar.GOOGLESYNC"));
 			}
 		});
-
+/*
 		// calendar view
 		calendarV = (CalendarView) findViewById(R.id.calendarV);
 		calendarV.setEnabled(true);
@@ -148,7 +149,7 @@ public class MonthlyView extends Activity {
 
 			}
 		});
-
+*/
 	}
 
 	// call when create dialog, for GoTo use
@@ -167,9 +168,9 @@ public class MonthlyView extends Activity {
 			
 					Calendar date = Calendar.getInstance();
 					date.set(year, monthOfYear, dayOfMonth);
-					calendarV.setDate(date.getTimeInMillis());
+					//calendarV.setDate(date.getTimeInMillis());
 					//calendarL.recomputeViewAttributes(calendarV);
-					calendarV.refreshDrawableState();
+					//calendarV.refreshDrawableState();
 					
 				}
 			}

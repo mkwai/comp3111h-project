@@ -283,8 +283,8 @@ public class FriendsView extends Activity{
 			try{
 				setHeight((int) dp2px(t,jo.getInt("len")*5));
 				setText(jo.getString("title"));
-				setX(100);
-				setY(noon.getY()+ dp2px(t,(jo.getInt("stime")*5)));
+//				setX(100);
+//				setY(noon.getY()+ dp2px(t,(jo.getInt("stime")*5)));
 			}catch (Exception e){
 				Log.i("not get JO",e.toString());
 			}
@@ -329,7 +329,7 @@ public class FriendsView extends Activity{
 				"4:00pm","5:00pm","6:00pm","7:00pm",
 				"8:00pm","9:00pm","10:00pm","11:00pm"
 		};	
-		
+	/*	
 		for(int i = 0;i<times.length;i++){
 			TextView tv = new TextView(t);
 			tv.setText(times[i]);
@@ -339,7 +339,7 @@ public class FriendsView extends Activity{
 			DayLayout.addView(tv);
 			DayLayout.setMinimumHeight((int) (h+dp2px(t,61)));
 		}
-		
+		*/
 	}	
 	
 	// convert month or day

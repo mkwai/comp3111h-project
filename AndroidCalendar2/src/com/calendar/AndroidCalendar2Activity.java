@@ -1,9 +1,9 @@
 package com.calendar;
 
+import com.exina.android.calendar.CalendarActivity;
+
 import com.googlesync.GoogleSync;
 import com.localdb.*;
-
-import com.test2.R;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -36,13 +36,13 @@ public class AndroidCalendar2Activity extends Activity {
 		// set to full screen
 
 		// first page showing is the monthly view
-		startActivity(new Intent("com.calendar.MONTHLYVIEW"));
-
+//		startActivity(new Intent("com.calendar.MONTHLYVIEW"));
+		startActivity(new Intent(Intent.ACTION_VIEW).setDataAndType(null, CalendarActivity.MIME_TYPE));
 		// create or connect database
 		mdb = new MyDataBase(this);
 		
 		// get an instance of GoogleSync, username and password will be set later
-		mgs = new GoogleSync();
+//		mgs = new GoogleSync();
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class AndroidCalendar2Activity extends Activity {
 		// TODO Auto-generated method stub
 		super.onResume();
 
-		startActivity(new Intent("com.calendar.MONTHLYVIEW"));
+	//	startActivity(new Intent("com.calendar.MONTHLYVIEW"));
 
 	}
 
