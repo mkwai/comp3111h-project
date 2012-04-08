@@ -187,7 +187,7 @@
                 </TextView>
 
                 <CheckBox
-                    android:id="@+id/reminder_checkBox"
+                    android:id="@+id/addevent_reminder_checkBox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -258,7 +258,7 @@
                 </TextView>
 
                 <CheckBox
-                    android:id="@+id/private_event_checkBox"
+                    android:id="@+id/addevent_private_event_checkBox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -287,7 +287,7 @@
                 </TextView>
 
                 <CheckBox
-                    android:id="@+id/restrict_checkBox"
+                    android:id="@+id/addevent_restrict_checkBox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"

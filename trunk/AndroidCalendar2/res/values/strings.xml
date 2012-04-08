@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Daily Assistant</string>
-    
+    <string name="addevent_addevent">Add Event</string>
     <string name="addevent_content">Title</string>
     <string name="addevent_content_hint">Enter event content</string>
     <string name="addevent_starting_time">Starting</string>
@@ -16,9 +17,28 @@
     <string name="addevent_contact_person_hint">Enter Contact Person</string>
     <string name="addevent_confirm">Confirm</string>
     <string name="addevent_cancel">Cancel</string>
+    <string name="editevent_editevent">Edit Event</string>
+    <string name="editevent_content">Title</string>
+    <string name="editevent_content_hint">Enter event content</string>
+    <string name="editevent_starting_time">Starting</string>
+    <string name="editevent_ending_time">Ending</string>
+    <string name="editevent_location_hint">Enter Location</string>
+    <string name="editevent_location">Location</string>
+    <string name="editevent_reminder">Reminder</string>
+    <string name="editevent_restrict">Restrict facebook</string>
+    <string name="editevent_private_event">Private Event</string>
+    <string name="editevent_contact_person">Contatct Person</string>
+    <string name="editevent_optional">optional field</string>
+    <string name="editevent_contact_person_hint">Enter Contact Person</string>
+    <string name="editevent_confirm">Confirm</string>
+    <string name="editevent_cancel">Cancel</string>
+    
     <color name="background_color">#505050</color>
-    <string name="monthlyview_synchronous">Sharing</string><string name="monthlyview_add_event">+</string>
-    <string name="monthlyview_google">Google Sync.</string><string name="monthlyview_daily">Daily Schedule</string>
+
+    <string name="monthlyview_synchronous">Sharing</string>
+    <string name="monthlyview_add_event">+</string>
+    <string name="monthlyview_google">Google Sync.</string>
+    <string name="monthlyview_daily">Daily Schedule</string>
     <string name="monthlyview_monthly">Monthly</string>
     <string name="monthlyview_goto">GoTo</string>
     <string name="monthlyview_todoList">To-do List</string>
@@ -35,10 +55,8 @@
     <string name="addtask_reminder">Reminder Setting:</string>
     <string name="addtask_cancel">Cancel</string>
     <string name="addtask_confirm">Confirm</string>
-    <string name="addevent_addevent">Add Event</string>
     <string name="dailyview_addevent">+</string>
-    
- 	<string name="pl_total1">"Total: "</string>
+    <string name="pl_total1">"Total: "</string>
     <string name="gs_username">User Name: </string>
     <string name="gs_password">Password: </string>
     <string name="gs_fromthepast">From the past </string>
@@ -54,10 +72,13 @@
     <string name="gs_gs">Sign in to Google</string>
     <string name="addtask_progress_percent">0 % </string>
     <string name="monthlyview_weekDay"></string>
+
     <color name="view_color">#660099</color>
+
     <string name="dailyview_previous">&lt;- previous</string>
-    <string name="dailyview_next">next -&gt;</string>
+    <string name="dailyview_next">next -></string>
     <string name="monthlyview_previous">&lt;-previous</string>
-    <string name="monthlyview_next">next-&gt;</string>
-    
+    <string name="monthlyview_next">next-></string>
+    <string name="editevent_delevent">Delete</string>
+
 </resources>
