@@ -1,28 +1,24 @@
 package com.calendar;
 
-import java.io.IOException;
+
 import java.text.SimpleDateFormat;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.concurrent.TimeUnit;
-
-import org.json.JSONArray;
 
 import com.google.gdata.data.DateTime;
-import com.google.gdata.util.ServiceException;
+
 import com.test2.R;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
-import android.content.DialogInterface;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -86,9 +82,9 @@ public class AddEvent extends Activity {
 		content = (EditText) findViewById(R.id.addevent_content_edit);
 		location = (EditText) findViewById(R.id.addevent_location_edit);
 		contactPerson = (EditText) findViewById(R.id.addevent_contact_person_edit);
-		reminder = (CheckBox) findViewById(R.id.reminder_checkBox);
-		privateEvent = (CheckBox) findViewById(R.id.private_event_checkBox);
-		restrictFacebook = (CheckBox) findViewById(R.id.restrict_checkBox);
+		reminder = (CheckBox) findViewById(R.id.addevent_reminder_checkBox);
+		privateEvent = (CheckBox) findViewById(R.id.addevent_private_event_checkBox);
+		restrictFacebook = (CheckBox) findViewById(R.id.addevent_restrict_checkBox);
 
 		cancelButton = (Button) findViewById(R.id.addevent_cancel_button);
 		confirmButton = (Button) findViewById(R.id.addevent_confirm_button);
