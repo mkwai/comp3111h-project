@@ -45,6 +45,15 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+                <activity
+            android:name="com.calendar.EditEvent"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.calendar.EDITEVENT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name="com.calendar.DailyView"
             android:label="@string/app_name" >
