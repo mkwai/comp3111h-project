@@ -15,7 +15,9 @@ import com.commTimeCal.TimeCal;
 import com.test2.R;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.SensorEvent;
@@ -111,16 +113,16 @@ public class DailyView extends Activity {
 
 		if (rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270) {
 			Calendar temp;
-			//first day
+			// first day
 			testAddLabels(this);
-			//second day
+			// second day
 			hView = 2;
 			calendar.add(Calendar.DATE, 1);
 			dailyYear = calendar.get(Calendar.YEAR);
 			dailyMonth = calendar.get(Calendar.MONTH) + 1;
 			dailyDayOfMonth = calendar.get(Calendar.DATE);
 			testAddLabels(this);
-			//third day
+			// third day
 			hView = 3;
 			calendar.add(Calendar.DATE, 1);
 			temp = (Calendar) calendar.clone();
@@ -129,14 +131,14 @@ public class DailyView extends Activity {
 			dailyDayOfMonth = calendar.get(Calendar.DATE);
 			testAddLabels(this);
 			hView = 1;
-			
-			//reset variable 
+
+			// reset variable
 			calendar.add(Calendar.DATE, -2);
 			dailyYear = calendar.get(Calendar.YEAR);
 			dailyMonth = calendar.get(Calendar.MONTH) + 1;
 			dailyDayOfMonth = calendar.get(Calendar.DATE);
 
-			//text view at the top
+			// text view at the top
 			dailyview_today.setText("Date: from " + dailyDayOfMonth + "/"
 					+ dailyMonth + "/" + dailyYear + " to "
 					+ DateFormat.format("dd/MM/yyyy", temp));
@@ -198,7 +200,7 @@ public class DailyView extends Activity {
 				long stime = Long.parseLong(output[i + 1]);
 				long etime = Long.parseLong(output[i + 2]);
 				events[i / 3] = new EventItem(t, stime, etime, output[i]);
-//				relativeLayout.addView(events[i / 3]);
+				// relativeLayout.addView(events[i / 3]);
 			}
 		}
 	}
@@ -274,75 +276,77 @@ public class DailyView extends Activity {
 				"6:00pm", "7:00pm", "8:00pm", "9:00pm", "10:00pm", "11:00pm" };
 
 		for (int i = 0; i < times.length; i++) {
-			 TextView tv = new TextView(t);
+			TextView tv = new TextView(t);
 			tv.setText(times[i]);
 			float h = twelve_am.getBottom() + dp2px(t, 60 * (i + 1));
 
-			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-			params.topMargin = (int)h;
-			params.leftMargin=0;
-			relativeLayout.addView(tv,params);			
+			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			params.topMargin = (int) h;
+			params.leftMargin = 0;
+			relativeLayout.addView(tv, params);
 			relativeLayout.setMinimumHeight((int) (h + dp2px(t, 61)));
 
-			//horizontal line
+			// horizontal line
 			View v1 = new View(t);
 			View v2 = new View(t);
-			RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-			params1.leftMargin=100;
+			RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(
+					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			params1.leftMargin = 100;
 
-			params1.topMargin = (int)h + 15;
-				
-			RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-			params2.leftMargin=100;
-			params2.topMargin = (int)h + 60;
+			params1.topMargin = (int) h + 15;
 
-/*
-			v1.setX(100);
-			v2.setX(100);
-			v1.setY(h + 15);
-			v2.setY(h+ 60);
-		*/	
+			RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(
+					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			params2.leftMargin = 100;
+			params2.topMargin = (int) h + 60;
+
+			/*
+			 * v1.setX(100); v2.setX(100); v1.setY(h + 15); v2.setY(h+ 60);
+			 */
 			v1.setBackgroundColor(Color.GRAY);
 			v2.setBackgroundColor(Color.DKGRAY);
 			v1.setMinimumHeight(2);
 			v2.setMinimumHeight(2);
 			v1.setMinimumWidth(200);
 			v2.setMinimumWidth(200);
-			relativeLayout.addView(v1,params1);
-			relativeLayout.addView(v2,params2);
+			relativeLayout.addView(v1, params1);
+			relativeLayout.addView(v2, params2);
 		}
 
-		// for the line @ 12:00 am 
+		// for the line @ 12:00 am
 		View v1 = new View(t);
-		
-		RelativeLayout.LayoutParams params3 = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-		params3.leftMargin=100;
+
+		RelativeLayout.LayoutParams params3 = new RelativeLayout.LayoutParams(
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		params3.leftMargin = 100;
 		params3.topMargin = 15;
 
 		v1.setBackgroundColor(Color.GRAY);
 
 		v1.setMinimumHeight(2);
 		v1.setMinimumWidth(200);
-		relativeLayout.addView(v1,params3);
-		
-		// for the line @ 12:30 am 
+		relativeLayout.addView(v1, params3);
+
+		// for the line @ 12:30 am
 		View v2 = new View(t);
-		RelativeLayout.LayoutParams params4 = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-		params4.leftMargin=100;
+		RelativeLayout.LayoutParams params4 = new RelativeLayout.LayoutParams(
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		params4.leftMargin = 100;
 		params4.topMargin = 60;
-		
+
 		v2.setBackgroundColor(Color.DKGRAY);
 
 		v2.setMinimumHeight(2);
 		v2.setMinimumWidth(200);
-		relativeLayout.addView(v2,params4);
+		relativeLayout.addView(v2, params4);
 	}
 
 	private class EventItem extends TextView {
 		String eventid;
 		Context outside;
 
-		public EventItem(Context t, long stime, long etime, String ID) {
+		public EventItem(final Context t, long stime, long etime, String ID) {
 			super(t);
 			outside = t;
 			eventid = ID;
@@ -354,44 +358,99 @@ public class DailyView extends Activity {
 				Log.i("not get JO", e.toString());
 			}
 
-			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-			
+			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+
 			if (hView == 2)
-				params.leftMargin=325;
+				params.leftMargin = 325;
 			else if (hView == 3)
-				params.leftMargin=550;
+				params.leftMargin = 550;
 			else
-				params.leftMargin=100;
-			
-			params.topMargin = (int) (twelve_am.getBottom() + dp2px(t, (stime * 5)));
-	/*		
-			if (hView == 2)
-				setX(325);
-			else if (hView == 3)
-				setX(550);
-			else
-				setX(100);
-			setY(twelve_am.getBottom() + dp2px(t, (stime * 5)));
-*/
+				params.leftMargin = 100;
+
+			params.topMargin = (int) (twelve_am.getBottom() + dp2px(t,
+					(stime * 5)));
+			/*
+			 * if (hView == 2) setX(325); else if (hView == 3) setX(550); else
+			 * setX(100); setY(twelve_am.getBottom() + dp2px(t, (stime * 5)));
+			 */
 			super.setWidth(200);
 
-			relativeLayout.addView(this,params);
-
-			 
+			relativeLayout.addView(this, params);
 			super.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View arg0) {
-					// TODO Auto-generated method stub
+
 					try {
-						JSONObject itemOB = getJO();
-						String t = "Title:   " + itemOB.getString("title")
-								+ "\n" + "Start: 	 "
+						// build a dialog to show the information of the event
+						final JSONObject itemOB = getJO();
+						AlertDialog.Builder builder = new AlertDialog.Builder(t);
+						String startDate = itemOB.getString("startDate");
+						Calendar s = Calendar.getInstance();
+						s.set(Integer.parseInt(startDate.substring(0, 4)),
+								Integer.parseInt(startDate.substring(5, 6)) - 1,
+								Integer.parseInt(startDate.substring(7, 8)));
+						String st = DateFormat.format("dd-MMM-yyyy", s) + "";
+
+						String endDate = itemOB.getString("endDate");
+
+						Calendar e = Calendar.getInstance();
+						e.set(Integer.parseInt(endDate.substring(0, 4)),
+								Integer.parseInt(endDate.substring(5, 6)) - 1,
+								Integer.parseInt(endDate.substring(7, 8)));
+						String en = DateFormat.format("dd-MMM-yyyy", e) + "";
+
+						final String info = 
+								 "Title: 	"
+								+ itemOB.getString("title") + "\n"
+								+ "Start:	" + st + "   "
 								+ itemOB.getString("startTime") + "\n"
-								+ "End:   " + itemOB.getString("endTime")
-								+ "\n" + "Location:   "
-								+ itemOB.getString("location") + "\n";
-						Toast.makeText(outside, t, Toast.LENGTH_SHORT).show();
+								+ "End:		" + en + "   "
+								+ itemOB.getString("endTime") + "\n"
+								+ "Location:   " + itemOB.getString("location")
+								+ "\n";
+						builder.setMessage(info);
+						builder.setCancelable(true);
+
+						builder.setPositiveButton("OK",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+											int id) {
+									}
+								});
+
+						builder.setNegativeButton("Edit",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+											int id) {
+										try {
+											// pass the info to the edit event
+											// page
+											Intent i = new Intent(
+													"com.calendar.EDITEVENT");
+											i.putExtra("title",
+													itemOB.getString("title"));
+											i.putExtra("startDate", itemOB
+													.getString("startDate"));
+											i.putExtra("endDate",
+													itemOB.getString("endDate"));
+											i.putExtra("startTime", itemOB
+													.getString("startTime"));
+											i.putExtra("endTime",
+													itemOB.getString("endTime"));
+											i.putExtra("location", itemOB
+													.getString("location"));
+											startActivity(i);
+										} catch (Exception e) {
+
+										}
+									}
+								});
+
+						AlertDialog alert = builder.create();
+						alert.show();
+
 					} catch (Exception e) {
 
 					}
