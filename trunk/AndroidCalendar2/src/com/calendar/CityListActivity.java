@@ -9,7 +9,9 @@ import com.location.Utils;
 import com.test2.R;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -62,6 +64,15 @@ public class CityListActivity extends Activity implements OnItemClickListener{
 		ArrayList<String> arrayList = new ArrayList<String>();
 		
 		int arraySize = list.size();
+		if(arraySize == 0){
+			new AlertDialog.Builder(CityListActivity.this).
+			setTitle("Null result").setMessage("Please input a specific address or a valid Latitude, Longitude").
+			  setPositiveButton( "back" ,new DialogInterface.OnClickListener() {  
+				public void onClick(DialogInterface dialoginterface, int i){ finish();	}          
+			}).show();
+			
+			
+		}
 		for(int i=0;i<arraySize;i++){
 			arrayList.add(list.get(i).getCityName());
 			Log.i(TAG, "CityName ="+list.get(i).getCityName());
