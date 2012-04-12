@@ -1,9 +1,14 @@
 package com.photolink;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.calendar.AddEvent;
+import com.calendar.CityListActivity;
 import com.test2.R;
 
 import android.app.Activity;
@@ -19,9 +24,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -123,18 +130,21 @@ public class PhotolinkActivity extends Activity {
 		Intent i = getIntent();
 		Bundle extras = i.getExtras();
 		title = extras.getString("title");
-
+		String startDate= extras.getString("startDate");
+		String startTime= extras.getString("startTime");
+		
+		
 		startYear = Integer.parseInt(extras.getString("startDate").substring(0,
 				4));
 		startMonth = Integer.parseInt(extras.getString("startDate").substring(
-				5, 6));
-		startDay = Integer.parseInt(extras.getString("startDate").substring(7,
+				4, 6));
+		startDay = Integer.parseInt(extras.getString("startDate").substring(6,
 				8));
 
 		endYear = Integer.parseInt(extras.getString("endDate").substring(0, 4));
 		endMonth = Integer
-				.parseInt(extras.getString("endDate").substring(5, 6));
-		endDay = Integer.parseInt(extras.getString("endDate").substring(7, 8));
+				.parseInt(extras.getString("endDate").substring(4, 6));
+		endDay = Integer.parseInt(extras.getString("endDate").substring(6, 8));
 
 		startHour = Integer.parseInt(extras.getString("startTime").substring(0,
 				2));
@@ -147,11 +157,20 @@ public class PhotolinkActivity extends Activity {
 		setContentView(R.layout.photolink);
 
 		total = (TextView) findViewById(R.id.pl_TOTAL2);
-	
+		
+		//total.setText(startYear+"-"+startMonth+"-"+startDay
+		//		+ startTime+"\n"+ startHour+":"+startMin);
+		
+		//total.setText(startDate+"\n"+ startYear+"-"+startMonth+"-"+startDay
+		//+ startTime+"\n"+ startHour+":"+startMin);
+		
+		
 		init_phone_image_grid();
 
 	}
 
+	private ListView mListView;
+	
 	private void init_phone_image_grid() {
 		System.gc();
 
@@ -164,6 +183,7 @@ public class PhotolinkActivity extends Activity {
 				MediaStore.Images.Media.DATA,
 				MediaStore.Images.Media.DISPLAY_NAME,
 				MediaStore.Images.Media.SIZE, MediaStore.Images.Media.DATE_ADDED };
+		
 
 		Date start = new Date(startYear - 1900, startMonth - 1, startDay,
 				startHour, startMin);
@@ -181,16 +201,26 @@ public class PhotolinkActivity extends Activity {
 		String[] selectionArgs = null;
 		final String sortOrder = null;
 
-		imagecursor = managedQuery(uri, proj, selection, selectionArgs,
-				sortOrder);
+		imagelist = (ListView) findViewById(R.id.pl_PhoneImagesList);
+		imagecursor = managedQuery(uri, proj, selection, selectionArgs, sortOrder);
 		count = imagecursor.getCount();
 
+		
 		total.setText(Integer.toString(count));
+		ArrayList<String> arrayList = new ArrayList<String>();
+		
+		while (imagecursor != null && imagecursor.moveToNext()) { 
+			String imageName = imagecursor.getString(imagecursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)); 
+			Log.i("hahahaha", imageName);
+			arrayList.add(imageName);
+		}
+		
+		
+		
+		
+		//imagelist.setAdapter(new ImagesAdapter(getApplicationContext()));
 
-		imagelist = (ListView) findViewById(R.id.pl_PhoneImagesList);
-		imagelist.setAdapter(new ImagesAdapter(getApplicationContext()));
-
-		imagelist.setOnItemClickListener(imagegridlistener);
+		//imagelist.setOnItemClickListener(imagegridlistener);
 	}
 
 	private OnItemClickListener imagegridlistener = new OnItemClickListener() {
