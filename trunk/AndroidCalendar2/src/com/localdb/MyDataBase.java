@@ -66,13 +66,13 @@ public class MyDataBase {
 
     private static class TaskTable implements Table{
     	public String[] getFields(){
-    		return new String[] {"taskID", "title","deadlineDate","deadlineDate","location","reminder"};
+    		return new String[] {"taskID", "title","deadlineDate","deadlineTime","location", "progress", "reminder"};
     	}
 
     	public String getName(){return "TaskTable";}
     	public String getCreate(){
     		return "create table TaskTable "+
-    				"(taskID INT, title TEXT, deadlineDate INT, deadlineTime TEXT, location TEXT, reminder TEXT);";
+    				"(taskID INT, title TEXT, deadlineDate INT, deadlineTime TEXT, location TEXT, progress INT, reminder TEXT);";
     	}
     }
     
@@ -123,7 +123,7 @@ public class MyDataBase {
             // **************************************
             // delete database every time for testing
             // **************************************
-             //context.deleteDatabase(DATABASE_NAME);
+             context.deleteDatabase(DATABASE_NAME);
         }
 
         @Override

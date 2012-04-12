@@ -178,7 +178,7 @@ public class AddTask extends Activity {
 											
 				String locat = location.getText().toString();
 				String remind = reminder.isChecked()?"1":"0";
-				String args[] = {taskid,title,deadlineDate,deadlineTime,locat,remind};	
+				String args[] = {taskid,title,deadlineDate,deadlineTime,locat,progress +"",remind};	
 				
 				AndroidCalendar2Activity.getDB().insert("TaskTable", args);
 				finish();

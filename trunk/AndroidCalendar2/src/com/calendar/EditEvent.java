@@ -47,7 +47,7 @@ public class EditEvent extends Activity {
 	private Button searchLoc;
 	
 	private Button delete;
-	
+	 
 	// for date set dialog
 	public static final int STARTING_DATE_DIALOG = 0;
 	public static final int STARTING_TIME_DIALOG = 1;
