@@ -146,7 +146,7 @@ public class EditEvent extends Activity {
 			}
 
 		});
-
+//alvin: update db when confirm button pressed
 		confirmButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -314,7 +314,7 @@ public class EditEvent extends Activity {
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog,
 							int id) {
-						// implement delete record
+// alvin: implement delete record
 						
 					}
 				});
