@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import java.io.File;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -36,7 +37,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class PhotolinkActivity extends Activity {
+public class PhotolinkActivity extends Activity implements OnItemClickListener{
 	private static final String LIST_STATE = "listState";
 	private Parcelable mListState = null;
 	ListView imagelist;
@@ -207,28 +208,86 @@ public class PhotolinkActivity extends Activity {
 
 		
 		total.setText(Integer.toString(count));
-		ArrayList<String> arrayList = new ArrayList<String>();
+		ArrayList<ImageBean> arrayList = new ArrayList<ImageBean>();
 		
 		while (imagecursor != null && imagecursor.moveToNext()) { 
-			String imageName = imagecursor.getString(imagecursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)); 
-			Log.i("hahahaha", imageName);
-			arrayList.add(imageName);
+			String imageName = imagecursor.getString(imagecursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME));
+			int id = imagecursor.getInt(imagecursor.getColumnIndex("_id"));
+			Log.i("hahahaha", imageName + "   " + id);
+			ImageBean temp = new ImageBean(imageName, id);
+			arrayList.add(temp);
 		}
 		
 		
+		//mListView.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, arrayList));
+		//mListView.setOnItemClickListener(this);
 		
 		
 		//imagelist.setAdapter(new ImagesAdapter(getApplicationContext()));
 
 		//imagelist.setOnItemClickListener(imagegridlistener);
 	}
+	
+	private class ImageBean {
+		
+		private static final long serialVersionUID = 1L;
 
+		public ImageBean(){}
+		
+		private String imageName;  
+		private int ID;
+		
+		public ImageBean(String imageName, int ID) {
+			super();
+			this.imageName = imageName;
+			this.ID = ID;
+		}
+
+		public String getImageName() {
+			return imageName;
+		}
+		public void setImageName(String imageName) {
+			this.imageName = imageName;
+		}
+		public Integer getID() {
+			return ID;
+		}
+		public void setID(int ID) {
+			this.ID = ID;
+		}
+	}
+	
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, final int position,long id) {
+		/*
+		
+		Thread t = new Thread(new Runnable(){
+			public void run() {
+				String lat= arrayList.get(position).getLat()+"";
+				String lng= arrayList.get(position).getLng()+"";
+				String destination = list.get(position).getCityName();
+				
+				Intent intent = new Intent(CityListActivity.this, AddEvent.class);
+				Bundle bundle = new Bundle();
+				bundle.putString("placename", destination);
+				bundle.putString("placelat", lat);
+				bundle.putString("placelng", lng);
+				intent.putExtras(bundle);
+				setResult(Activity.RESULT_OK, intent);
+				finish();
+				
+			}
+		});
+		
+		t.start();*/
+		
+	}
+	
 	private OnItemClickListener imagegridlistener = new OnItemClickListener() {
 		public void onItemClick(AdapterView parent, View v, int position,
 				long id) {
 			System.gc();
-			image_column_index = imagecursor
-					.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+			image_column_index = imagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 			imagecursor.moveToPosition(position);
 			String filename = imagecursor.getString(image_column_index);
 
@@ -263,8 +322,7 @@ public class PhotolinkActivity extends Activity {
 			TextView tv = new TextView(mContext.getApplicationContext());
 			String id = null;
 			if (convertView == null) {
-				image_column_index = imagecursor
-						.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME);
+				image_column_index = imagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME);
 				imagecursor.moveToPosition(position);
 
 				// filename
