@@ -183,7 +183,7 @@ public class MyDataBase {
     	String key = T.getFields()[0];
     	String k = id;
     	if(id!=null)
-    		k = key+"="+id;
+    		k = key+"= '"+id+"' ";
         return mDb.delete(T.getName(), k, null) > 0;
     }
 
