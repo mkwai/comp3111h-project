@@ -2,6 +2,7 @@ package com.calendar;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,6 +11,7 @@ import com.location.Utils;
 import com.test2.R;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -31,6 +33,8 @@ public class TodoList extends Activity {
 	TextView today;
 	JSONArray titleT;
 	
+	LinearLayout linear ;
+	ListView listview ;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//set to full screen
@@ -42,7 +46,7 @@ public class TodoList extends Activity {
 		today = (TextView) findViewById(R.id.todolist_today);
 		addTask = (Button) findViewById(R.id.todolist_addTask);
 		sorting = (Button) findViewById(R.id.todolist_sorting);
-		
+		linear = (LinearLayout) findViewById(R.id.todolist_linear);
 
 		//showing the current date
 		CharSequence currentYear = DateFormat.format("yyyy", currentDateCalendar);
@@ -69,8 +73,11 @@ public class TodoList extends Activity {
 				Log.i("sort", "test");
 				
 		        titleT = AndroidCalendar2Activity.getDB().fetchConditional("TaskTable","");
-
-		        ArrayList<String> TDL = new ArrayList<String>();
+/*		        titleT = AndroidCalendar2Activity.getDB().fetchAllNotes("TaskTable",
+        		new String[]{"title","deadlineDate","deadlineTime", "location","reminder"}, 
+				new String[]{""}
+				) ;
+*/		        ArrayList<String> TDL = new ArrayList<String>();
 		        Log.i("JSON Length", titleT.length()+"");
 		        
 				if (titleT.length()>0) {
@@ -95,9 +102,38 @@ public class TodoList extends Activity {
 
 		});
 		
-
+		listview = new ListView(this);
+		addTaskToList(this);
+		linear.addView(listview);
 			
 	}
 	
+	 private void addTaskToList(Context t){
+		 JSONArray temp = AndroidCalendar2Activity.getDB().fetchAllNotes("TaskTable",null,null);
+	        Log.i("JSON Length", temp.length()+"");
+	        
+			if (temp.length()>0) {
+				Log.i("list", ">0");
+				String tempTitle = "";
+				String tempProgress = "";
+				try{
+					
+					List<String> data = new ArrayList<String>();
+					
+					for(int i = 0; i<temp.length();i++){
+						tempTitle =  temp.getJSONObject(i).getString("title");
+						Log.i("title", tempTitle);
+						tempProgress =  temp.getJSONObject(i).getString("progress");
+						data.add(tempTitle + " " + tempProgress);
+					}
+					listview.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_expandable_list_item_1,data));
+					
+				}catch(Exception e){
+		        	Log.i("h",e.toString());
+		        }
+					
+			}
+			else Log.i("list", "else");
+	 }
 
 }

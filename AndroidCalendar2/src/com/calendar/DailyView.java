@@ -383,10 +383,6 @@ public class DailyView extends Activity {
 						AlertDialog.Builder builder = new AlertDialog.Builder(t);
 						String startDate = itemOB.getString("startDate");
 						Calendar s = Calendar.getInstance();
-						Log.i("startDateDB", startDate);
-						Log.i("startDateDB", Integer.parseInt(startDate.substring(0, 4) )+"");
-						Log.i("startDateDB", Integer.parseInt(startDate.substring(4, 6) )-1 +"");
-						Log.i("startDateDB", Integer.parseInt(startDate.substring(6, 8) )+"");
 						
 						s.set(Integer.parseInt(startDate.substring(0, 4)),
 								Integer.parseInt(startDate.substring(4, 6)) - 1,
