@@ -453,6 +453,7 @@ public class DailyView extends Activity {
 											// page
 											Intent i = new Intent(
 													"com.calendar.EDITEVENT");
+											i.putExtra("eventid", eventid);
 											i.putExtra("title",
 													itemOB.getString("title"));
 											i.putExtra("startDate", itemOB
@@ -466,6 +467,7 @@ public class DailyView extends Activity {
 											i.putExtra("location", itemOB
 													.getString("location"));
 											startActivity(i);
+											finish();
 										} catch (Exception e) {
 
 										}

@@ -55,6 +55,9 @@ public class EditEvent extends Activity {
 	public static final int ENDING_TIME_DIALOG = 3;
 
 	public static Calendar currentDateCalendar = Calendar.getInstance();
+
+	public static String eventid ="";
+	
 	// storing the event starting/ending calendar(date+time)
 	private Calendar startingCalendar = Calendar.getInstance();
 	private Calendar endingCalendar = Calendar.getInstance();
@@ -146,7 +149,7 @@ public class EditEvent extends Activity {
 			}
 
 		});
-//alvin: update db when confirm button pressed
+		
 		confirmButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -155,7 +158,6 @@ public class EditEvent extends Activity {
 				// TODO Auto-generated method stub
 				// sent data to database
 
-				String eventid = AndroidCalendar2Activity.getDB().GiveEventID();
 				final String title = content.getText().toString();
 				if (title.length() == 0) {
 					Toast.makeText(EditEvent.this,
@@ -215,14 +217,15 @@ public class EditEvent extends Activity {
 				String isPrivate = privateEvent.isChecked() ? "1" : "0";
 				String locat = location.getText().toString();
 				String remind = reminder.isChecked() ? "1" : "0";
-				String args[] = { eventid, title, startDate, endDate,
+				String args[] = {title, startDate, endDate,
 						startTime, endTime, isPrivate, locat, remind };
+				String fields[] = {"title", "startDate", "endDate", 
+						"startTime", "endTime", "private", "location", "reminder"};
+				String condition=" eventID = '"+eventid+"' ";
+				
+				AndroidCalendar2Activity.getDB().updateConditional("TimeTable", condition, fields, args);
 
-				Log.i("done", startDate + " " + startTime + " " + endDate + " "
-						+ endTime);
-
-				AndroidCalendar2Activity.getDB().insert("TimeTable", args);
-
+				
 				// "2012-03-01T22:40:00"
 				final String sdt = startDate2 + "T" + startTime.substring(0, 2)
 						+ ":" + startTime.substring(3, 5) + ":00";
@@ -314,8 +317,8 @@ public class EditEvent extends Activity {
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog,
 							int id) {
-// alvin: implement delete record
-						
+						AndroidCalendar2Activity.getDB().delete("TimeTable", eventid);
+						finish();
 					}
 				});
 		
@@ -343,6 +346,8 @@ public class EditEvent extends Activity {
 			return;
 			}
 
+		eventid = extras.getString("eventid");
+		
 		String title = extras.getString("title");
 		if(title !=null)
 			content.setText(title);
