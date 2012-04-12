@@ -17,6 +17,7 @@ import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,92 +29,133 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class PhotolinkActivity extends Activity { 
+public class PhotolinkActivity extends Activity {
+	private static final String LIST_STATE = "listState";
+	private Parcelable mListState = null;
 	ListView imagelist;
 	Cursor imagecursor;
 	int image_column_index;
 	int count;
 	private TextView total;
-	
-	int startYear= 2012;
-	int startMonth= 4;
-	int startDay= 1;
-	int startHour= 0;
-	int startMin= 0;
-	
-	int endYear= 2012;
-	int endMonth= 4;
-	int endDay= 1;
-	int endHour= 2;
-	int endMin= 0;
-	
-	int timezone= 8;
-	
-	public boolean isLinkReady(){
-		return (startYear>= 1900 && endYear >=1900 && startMonth>=1 && endMonth>=1);
+
+	int timezone = 8;
+
+	public boolean isLinkReady() {
+		return (startYear >= 1900 && endYear >= 1900 && startMonth >= 1 && endMonth >= 1);
 	}
+
 	// set Starts
-	public void setStart( int year, int month, int day, int hour, int min){
-		startYear= year;
-		startMonth= month;
-		startDay= day;
-		startHour= hour;
-		startMin= min;
+	public void setStart(int year, int month, int day, int hour, int min) {
+		startYear = year;
+		startMonth = month;
+		startDay = day;
+		startHour = hour;
+		startMin = min;
 	}
-	public void setStartYear(int year){
-		startYear= year;
+
+	public void setStartYear(int year) {
+		startYear = year;
 	}
-	public void setStartMonth(int month){
-		startMonth= month;
+
+	public void setStartMonth(int month) {
+		startMonth = month;
 	}
-	public void setStartDay(int day){
-		startDay= day;
+
+	public void setStartDay(int day) {
+		startDay = day;
 	}
-	public void setStartHour(int hour){
-		startHour= hour;
+
+	public void setStartHour(int hour) {
+		startHour = hour;
 	}
-	public void setStartMin(int min){
-		startMin= min;
+
+	public void setStartMin(int min) {
+		startMin = min;
 	}
+
 	// set Ends
-	public void setEnd( int year, int month, int day, int hour, int min){
-		endYear= year;
-		endMonth= month;
-		endDay= day;
-		endHour= hour;
-		endMin= min;
+	public void setEnd(int year, int month, int day, int hour, int min) {
+		endYear = year;
+		endMonth = month;
+		endDay = day;
+		endHour = hour;
+		endMin = min;
 	}
-	public void setEndYear(int year){
-		endYear= year;
+
+	public void setEndYear(int year) {
+		endYear = year;
 	}
-	public void setEndMonth(int month){
-		endMonth= month;
+
+	public void setEndMonth(int month) {
+		endMonth = month;
 	}
-	public void setEndDay(int day){
-		endDay= day;
+
+	public void setEndDay(int day) {
+		endDay = day;
 	}
-	public void setEndHour(int hour){
-		endHour= hour;
+
+	public void setEndHour(int hour) {
+		endHour = hour;
 	}
-	public void setEndMin(int min){
-		endMin= min;
+
+	public void setEndMin(int min) {
+		endMin = min;
 	}
-	
+
+	private String title = "";
+	private int startYear = 2010;
+	private int startMonth = 4;
+	private int startDay = 1;
+	private int startHour = 0;
+	private int startMin = 0;
+
+	private int endYear = 2013;
+	private int endMonth = 4;
+	private int endDay = 1;
+	private int endHour = 2;
+	private int endMin = 0;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		System.gc();
+		Intent i = getIntent();
+		Bundle extras = i.getExtras();
+		title = extras.getString("title");
+
+		startYear = Integer.parseInt(extras.getString("startDate").substring(0,
+				4));
+		startMonth = Integer.parseInt(extras.getString("startDate").substring(
+				5, 6));
+		startDay = Integer.parseInt(extras.getString("startDate").substring(7,
+				8));
+
+		endYear = Integer.parseInt(extras.getString("endDate").substring(0, 4));
+		endMonth = Integer
+				.parseInt(extras.getString("endDate").substring(5, 6));
+		endDay = Integer.parseInt(extras.getString("endDate").substring(7, 8));
+
+		startHour = Integer.parseInt(extras.getString("startTime").substring(0,
+				2));
+		startMin = Integer.parseInt(extras.getString("startTime").substring(3,
+				5));
+
+		endHour = Integer.parseInt(extras.getString("endTime").substring(0, 2));
+		endMin = Integer.parseInt(extras.getString("endTime").substring(3, 5));
+	
 		setContentView(R.layout.photolink);
 
 		total = (TextView) findViewById(R.id.pl_TOTAL2);
+	
 		init_phone_image_grid();
 
 	}
 
 	private void init_phone_image_grid() {
 		System.gc();
-		
-		if (isLinkReady()== false){
+
+		if (isLinkReady() == false) {
 			ShowMsgDialog("System", "Please fill in valid date and time.");
 			return;
 		}
@@ -121,24 +163,26 @@ public class PhotolinkActivity extends Activity {
 		String[] proj = { MediaStore.Images.Media._ID,
 				MediaStore.Images.Media.DATA,
 				MediaStore.Images.Media.DISPLAY_NAME,
-				MediaStore.Video.Media.SIZE, 
-				MediaStore.Images.Media.DATE_ADDED };
-		
-		Date start = new Date(startYear-1900, startMonth-1, startDay, startHour, startMin);
+				MediaStore.Images.Media.SIZE, MediaStore.Images.Media.DATE_ADDED };
+
+		Date start = new Date(startYear - 1900, startMonth - 1, startDay,
+				startHour, startMin);
 		long startSec = start.getTime() / 1000l;
-		
-		Date end = new Date(endYear-1900, endMonth-1, endDay, endHour, endMin);
+
+		Date end = new Date(endYear - 1900, endMonth - 1, endDay, endHour,
+				endMin);
 		long endSec = end.getTime() / 1000l;
-		
-		String selection = MediaStore.Images.Media.DATE_ADDED + " > " + startSec + " AND " +
-				MediaStore.Images.Media.DATE_ADDED + " < " + endSec;
-		
-		//String selection2=null;
-		
+
+		String selection = MediaStore.Images.Media.DATE_ADDED + " > "
+				+ startSec + " AND " + MediaStore.Images.Media.DATE_ADDED
+				+ " < " + endSec;
+
+		String selection2 = null; // for testing
 		String[] selectionArgs = null;
 		final String sortOrder = null;
 
-		imagecursor = managedQuery(uri, proj, selection, selectionArgs,	sortOrder);
+		imagecursor = managedQuery(uri, proj, selection, selectionArgs,
+				sortOrder);
 		count = imagecursor.getCount();
 
 		total.setText(Integer.toString(count));
@@ -158,21 +202,10 @@ public class PhotolinkActivity extends Activity {
 			imagecursor.moveToPosition(position);
 			String filename = imagecursor.getString(image_column_index);
 
-			// ShowMsgDialog("System", filename);
+			Intent i = new Intent("com.calendar.VIEWIMAGE");
+			i.putExtra("filename", filename);
 
-			Intent intent = new Intent();
-			intent.setAction(android.content.Intent.ACTION_VIEW);
-			File file = new File(filename);
-
-			intent.setDataAndType(Uri.fromFile(file), "image/*");
-
-			/*
-			 * ImageView iv = new ImageView(getApplicationContext()); Bitmap bm
-			 * = BitmapFactory.decodeFile(filename); iv.setImageBitmap(bm);
-			 * setContentView(iv);
-			 */
-
-			startActivity(intent);
+			startActivity(i);
 		}
 	};
 
@@ -203,13 +236,18 @@ public class PhotolinkActivity extends Activity {
 				image_column_index = imagecursor
 						.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME);
 				imagecursor.moveToPosition(position);
-				id = imagecursor.getString(image_column_index);
 
-				image_column_index = imagecursor
-						.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE);
-				imagecursor.moveToPosition(position);
-				id += " Size(KB):" + imagecursor.getString(image_column_index);
+				// filename
+				id = "File name: " + imagecursor.getString(image_column_index);
 
+				/*
+				 * file size image_column_index = imagecursor
+				 * .getColumnIndexOrThrow(MediaStore.Images.Media.SIZE);
+				 * imagecursor.moveToPosition(position); id += "Size(KB): " +
+				 * imagecursor.getString(image_column_index)+ "\n";
+			
+
+				// date created
 				image_column_index = imagecursor
 						.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED);
 				imagecursor.moveToPosition(position);
@@ -218,7 +256,7 @@ public class PhotolinkActivity extends Activity {
 						.getString(image_column_index));
 
 				Date d = new Date((long) (1000L * ms));
-				
+
 				int dd = d.getDate();
 				int mm = d.getMonth() + 1;
 				int yyyy = d.getYear() + 1900;
@@ -234,8 +272,10 @@ public class PhotolinkActivity extends Activity {
 						+ "  " + Integer.toString(hr) + ":" + mina
 						+ Integer.toString(min);
 
-				id += " \nDate Created:" + resultdate;
-				id += " \nMS:" + ms;
+				id += "Date Created: " + resultdate;
+				// id += " \nMS:" + ms;
+					 */
+				
 				tv.setText(id);
 			} else
 				tv = (TextView) convertView;

@@ -401,12 +401,10 @@ public class DailyView extends Activity {
 								Integer.parseInt(endDate.substring(6, 8)));
 						String en = DateFormat.format("dd-MMM-yyyy", e) + "";
 
-						final String info = 
-								 "Title: 	"
-								+ itemOB.getString("title") + "\n"
-								+ "Start:	" + st + "   "
-								+ itemOB.getString("startTime") + "\n"
-								+ "End:		" + en + "   "
+						final String info = "Title: 	"
+								+ itemOB.getString("title") + "\n" + "Start:	"
+								+ st + "   " + itemOB.getString("startTime")
+								+ "\n" + "End:		" + en + "   "
 								+ itemOB.getString("endTime") + "\n"
 								+ "Location:   " + itemOB.getString("location")
 								+ "\n";
@@ -417,6 +415,32 @@ public class DailyView extends Activity {
 								new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog,
 											int id) {
+
+									}
+								});
+
+						builder.setNeutralButton("View photo",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+											int id) {
+										try {
+											Intent i = new Intent(
+													"com.calendar.PHOTOLINK");
+											i.putExtra("title",
+													itemOB.getString("title"));
+											i.putExtra("startDate", itemOB
+													.getString("startDate"));
+											i.putExtra("endDate",
+													itemOB.getString("endDate"));
+											i.putExtra("startTime", itemOB
+													.getString("startTime"));
+											i.putExtra("endTime",
+													itemOB.getString("endTime"));
+											i.putExtra("location", itemOB
+													.getString("location"));
+											startActivity(i);
+										} catch (Exception e) {
+										}
 									}
 								});
 
