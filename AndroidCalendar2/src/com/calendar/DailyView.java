@@ -79,8 +79,6 @@ public class DailyView extends Activity {
 		linearLayout = (LinearLayout) findViewById(R.id.daily_linearlayout);
 		calendar.set(dailyYear, dailyMonth - 1, dailyDayOfMonth);
 
-		Log.i("on create", "@@@");
-
 		// button AddEvent
 		bAddEvent = (Button) findViewById(R.id.dailyview_bAddEvent);
 		bAddEvent.setOnClickListener(new OnClickListener() {
@@ -301,9 +299,6 @@ public class DailyView extends Activity {
 			params2.leftMargin = 100;
 			params2.topMargin = (int) h + 60;
 
-			/*
-			 * v1.setX(100); v2.setX(100); v1.setY(h + 15); v2.setY(h+ 60);
-			 */
 			v1.setBackgroundColor(Color.GRAY);
 			v2.setBackgroundColor(Color.DKGRAY);
 			v1.setMinimumHeight(2);
@@ -388,17 +383,22 @@ public class DailyView extends Activity {
 						AlertDialog.Builder builder = new AlertDialog.Builder(t);
 						String startDate = itemOB.getString("startDate");
 						Calendar s = Calendar.getInstance();
+						Log.i("startDateDB", startDate);
+						Log.i("startDateDB", Integer.parseInt(startDate.substring(0, 4) )+"");
+						Log.i("startDateDB", Integer.parseInt(startDate.substring(4, 6) )-1 +"");
+						Log.i("startDateDB", Integer.parseInt(startDate.substring(6, 8) )+"");
+						
 						s.set(Integer.parseInt(startDate.substring(0, 4)),
-								Integer.parseInt(startDate.substring(5, 6)) - 1,
-								Integer.parseInt(startDate.substring(7, 8)));
+								Integer.parseInt(startDate.substring(4, 6)) - 1,
+								Integer.parseInt(startDate.substring(6, 8)));
 						String st = DateFormat.format("dd-MMM-yyyy", s) + "";
 
 						String endDate = itemOB.getString("endDate");
-
+						Log.i("endDateDB", endDate);
 						Calendar e = Calendar.getInstance();
 						e.set(Integer.parseInt(endDate.substring(0, 4)),
-								Integer.parseInt(endDate.substring(5, 6)) - 1,
-								Integer.parseInt(endDate.substring(7, 8)));
+								Integer.parseInt(endDate.substring(4, 6)) - 1,
+								Integer.parseInt(endDate.substring(6, 8)));
 						String en = DateFormat.format("dd-MMM-yyyy", e) + "";
 
 						final String info = 
