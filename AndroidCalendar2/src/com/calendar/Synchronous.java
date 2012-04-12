@@ -78,7 +78,7 @@ public class Synchronous extends Activity implements OnItemClickListener{
 					return;
 				}
 				UpdateFdList();
-				ShowFdList();
+				//ShowFdList();
 			}
         	
         });
@@ -268,6 +268,8 @@ public class Synchronous extends Activity implements OnItemClickListener{
 					for(int i = 0;i<checked.length;i++){
 						checked[i]=false;
 					}
+					
+					ShowFdList();
 				}
 	    	}).start();
 	    	    
