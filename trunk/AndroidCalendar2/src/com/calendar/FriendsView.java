@@ -25,7 +25,10 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -51,6 +54,11 @@ public class FriendsView extends Activity{
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		// set to full screen
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
 		setContentView(R.layout.friends);
 		
 		Bundle extras = getIntent().getExtras();
@@ -285,10 +293,21 @@ public class FriendsView extends Activity{
 				setText(jo.getString("title"));
 //				setX(100);
 //				setY(noon.getY()+ dp2px(t,(jo.getInt("stime")*5)));
+		
+			super.setWidth(200);
+			
+
+			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			params.leftMargin = 100;
+
+			params.topMargin = (int) (noon.getBottom() + dp2px(t,
+					(jo.getInt("stime") * 5)));
+			DayLayout.addView(this, params);
+			
 			}catch (Exception e){
 				Log.i("not get JO",e.toString());
 			}
-			super.setWidth(300);
 			
 			super.setOnClickListener(new OnClickListener(){
 
@@ -321,26 +340,78 @@ public class FriendsView extends Activity{
 		}
 	
 	// setup daily view
-	public void setupDailyTimes(Context t){
-		String [] times = {"1:00am","2:00am","3:00am",
-				"4:00am","5:00am","6:00am","7:00am",
-				"8:00am","9:00am","10:00am","11:00am",
-				"12:00pm","1:00pm","2:00pm","3:00pm",
-				"4:00pm","5:00pm","6:00pm","7:00pm",
-				"8:00pm","9:00pm","10:00pm","11:00pm"
-		};	
-	/*	
-		for(int i = 0;i<times.length;i++){
-			TextView tv = new TextView(t);
-			tv.setText(times[i]);
-			tv.setX(0);
-			float h = noon.getY()+dp2px(t,60*(i+1));
-			tv.setY(h);
-			DayLayout.addView(tv);
-			DayLayout.setMinimumHeight((int) (h+dp2px(t,61)));
+		public void setupDailyTimes(Context t) {
+			String[] times = { "1:00am", "2:00am", "3:00am", "4:00am", "5:00am",
+					"6:00am", "7:00am", "8:00am", "9:00am", "10:00am", "11:00am",
+					"12:00pm", "1:00pm", "2:00pm", "3:00pm", "4:00pm", "5:00pm",
+					"6:00pm", "7:00pm", "8:00pm", "9:00pm", "10:00pm", "11:00pm" };
+
+			for (int i = 0; i < times.length; i++) {
+				TextView tv = new TextView(t);
+				tv.setText(times[i]);
+				float h = noon.getBottom() + dp2px(t, 60 * (i + 1));
+
+				RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+				params.topMargin = (int) h;
+				params.leftMargin = 0;
+				DayLayout.addView(tv, params);
+				DayLayout.setMinimumHeight((int) (h + dp2px(t, 61)));
+
+				// horizontal line
+				View v1 = new View(t);
+				View v2 = new View(t);
+				RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(
+						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+				params1.leftMargin = 100;
+
+				params1.topMargin = (int) h + 15;
+
+				RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(
+						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+				params2.leftMargin = 100;
+				params2.topMargin = (int) h + 60;
+
+				/*
+				 * v1.setX(100); v2.setX(100); v1.setY(h + 15); v2.setY(h+ 60);
+				 */
+				v1.setBackgroundColor(Color.GRAY);
+				v2.setBackgroundColor(Color.DKGRAY);
+				v1.setMinimumHeight(2);
+				v2.setMinimumHeight(2);
+				v1.setMinimumWidth(200);
+				v2.setMinimumWidth(200);
+				DayLayout.addView(v1, params1);
+				DayLayout.addView(v2, params2);
+			}
+
+			// for the line @ 12:00 am
+			View v1 = new View(t);
+
+			RelativeLayout.LayoutParams params3 = new RelativeLayout.LayoutParams(
+					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			params3.leftMargin = 100;
+			params3.topMargin = 15;
+
+			v1.setBackgroundColor(Color.GRAY);
+
+			v1.setMinimumHeight(2);
+			v1.setMinimumWidth(200);
+			DayLayout.addView(v1, params3);
+
+			// for the line @ 12:30 am
+			View v2 = new View(t);
+			RelativeLayout.LayoutParams params4 = new RelativeLayout.LayoutParams(
+					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			params4.leftMargin = 100;
+			params4.topMargin = 60;
+
+			v2.setBackgroundColor(Color.DKGRAY);
+
+			v2.setMinimumHeight(2);
+			v2.setMinimumWidth(200);
+			DayLayout.addView(v2, params4);
 		}
-		*/
-	}	
 	
 	// convert month or day
 	private String getZero(int x){

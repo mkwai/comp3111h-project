@@ -350,15 +350,15 @@ public class EditEvent extends Activity {
 		String startDate = extras.getString("startDate");
 		if(startDate !=null){
 			startingCalendar.set(Integer.parseInt(startDate.substring(0, 4)),
-					Integer.parseInt(startDate.substring(5, 6)) - 1,
-					Integer.parseInt(startDate.substring(7, 8)));
+					Integer.parseInt(startDate.substring(4, 6)) - 1,
+					Integer.parseInt(startDate.substring(6, 8)));
 			startingDateButton.setText( DateFormat.format("MMM dd , yyyy", startingCalendar) + ""); 
 		}
 		String endDate = extras.getString("endDate");
 		if(endDate !=null){
 			endingCalendar.set(Integer.parseInt(endDate.substring(0, 4)),
-					Integer.parseInt(endDate.substring(5, 6)) - 1,
-					Integer.parseInt(endDate.substring(7, 8)));
+					Integer.parseInt(endDate.substring(4, 6)) - 1,
+					Integer.parseInt(endDate.substring(6, 8)));
 			endingDateButton.setText( DateFormat.format("MMM dd , yyyy", endingCalendar) + ""); 
 			
 		}
@@ -369,7 +369,7 @@ public class EditEvent extends Activity {
 			startingCalendar.set(Calendar.HOUR_OF_DAY,
 					Integer.parseInt(startTime.substring(0, 2)));
 			startingCalendar.set(Calendar.MINUTE,
-					Integer.parseInt(startTime.substring(4, 5)));
+					Integer.parseInt(startTime.substring(3, 5)));
 			Log.i("substring", startTime);
 			Log.i("mm:hh", startingCalendar.get(Calendar.HOUR_OF_DAY) + " " +startingCalendar.get(Calendar.MINUTE ));
 			startingTimeButton.setText( DateFormat.format("kk:mm", startingCalendar) + ""); 
@@ -380,7 +380,7 @@ public class EditEvent extends Activity {
 			endingCalendar.set(Calendar.HOUR_OF_DAY,
 					Integer.parseInt(endTime.substring(0, 2)));
 			endingCalendar.set(Calendar.MINUTE,
-					Integer.parseInt(endTime.substring(4, 5)));
+					Integer.parseInt(endTime.substring(3, 5)));
 			endingTimeButton.setText( DateFormat.format("kk:mm", endingCalendar) + ""); 
 		}
 		
