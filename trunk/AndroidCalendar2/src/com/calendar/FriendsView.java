@@ -146,7 +146,6 @@ public class FriendsView extends Activity{
 		}else{
 			getToday();
 		}
-
 		
 		//set
 		setbackground(this);
@@ -209,7 +208,6 @@ public class FriendsView extends Activity{
 			try{
 			for(int i = 0;i<x.length();i++){
 				events[i] = new EventItem(t,x.getJSONObject(i));
-				DayLayout.addView(events[i]);
 			}
 			}catch(Exception e){
 				e.printStackTrace();
