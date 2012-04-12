@@ -179,7 +179,7 @@ public class Synchronous extends Activity implements OnItemClickListener{
 						);
 				myFriends = new JSONArray();
 				checked = null;
-				listLayout.setAdapter(null);
+		        listLayout.setAdapter(new FDAdapter(Synchronous.this));
 			}
         });
         
@@ -255,13 +255,6 @@ public class Synchronous extends Activity implements OnItemClickListener{
 					}catch(Exception e){
 						e.printStackTrace();
 					}
-								        
-					runOnUiThread(new Runnable(){
-						public void run() {
-							ShowFdList();
-							progress.cancel();
-						}
-					});
 					
 					if(myFriends.length()==0) return;
 					checked = new boolean[myFriends.length()];
@@ -269,7 +262,13 @@ public class Synchronous extends Activity implements OnItemClickListener{
 						checked[i]=false;
 					}
 					
-					ShowFdList();
+					runOnUiThread(new Runnable(){
+						public void run() {
+							ShowFdList();
+							progress.cancel();
+						}
+					});
+					
 				}
 	    	}).start();
 	    	    
@@ -366,6 +365,8 @@ public class Synchronous extends Activity implements OnItemClickListener{
 		@Override
 		public View getView(final int position, View convertView, ViewGroup arg2) {
 			// TODO Auto-generated method stub
+			if(myFriends.length()==0) return convertView;
+			
 			JSONObject aFriend = null;
 			try {
 				aFriend = myFriends.getJSONObject(position);
