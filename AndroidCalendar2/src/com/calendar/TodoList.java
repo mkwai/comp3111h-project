@@ -1,10 +1,12 @@
 package com.calendar;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import com.location.Utils;
 import com.test2.R;
 
 import android.app.Activity;
@@ -16,6 +18,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -27,8 +30,6 @@ public class TodoList extends Activity {
 	Button addTask, sorting;
 	TextView today;
 	JSONArray titleT;
-	private LinearLayout listLayout;
-	//ListView list = (ListView) findViewById(R.id.todoList);  
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,7 +43,7 @@ public class TodoList extends Activity {
 		addTask = (Button) findViewById(R.id.todolist_addTask);
 		sorting = (Button) findViewById(R.id.todolist_sorting);
 		
-		
+
 		//showing the current date
 		CharSequence currentYear = DateFormat.format("yyyy", currentDateCalendar);
 		CharSequence currentMonth = DateFormat.format("MMM", currentDateCalendar);
@@ -66,37 +67,37 @@ public class TodoList extends Activity {
 			public void onClick(View arg1) {
 				
 				Log.i("sort", "test");
-				Bundle extras = getIntent().getExtras();
 				
-//		        try {
-		        	titleT = AndroidCalendar2Activity.getDB().fetchConditional("TaskTable","");
-//				} catch (JSONException e) {Log.i("json",e.toString());}
-				
+		        titleT = AndroidCalendar2Activity.getDB().fetchConditional("TaskTable","");
+
+		        ArrayList<String> TDL = new ArrayList<String>();
+		        Log.i("JSON Length", titleT.length()+"");
+		        
 				if (titleT.length()>0) {
 					Log.i("sort", ">0");
+					String tempTitle = "";
+					String tempProgress = "";
 					try{
-						for(int i = 0;i<titleT.length();i++)
-							Log.i(i+"", titleT.getJSONObject(i).getString("title"));
-						//To-do...
+						for(int i = 0; i<titleT.length();i++){
+							tempTitle =  titleT.getJSONObject(i).getString("title");
+							tempProgress =  titleT.getJSONObject(i).getString("progress");
+							TDL.add((tempTitle.length()>15? tempTitle.substring(0, 15): tempTitle)+ " "  + tempProgress + "%");
+							Log.i("listView", TDL.get(i));
+						}
+
 					}catch(Exception e){
 			        	Log.i("h",e.toString());
 			        }
-/*			        try{
-			        	for(int i = 0;i<titleT.length();i++){
-			        		TextView TV = new TextView(this);
-			        		TV.setText(titleT.getJSONObject(i).getString("name"));
-			        		listLayout.addView(TV,i);
-			        	}
-			        	
-			        }catch(Exception e){
-			        	Log.i("h",e.toString());
-			        }
-*/				
+						
 				}
 				else Log.i("sort", "else");
 			}
 
 		});
+		
+
 			
 	}
+	
+
 }
