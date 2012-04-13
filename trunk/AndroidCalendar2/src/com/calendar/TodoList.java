@@ -53,7 +53,7 @@ public class TodoList extends Activity {
 		today = (TextView) findViewById(R.id.todolist_today);
 		addTask = (Button) findViewById(R.id.todolist_addTask);
 		sorting = (Button) findViewById(R.id.todolist_sorting);
-		linear = (LinearLayout) findViewById(R.id.todolist_linear);
+		//linear = (LinearLayout) findViewById(R.id.todolist_linear);
 
 		//showing the current date
 		CharSequence currentYear = DateFormat.format("yyyy", currentDateCalendar);
