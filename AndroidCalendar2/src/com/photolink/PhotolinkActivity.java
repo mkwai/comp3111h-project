@@ -123,6 +123,8 @@ public class PhotolinkActivity extends Activity implements OnItemClickListener{
 	private int endHour = 2;
 	private int endMin = 0;
 
+	
+	private ArrayList<ImageBean> arrayList = new ArrayList<ImageBean>();
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -165,7 +167,6 @@ public class PhotolinkActivity extends Activity implements OnItemClickListener{
 		//total.setText(startDate+"\n"+ startYear+"-"+startMonth+"-"+startDay
 		//+ startTime+"\n"+ startHour+":"+startMin);
 		
-		
 		init_phone_image_grid();
 
 	}
@@ -185,7 +186,6 @@ public class PhotolinkActivity extends Activity implements OnItemClickListener{
 				MediaStore.Images.Media.DISPLAY_NAME,
 				MediaStore.Images.Media.SIZE, MediaStore.Images.Media.DATE_ADDED };
 		
-
 		Date start = new Date(startYear - 1900, startMonth - 1, startDay,
 				startHour, startMin);
 		long startSec = start.getTime() / 1000l;
@@ -200,7 +200,7 @@ public class PhotolinkActivity extends Activity implements OnItemClickListener{
 
 		String selection2 = null; // for testing
 		String[] selectionArgs = null;
-		final String sortOrder = null;
+		final String sortOrder = MediaStore.Images.Media.DEFAULT_SORT_ORDER;
 
 		imagelist = (ListView) findViewById(R.id.pl_PhoneImagesList);
 		imagecursor = managedQuery(uri, proj, selection, selectionArgs, sortOrder);
@@ -208,8 +208,7 @@ public class PhotolinkActivity extends Activity implements OnItemClickListener{
 
 		
 		total.setText(Integer.toString(count));
-		ArrayList<ImageBean> arrayList = new ArrayList<ImageBean>();
-		
+			
 		while (imagecursor != null && imagecursor.moveToNext()) { 
 			String imageName = imagecursor.getString(imagecursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME));
 			int id = imagecursor.getInt(imagecursor.getColumnIndex("_id"));
@@ -219,8 +218,8 @@ public class PhotolinkActivity extends Activity implements OnItemClickListener{
 		}
 		
 		
-		//mListView.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, arrayList));
-		//mListView.setOnItemClickListener(this);
+		//imagelist.setAdapter(new ArrayAdapter<ImageBean>(this, R.layout.photolink, arrayList));
+		//imagelist.setOnItemClickListener(this);
 		
 		
 		//imagelist.setAdapter(new ImagesAdapter(getApplicationContext()));
@@ -228,34 +227,7 @@ public class PhotolinkActivity extends Activity implements OnItemClickListener{
 		//imagelist.setOnItemClickListener(imagegridlistener);
 	}
 	
-	private class ImageBean {
-		
-		private static final long serialVersionUID = 1L;
-
-		public ImageBean(){}
-		
-		private String imageName;  
-		private int ID;
-		
-		public ImageBean(String imageName, int ID) {
-			super();
-			this.imageName = imageName;
-			this.ID = ID;
-		}
-
-		public String getImageName() {
-			return imageName;
-		}
-		public void setImageName(String imageName) {
-			this.imageName = imageName;
-		}
-		public Integer getID() {
-			return ID;
-		}
-		public void setID(int ID) {
-			this.ID = ID;
-		}
-	}
+	
 	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, final int position,long id) {
@@ -263,11 +235,13 @@ public class PhotolinkActivity extends Activity implements OnItemClickListener{
 		
 		Thread t = new Thread(new Runnable(){
 			public void run() {
-				String lat= arrayList.get(position).getLat()+"";
-				String lng= arrayList.get(position).getLng()+"";
-				String destination = list.get(position).getCityName();
+				String imageName= arrayList.get(position).getImageName()+"";
+				int ID= arrayList.get(position).getID()+"";
 				
-				Intent intent = new Intent(CityListActivity.this, AddEvent.class);
+				
+				//String destination = list.get(position).getCityName();
+				
+				/*Intent intent = new Intent(PhotolinkActivity.this, AddEvent.class);
 				Bundle bundle = new Bundle();
 				bundle.putString("placename", destination);
 				bundle.putString("placelat", lat);
@@ -279,8 +253,8 @@ public class PhotolinkActivity extends Activity implements OnItemClickListener{
 			}
 		});
 		
-		t.start();*/
-		
+		t.start();
+		*/
 	}
 	
 	private OnItemClickListener imagegridlistener = new OnItemClickListener() {

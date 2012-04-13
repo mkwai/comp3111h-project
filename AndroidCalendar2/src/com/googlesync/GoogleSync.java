@@ -214,7 +214,10 @@ public class GoogleSync {
 			System.out.println("No entry");
 			return;
 		}
-
+		
+		//////////////////////////////////
+		System.out.println( entry.getId() );
+		
 		title = entry.getTitle().getPlainText(); // get title
 		description = entry.getPlainTextContent(); // get description
 		location = entry.getLocations().get(0).getValueString(); // get location
@@ -267,13 +270,14 @@ public class GoogleSync {
 			AndroidCalendar2Activity.getDB().insert("TimeTable", args);
 			}
 		
-		/*
-		 * System.out.println(store.title);
-		 * System.out.println(store.description);
-		 * System.out.println(store.location);
-		 * System.out.println(store.starttime);
-		 * System.out.println(store.endtime); System.out.println();
-		 */
+		
+		 System.out.println(title);
+		 System.out.println(description);
+		 //System.out.println(location);
+		// System.out.println(startDate);
+		 //System.out.println(startTime); 
+		 System.out.println();
+		 
 
 	}
 

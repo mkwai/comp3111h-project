@@ -1,5 +1,9 @@
 package com.calendar;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -19,6 +23,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
@@ -28,6 +34,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
 import android.view.View;
+import android.view.View.MeasureSpec;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
@@ -49,7 +56,7 @@ public class DailyView extends Activity {
 	TextView dailyview_today;
 	TextView twelve_am;
 	RelativeLayout relativeLayout;
-	Button bAddEvent, bPrevious, bNext;
+	Button bAddEvent, bPrevious, bNext , bExportjpg;
 	LinearLayout linearLayout;
 
 	Calendar calendar = Calendar.getInstance();
@@ -82,7 +89,6 @@ public class DailyView extends Activity {
 		// button AddEvent
 		bAddEvent = (Button) findViewById(R.id.dailyview_bAddEvent);
 		bAddEvent.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
@@ -93,7 +99,48 @@ public class DailyView extends Activity {
 			}
 
 		});
+		
+		// button export jpg
+		bExportjpg= (Button) findViewById(R.id.exportjpg);
+		bExportjpg.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				
+				LinearLayout layout = (LinearLayout) findViewById(R.id.daily_linearlayout);
+				
+				Bitmap screenBitmap = Bitmap.createBitmap(layout.getWidth(), layout.getHeight(),
+						Bitmap.Config.ARGB_8888);
+				
+				Canvas canvas = new Canvas(screenBitmap);
+				layout.draw(canvas);
+		
+				FileOutputStream fos;
+				try {
+					File exportDirectory = new File("/sdcard/dailyassistant_image/");
+					
+					if (!exportDirectory.exists())
+						exportDirectory.mkdirs();
+					
+					String filename= "dailyview.jpg";
+					
+					File outputFile = new File(exportDirectory, filename);
+					fos = new FileOutputStream(outputFile);
 
+					screenBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+
+					fos.flush();
+					fos.close();
+					fos = null;
+					
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+		});
+		
 		// text date
 		dailyview_today = (TextView) findViewById(R.id.dailyview_today);
 		dailyview_today.setText("Date: " + dailyDayOfMonth + " / " + dailyMonth
