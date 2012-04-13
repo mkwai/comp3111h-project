@@ -41,7 +41,7 @@ public class CalendarActivity extends Activity implements
 
 	LinearLayout calendarL;
 	Button bGoTo, bAddEvent, bSynchronous, bDaily, bMonthlyb, bTodoList,
-			bGoogle, bPrevious, bNext;
+			bGoogle, bPrevious, bNext, bWebCheck;
 	TextView monthlyview_month;
 	public static final int SET_DATE_DIALOG = 0;
 
@@ -138,6 +138,18 @@ public class CalendarActivity extends Activity implements
 				startActivity(new Intent("com.calendar.GOOGLESYNC"));
 			}
 		});
+		
+		//button specific websites hindering
+		bWebCheck = (Button) findViewById(R.id.bWebCheck);
+		bWebCheck.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				startActivity(new Intent("comp.history.BHA"));
+			}
+		});
+
 		// ///
 		// button Previous
 		bPrevious = (Button) findViewById(R.id.bPrevious);

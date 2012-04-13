@@ -81,5 +81,6 @@
     <string name="monthlyview_next">next-></string>
     <string name="editevent_delevent">Delete</string>
 	
-    <string name="webCheck">On</string>
+    <string name="webCheck">WebCheck</string>
+    <string name="siteAdd">Add</string>
 </resources>

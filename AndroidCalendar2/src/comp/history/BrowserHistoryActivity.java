@@ -28,7 +28,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
-
+import com.test2.R;
 
 
 public class BrowserHistoryActivity extends Activity {
@@ -41,7 +41,8 @@ public class BrowserHistoryActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.main);
+        Log.i("BrowserHistoryActivity", "start");
+        setContentView(R.layout.browserhistory);
         blockWebsites.add("facebook.com");
         
         testing.setAction("PopupMessage");
