@@ -192,7 +192,7 @@ public class TodoList extends Activity {
 								+ list.get(arg2).get("location") + "\n";
 						builder.setMessage(info);
 						builder.setCancelable(true);
-
+ 
 						builder.setPositiveButton("OK",
 								new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog,
