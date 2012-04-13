@@ -64,13 +64,15 @@
         android:layout_marginTop="5dp"
         android:scrollbars="none" >
 -->
+
         <LinearLayout
             android:id="@+id/todolist_linear"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" 
-                    android:layout_below="@id/middle_view"
-        android:layout_marginTop="5dp">
+            android:layout_below="@id/middle_view"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical" >
+
         </LinearLayout>
 
 </RelativeLayout>
