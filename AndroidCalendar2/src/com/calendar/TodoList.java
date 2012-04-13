@@ -2,6 +2,7 @@ package com.calendar;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -20,10 +21,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 public class TodoList extends Activity {
@@ -35,6 +39,9 @@ public class TodoList extends Activity {
 	
 	LinearLayout linear ;
 	ListView listview ;
+	
+	ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
+	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//set to full screen
@@ -60,7 +67,9 @@ public class TodoList extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
+			
 				startActivity(new Intent("com.calendar.ADDTASK"));
+				//finish();
 			}
 			
 		});
@@ -108,7 +117,15 @@ public class TodoList extends Activity {
 			
 	}
 	
-	 private void addTaskToList(Context t){
+	 @Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		list.clear();
+		addTaskToList(this);
+	}
+
+	private void addTaskToList(Context t){
 		 JSONArray temp = AndroidCalendar2Activity.getDB().fetchAllNotes("TaskTable",null,null);
 	        Log.i("JSON Length", temp.length()+"");
 	        
@@ -116,17 +133,42 @@ public class TodoList extends Activity {
 				Log.i("list", ">0");
 				String tempTitle = "";
 				String tempProgress = "";
+				String tempLocation = "";
 				try{
 					
-					List<String> data = new ArrayList<String>();
-					
+				
 					for(int i = 0; i<temp.length();i++){
+						HashMap<String,String> item = new HashMap<String,String>();
+						
 						tempTitle =  temp.getJSONObject(i).getString("title");
-						Log.i("title", tempTitle);
 						tempProgress =  temp.getJSONObject(i).getString("progress");
-						data.add(tempTitle + " " + tempProgress);
+						tempLocation = temp.getJSONObject(i).getString("location");
+						item.put("title", tempTitle);
+						item.put("progress", tempProgress + " %");
+						item.put("location", tempLocation);
+						
+						list.add(item);
+						Log.i("title + progress" + " "+ i, tempTitle + " " + tempProgress + " "+ tempLocation);
 					}
-					listview.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_expandable_list_item_1,data));
+					
+					SimpleAdapter adapter = new SimpleAdapter(this,list,R.layout.mylistview,new String[] {"title","progress"}, new int[] { R.id.mylistiview_textView1, R.id.mylistview_textView2});
+					
+					listview.setAdapter(adapter);
+					listview.setOnItemClickListener(new OnItemClickListener(){
+
+						@Override
+						public void onItemClick(AdapterView<?> arg0, View arg1,
+								int arg2, long arg3) {
+							// TODO Auto-generated method stub
+							Log.i("clicked", "123");
+						
+//							listview.getItemAtPosition(arg2);
+						}
+						
+					});
+					//**** allow search function ***
+					// e.g. press "a" on the keyboard
+					listview.setTextFilterEnabled(true);
 					
 				}catch(Exception e){
 		        	Log.i("h",e.toString());
