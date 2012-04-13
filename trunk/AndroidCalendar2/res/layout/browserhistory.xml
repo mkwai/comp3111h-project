@@ -13,10 +13,10 @@
     		android:layout_height="wrap_content"
     		android:layout_weight="1"/>
     		
-    	<Button android:id="@+id/search" 
+    	<Button android:id="@+id/siteAdd" 
     		android:layout_height="wrap_content" 
-    		android:text="@+String/siteAdd" 
-    		android:layout_width="wrap_content"/>
+    		android:layout_width="wrap_content"
+    		android:text="Add" />
 	</LinearLayout>
 	
 	

@@ -99,7 +99,7 @@ public class DailyView extends Activity {
 			}
 
 		});
-		
+		/*
 		// button export jpg
 		bExportjpg= (Button) findViewById(R.id.exportjpg);
 		bExportjpg.setOnClickListener(new OnClickListener() {
@@ -140,7 +140,7 @@ public class DailyView extends Activity {
 			}
 
 		});
-		
+		*/
 		// text date
 		dailyview_today = (TextView) findViewById(R.id.dailyview_today);
 		dailyview_today.setText("Date: " + dailyDayOfMonth + " / " + dailyMonth
