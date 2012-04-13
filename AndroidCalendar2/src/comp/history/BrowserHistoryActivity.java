@@ -46,7 +46,7 @@ public class BrowserHistoryActivity extends Activity {
         
         testing.setAction("PopupMessage");
         Log.i("start", "start");
-
+        
         timer.scheduleAtFixedRate(new CheckWeb(), 0, 10000);
         
 
