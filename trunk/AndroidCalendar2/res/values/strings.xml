@@ -80,5 +80,6 @@
     <string name="monthlyview_previous">&lt;-previous</string>
     <string name="monthlyview_next">next-></string>
     <string name="editevent_delevent">Delete</string>
-
+	
+    <string name="webCheck">On</string>
 </resources>

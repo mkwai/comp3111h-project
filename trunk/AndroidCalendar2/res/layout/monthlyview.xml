@@ -65,6 +65,13 @@
             android:layout_height="wrap_content"
             android:text="@string/monthlyview_google" >
         </Button>
+
+        <Button
+            android:id="@+id/bWebCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/webCheck" />
+
     </LinearLayout>
 
     <View
