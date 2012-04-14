@@ -91,4 +91,5 @@
     <string name="addtask_24hour">24 hours</string>
     <string name="todolist_sort_text">sort by</string>
     <color name="text_color">#000000</color>
+    <string name="todolist_show_text">show finished task</string>
 </resources>
