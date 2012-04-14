@@ -24,8 +24,13 @@ import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
+import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -40,6 +45,12 @@ public class AddTask extends Activity {
 	private EditText location;
 	private CheckBox reminder;
 
+	private RadioGroup e;
+	private CheckBox deadline;
+	private TextView reminder_text;
+	//reminder in terms of MINUTES
+	private int reminder_setting;
+	
 	private Calendar currentDateCalendar = Calendar.getInstance();
 	private Calendar deadlineCalendar = Calendar.getInstance();
 
@@ -58,11 +69,16 @@ public class AddTask extends Activity {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 		setContentView(R.layout.addtask);
-		
+
 		title_edit = (EditText) findViewById(R.id.addtask_title_edit);
 		location = (EditText) findViewById(R.id.addtask_location_edit);
 		reminder = (CheckBox) findViewById(R.id.addtask_reminder_checkBox);
+		reminder_text = (TextView) findViewById(R.id.addtask_reminder_text);
 		
+		deadline = (CheckBox) findViewById(R.id.addtask_deadline_checkBox);
+
+		e = (RadioGroup) findViewById(R.id.addtask_reminder_radio);
+
 		// progress setting
 		progressPercent = (TextView) findViewById(R.id.addtask_progressPercent);
 		progressBar = (SeekBar) findViewById(R.id.addtask_progressBar);
@@ -132,8 +148,47 @@ public class AddTask extends Activity {
 				showDialog(DEADLINE_TIME_DIALOG);
 			}
 		});
-		
-		//cancel/confirm button
+
+		// deadline is optional
+
+		deadline.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				// TODO Auto-generated method stub
+				if (deadline.isChecked()) {
+					deadlineDateButton.setVisibility(0);
+					deadlineTimeButton.setVisibility(0);
+					reminder.setVisibility(0);
+					reminder_text.setVisibility(0);
+				}
+				if (!deadline.isChecked()) {
+					deadlineDateButton.setVisibility(8);
+					deadlineTimeButton.setVisibility(8);
+					reminder.setVisibility(8);
+					reminder_text.setVisibility(8);
+				}
+			}
+
+		});
+		// reminder setting
+
+		reminder.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				// TODO Auto-generated method stub
+				if (reminder.isChecked())
+					e.setVisibility(0);
+				if (!reminder.isChecked())
+					e.setVisibility(8);
+			}
+
+		});
+
+		// cancel/confirm button
 		cancelButton = (Button) findViewById(R.id.addtask_cancel_button);
 		confirmButton = (Button) findViewById(R.id.addtask_confirm_button);
 		cancelButton.setOnClickListener(new OnClickListener() {
@@ -153,40 +208,83 @@ public class AddTask extends Activity {
 
 				// TODO Auto-generated method stub
 				// sent data to database
-			
+
 				String taskid = AndroidCalendar2Activity.getDB().GiveEventID();
-				
+
 				String title = title_edit.getText().toString();
-				if(title.length()==0){
-					Toast.makeText(
-							AddTask.this,"You Should enter valid context/title",Toast.LENGTH_SHORT
-							).show();
+				if (title.length() == 0) {
+					Toast.makeText(AddTask.this,
+							"You Should enter valid context/title",
+							Toast.LENGTH_SHORT).show();
 					return;
 				}
-				
+
 				String deadlineTime = deadlineTimeButton.getText().toString();
-				
-				String deadlineDate="";
+
+				String deadlineDate = "";
 
 				SimpleDateFormat df = new SimpleDateFormat("MMM dd , yyyy");
-				try{
-					Date ddate = df.parse(deadlineDateButton.getText().toString());
-					deadlineDate=DateFormat.format("yyyyMMdd",ddate)+"";
-				}catch(Exception e){
-					Log.i("error",e.toString());
+				try {
+					Date ddate = df.parse(deadlineDateButton.getText()
+							.toString());
+					deadlineDate = DateFormat.format("yyyyMMdd", ddate) + "";
+				} catch (Exception e) {
+					Log.i("error", e.toString());
 				}
-											
+
 				String locat = location.getText().toString();
-				String remind = reminder.isChecked()?"1":"0";
-				String args[] = {taskid,title,deadlineDate,deadlineTime,locat,progress +"",remind};	
+				int reminderID = e.getCheckedRadioButtonId();
+				//reminder_setting <- radio group choice
+				switch(reminderID){
+				case  R.id.addtask_5min:
+					reminder_setting = 5;
+					break;
+				case  R.id.addtask_30min:
+					reminder_setting = 30;
+					break;
+				case  R.id.addtask_1hour:
+					reminder_setting = 60;
+					break;
+				case  R.id.addtask_2hour:
+					reminder_setting = 120;
+					break;
+				case  R.id.addtask_6hour:
+					reminder_setting = 360;
+					break;
+				case  R.id.addtask_24hour:
+					reminder_setting = 1440;
+					break;
+					default:
+						reminder_setting = 0;
+				}
 				
-				AndroidCalendar2Activity.getDB().insert("TaskTable", args);
+				//do not store deadline if deadline checked not checked
+				if (!deadline.isChecked()) {
+					String args[] = { taskid, title, 0 + "",0 + "", locat,
+							progress + "", 0 +"" };
+
+					AndroidCalendar2Activity.getDB().insert("TaskTable", args);
+
+				} else {
+					
+					if(reminder.isChecked()){
+						String args[] = { taskid, title, deadlineDate,
+								deadlineTime, locat, progress + "", reminder_setting +"" };
+						AndroidCalendar2Activity.getDB().insert("TaskTable", args);
+					}
+					else{
+						//set the reminder = 0 if reminder is not checked
+					String args[] = { taskid, title, deadlineDate,
+							deadlineTime, locat, progress + "", 0 + "" };
+					AndroidCalendar2Activity.getDB().insert("TaskTable", args);}
+				}
+
 				finish();
-				
+
 			}
 
 		});
-		
+
 	}
 
 	// call when create dialog

@@ -83,4 +83,10 @@
 	
     <string name="webCheck">WebCheck</string>
     <string name="siteAdd">Add</string>
+    <string name="addtask_5min">5 minutes</string>
+    <string name="addtask_30min">30 minutes</string>
+    <string name="addtask_1hour">1 hour</string>
+    <string name="addtask_2hour">2 hours</string>
+    <string name="addtask_6hour">6 hours</string>
+    <string name="addtask_24hour">24 hours</string>
 </resources>
