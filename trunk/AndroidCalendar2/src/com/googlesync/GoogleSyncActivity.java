@@ -127,8 +127,7 @@ public class GoogleSyncActivity extends Activity {
 				} else {
 					new Thread(new Runnable() {
 						public void run() {
-							username= "klhoab@gmail.com";
-							password= "977026a1";
+							
 							AndroidCalendar2Activity.getGS().setUserInfo(username, password);
 							pastdayID = rgpast.getCheckedRadioButtonId();
 
