@@ -128,6 +128,7 @@ public class TodoList extends Activity {
 
 		if (temp.length() > 0) {
 			Log.i("list", ">0");
+			String tempId = "";
 			String tempTitle = "";
 			String tempProgress = "";
 			String tempLocation = "";
@@ -138,7 +139,7 @@ public class TodoList extends Activity {
 
 				for (int i = 0; i < temp.length(); i++) {
 					HashMap<String, String> item = new HashMap<String, String>();
-
+					tempId = temp.getJSONObject(i).getString("taskID");
 					tempTitle = temp.getJSONObject(i).getString("title");
 					tempProgress = temp.getJSONObject(i).getString("progress");
 					tempLocation = temp.getJSONObject(i).getString("location");
@@ -147,7 +148,8 @@ public class TodoList extends Activity {
 					tempDeadlineTime = temp.getJSONObject(i).getString(
 							"deadlineTime");
 					tempReminder = temp.getJSONObject(i).getString("reminder");
-
+					
+					item.put("taskID", tempId);
 					item.put("title", tempTitle);
 					item.put("progress", tempProgress + " %");
 					item.put("location", tempLocation);
@@ -176,6 +178,7 @@ public class TodoList extends Activity {
 							int arg2, long arg3) {
 						// TODO Auto-generated method stub
 						AlertDialog.Builder builder = new AlertDialog.Builder(t);
+						final String tid = list.get(arg2).get("taskID");
 						String title = list.get(arg2).get("title");
 						String progress = list.get(arg2).get("progress");
 						String location = list.get(arg2).get("location");
@@ -241,13 +244,15 @@ public class TodoList extends Activity {
 
 									}
 								});
-						builder.setNegativeButton("Edit",
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog,
-											int id) {
-
+						builder.setNegativeButton("Edit", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int id) {
+										
+										Intent i = new Intent("com.calendar.EDITTASK");
+										i.putExtra("taskID", tid);
+										startActivity(i);
+										finish();
 									}
-								});
+						});
 						AlertDialog alert = builder.create();
 						alert.show();
 
