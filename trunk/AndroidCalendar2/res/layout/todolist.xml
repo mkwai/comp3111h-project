@@ -13,6 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_margin="10dp"
         android:text="@string/todolist_todolist"
+        android:textColor="@color/text_color"
         android:textSize="35dp" >
     </TextView>
 
@@ -24,6 +25,7 @@
         android:layout_below="@id/todolist_todolist"
         android:layout_margin="10dp"
         android:text="@string/todolist_todolist"
+        android:textColor="@color/text_color"
         android:textSize="20dp" >
     </TextView>
 
@@ -45,46 +47,56 @@
         android:layout_below="@id/todolist_addTask"
         android:text="@string/todolist_sorting"
         android:textSize="25dp" >
-       
-        </Spinner>
-        
+    </Spinner>
 
     <TextView
         android:id="@+id/todolist_sort_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-		android:layout_toLeftOf="@id/todolist_sorting"
         android:layout_alignBottom="@id/todolist_today"
+        android:layout_toLeftOf="@id/todolist_sorting"
         android:text="@string/todolist_sort_text"
+        android:textColor="@color/text_color"
         android:textSize="15dp" >
     </TextView>
+
+    <CheckBox
+        android:id="@+id/todolist_show_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/todolist_addTask"
+        android:layout_below="@id/todolist_sorting"
+        android:checked="true" >
+    </CheckBox>
+
+    <TextView
+        android:id="@+id/todolist_show_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/todolist_show_checkbox"
+        android:layout_toLeftOf="@+id/todolist_show_checkbox"
+        android:text="@string/todolist_show_text"
+        android:textColor="@color/text_color"
+        android:textSize="15dp" >
+    </TextView>
+
     <View
         android:id="@+id/middle_view"
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/todolist_today"
+        android:layout_below="@id/todolist_show_text"
         android:layout_marginTop="5dp"
         android:background="#FF9090" >
     </View>
 
- <!--    <ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <LinearLayout
+        android:id="@+id/todolist_linear"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/middle_view"
         android:layout_marginTop="5dp"
-        android:scrollbars="none" >
--->
-
-        <LinearLayout
-            android:id="@+id/todolist_linear"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/middle_view"
-            android:layout_marginTop="5dp"
-            android:orientation="vertical" >
-
-        </LinearLayout>
+        android:orientation="vertical" >
+    </LinearLayout>
 
 </RelativeLayout>
