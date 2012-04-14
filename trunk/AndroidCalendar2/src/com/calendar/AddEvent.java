@@ -209,7 +209,7 @@ public class AddEvent extends Activity {
 				String locat = location.getText().toString();
 				String remind = reminder.isChecked() ? "1" : "0";
 				String args[] = { eventid, title, startDate, endDate,
-						startTime, endTime, isPrivate, locat, remind };
+						startTime, endTime, isPrivate, locat, remind/*, "1"*/ };
 
 				Log.i("done", startDate + " " + startTime + " " + endDate + " "
 						+ endTime);
@@ -222,10 +222,10 @@ public class AddEvent extends Activity {
 				final String edt = endDate2 + "T" + endTime.substring(0, 2)
 						+ ":" + endTime.substring(3, 5) + ":00";
 
-				// sync to google calendar, if the connection with google is started 
+				// if the connection with google calendar is started 
 				if (AndroidCalendar2Activity.getGS() != null
 						&& AndroidCalendar2Activity.getGS().isGoogleConnected()) {
-
+					
 //					String[] args2= new String [args.length+1];
 //					for (int i=0;i< args.length; i++)
 //							args2[i]= args[i];
