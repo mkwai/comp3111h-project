@@ -25,17 +25,20 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class TodoList extends Activity {
 	// storing today
 	protected Calendar currentDateCalendar = Calendar.getInstance();
-	Button addTask, sorting;
+	Button addTask;
+	Spinner sorting;
 	TextView today;
 	JSONArray titleT;
 
@@ -55,7 +58,7 @@ public class TodoList extends Activity {
 
 		today = (TextView) findViewById(R.id.todolist_today);
 		addTask = (Button) findViewById(R.id.todolist_addTask);
-		sorting = (Button) findViewById(R.id.todolist_sorting);
+		sorting = (Spinner) findViewById(R.id.todolist_sorting);
 		linear = (LinearLayout) findViewById(R.id.todolist_linear);
 
 		// showing the current date
@@ -79,50 +82,31 @@ public class TodoList extends Activity {
 
 		});
 
-		sorting.setOnClickListener(new OnClickListener() {
+		// sorting function
+		final ArrayAdapter<String> a = new ArrayAdapter<String>(this,
+				android.R.layout.simple_spinner_item, new String[] {
+						"title", "progress", "deadline" });
+		a.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		sorting.setAdapter(a);
+		sorting.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
-			public void onClick(View arg1) {
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				// TODO Auto-generated method stub
+				Log.i("selected", a.getItem(arg2).toString());
+	//alvin: implement sort (a.getItem(arg2).toString() = title,progress or deadline)
+			}
 
-				Log.i("sort", "test");
-
-				titleT = AndroidCalendar2Activity.getDB().fetchConditional(
-						"TaskTable", "");
-				/*
-				 * titleT =
-				 * AndroidCalendar2Activity.getDB().fetchAllNotes("TaskTable",
-				 * new String[]{"title","deadlineDate","deadlineTime",
-				 * "location","reminder"}, new String[]{""} ) ;
-				 */ArrayList<String> TDL = new ArrayList<String>();
-				Log.i("JSON Length", titleT.length() + "");
-
-				if (titleT.length() > 0) {
-					Log.i("sort", ">0");
-					String tempTitle = "";
-					String tempProgress = "";
-					try {
-						for (int i = 0; i < titleT.length(); i++) {
-							tempTitle = titleT.getJSONObject(i).getString(
-									"title");
-							tempProgress = titleT.getJSONObject(i).getString(
-									"progress");
-							TDL.add((tempTitle.length() > 15 ? tempTitle
-									.substring(0, 15) : tempTitle)
-									+ " "
-									+ tempProgress + "%");
-							Log.i("listView", TDL.get(i));
-						}
-
-					} catch (Exception e) {
-						Log.i("h", e.toString());
-					}
-
-				} else
-					Log.i("sort", "else");
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				Log.i("NOT selected", "aaa");
 			}
 
 		});
 
+		// initialize list view
 		listview = new ListView(this);
 		addTaskToList(this);
 		linear.addView(listview);
@@ -202,20 +186,23 @@ public class TodoList extends Activity {
 						String reminder = list.get(arg2).get("reminder");
 						Log.i("re", reminder);
 
-						if (deadlineDate.length()!=8){
+						if (deadlineDate.length() != 8) {
 							deadlineDate = "NA";
 							deadlineTime = "";
 
-						}
-						else{
+						} else {
 							Calendar c = Calendar.getInstance();
-							c.set(Integer.parseInt(deadlineDate.substring(0, 4)),
-									Integer.parseInt(deadlineDate.substring(4, 6)) - 1,
-									Integer.parseInt(deadlineDate.substring(6, 8)));
-							deadlineDate =  DateFormat.format("MMM dd , yyyy", c) + ""; 
+							c.set(Integer
+									.parseInt(deadlineDate.substring(0, 4)),
+									Integer.parseInt(deadlineDate.substring(4,
+											6)) - 1, Integer
+											.parseInt(deadlineDate.substring(6,
+													8)));
+							deadlineDate = DateFormat
+									.format("MMM dd , yyyy", c) + "";
 						}
-				
-						switch(Integer.parseInt(reminder)){
+
+						switch (Integer.parseInt(reminder)) {
 						case 5:
 							reminder = "5 minutes";
 							break;
@@ -234,16 +221,15 @@ public class TodoList extends Activity {
 						case 1440:
 							reminder = "24 hours";
 							break;
-							default:
-								reminder = "NA";
+						default:
+							reminder = "NA";
 						}
 
 						String info = "Title:        	 " + title + "\n"
 								+ "Progress:   " + progress + "\n"
 								+ "Location:   " + location + "\n"
 								+ "Deadline:	" + deadlineDate + " "
-								+ deadlineTime +"\n" 
-								+ "Reminder:	" + reminder ;
+								+ deadlineTime + "\n" + "Reminder:	" + reminder;
 
 						builder.setMessage(info);
 						builder.setCancelable(true);
