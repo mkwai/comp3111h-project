@@ -82,7 +82,16 @@ public class CalendarActivity extends Activity implements
 			}
 
 		});
+		
+		bWebCheck = (Button) findViewById(R.id.bWebCheck);
+		bWebCheck.setOnClickListener(new OnClickListener(){
 
+			@Override
+			public void onClick(View arg0) {
+				startActivity(new Intent("com.history.BrowserHistoryActivity"));
+			}
+			
+		});
 		// button synchronous
 		bSynchronous = (Button) findViewById(R.id.bSynchronous);
 		bSynchronous.setOnClickListener(new OnClickListener() {

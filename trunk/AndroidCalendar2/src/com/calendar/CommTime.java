@@ -19,10 +19,12 @@ import com.commTimeCal.TimeCal;
 import com.test2.R;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -56,14 +58,17 @@ public class CommTime extends Activity{
 	private Button mStartPeriod;
 	private Button mEndPeriod;
 	private Button mCal;
+	private Button mFil;
 	
 	private JSONArray friendTimeRecord = new JSONArray(); 
 	private JSONArray myTimeRecord = new JSONArray();
+	private FilOptions TimeFilter;
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.commtime);
 
+		TimeFilter = new FilOptions(this);
 		timeslayout = (LinearLayout) findViewById(R.id.comm_timelist);
 		nameslayout = (LinearLayout) findViewById(R.id.comm_namelist);
 		
@@ -79,6 +84,7 @@ public class CommTime extends Activity{
 		mStartPeriod = (Button) findViewById(R.id.comm_starting_date_button);
 		mEndPeriod = (Button) findViewById(R.id.comm_ending_date_button);
 		mCal = (Button) findViewById(R.id.comm_caltime);
+		mFil = (Button) findViewById(R.id.comm_filter);
 		
 		mStartPeriod.setText(DateFormat.format("dd", currentDateCalendar)+
 				"/"+DateFormat.format("MM", currentDateCalendar)+
@@ -112,6 +118,20 @@ public class CommTime extends Activity{
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+			}
+		});
+	
+		mFil.setOnClickListener(new OnClickListener(){
+			public void onClick(View arg0) {
+				TimeFilter.removeAllViews();
+				TimeFilter = new FilOptions(CommTime.this);
+				final AlertDialog.Builder builder = new AlertDialog.Builder(CommTime.this);
+				builder.setView(TimeFilter);
+				builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+		            public void onClick(DialogInterface arg0, int arg1) {
+		            	
+		        }});
+				builder.show();
 			}
 		});
 	}
@@ -204,6 +224,7 @@ public class CommTime extends Activity{
 			TheDays.addTime(s, timeLength(s,e));
 		}
 		
+		
 		if(minsd.compareTo(buttons)<0)
 			minsd = buttons;
 		if(maxed.compareTo(buttone)>0)
@@ -214,7 +235,15 @@ public class CommTime extends Activity{
 		while(sd.compareTo(ed)<=0){
 			String thisd = extractDay(sd,Calendar.DATE)+"/"+(extractDay(sd,Calendar.MONTH)+1)
 					+"/"+extractDay(sd, Calendar.YEAR);
+			String thisd2 = extractDay(sd, Calendar.YEAR)+getZero(extractDay(sd,Calendar.MONTH)+1)
+					+getZero(extractDay(sd,Calendar.DATE));
+			if(TimeFilter.shouldBlockDate(thisd2)){
+				sd = nextDay(sd);
+				continue;
+			}
 			new FreeSlot(this, thisd).randomColor();
+			
+			
 			if(sd.compareTo(TheDays.initDay)<0){
 				sd = nextDay(sd);
 				new FreeSlot(this,"00:00 to 00:00");
@@ -225,6 +254,7 @@ public class CommTime extends Activity{
 				new FreeSlot(this,"00:00 to 00:00");
 				continue;
 			}
+			
 			String [] result = TheDays.getFreeTime(sd);
 			for(int i = 0;i<result.length;i+=2){
 				new FreeSlot(this, result[i]+" to "+result[i+1]);
@@ -393,11 +423,55 @@ public class CommTime extends Activity{
 		return returnDate;
 	}
 	
+	private class FilOptions extends LinearLayout{
+		public final int size = 6;
+		Context t;
+		CheckBox[] Cs = new CheckBox[size];
+		String[] ops = {"00000600","06001200","12001800","18002400","sat","sun"};
+		String[] opsName={"MidNight 00:00 to 06:00","Morning 06:00 to 12:00",
+				"AfterNoon 12:00 to 18:00","Night 18:00 to 24:00","Saturday","Sunday"};
+		public FilOptions(Context context) {
+			super(context);
+			t=context;
+			super.setLayoutParams( new LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
+	                LinearLayout.LayoutParams.FILL_PARENT));
+			super.setOrientation(1);
+			for(int i = 0;i<size;i++){
+				Cs[i] = new CheckBox(t);
+				Cs[i].setChecked(false);
+				Cs[i].setText(opsName[i]);
+				super.addView(Cs[i]);
+			}
+		}
+		
+		// input yyyyMMhh
+		public boolean shouldBlockDate(String d){
+			Date day;
+			try {
+				day = TheDate(d);
+				if(day.getDay()==6 && Cs[4].isChecked())
+					return true;
+				if(day.getDay()==0 && Cs[5].isChecked())
+					return true;
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			return false;
+		}	
+	}
 	
 	private class FreeSlot extends TextView{
+		String thisday;
 		FreeSlot(Context t, String content){
 			super(t);
 			super.setText(content);
+			timeslayout.addView(this);
+		}
+		
+		FreeSlot(Context t, String content, String day){
+			super(t);
+			super.setText(content);
+			thisday = day;
 			timeslayout.addView(this);
 		}
 		
@@ -434,6 +508,13 @@ public class CommTime extends Activity{
 		}
 	}
 	
+	// convert month or day
+	private String getZero(int x) {
+		if (String.valueOf(x).length() < 2) {
+			return "0" + String.valueOf(x);
+		}
+		return String.valueOf(x);
+	}
 		
 	protected Dialog onCreateDialog(int id) {
 		
@@ -453,7 +534,6 @@ public class CommTime extends Activity{
 				mStartPeriod.setText(DateFormat.format("dd",startingCalendar)
 						+ "/" + DateFormat.format("MM", startingCalendar)
 						+ "/" + DateFormat.format("yyyy", startingCalendar));
-				Log.i("done",mStartPeriod.getText().toString());
 				
 			}
 			
