@@ -1,8 +1,13 @@
 package com.googlesync;
 
+import java.io.IOException;
 import java.util.Calendar;
 
 import com.calendar.AndroidCalendar2Activity;
+import com.google.gdata.data.PlainTextConstruct;
+import com.google.gdata.data.calendar.CalendarEventEntry;
+import com.google.gdata.data.calendar.CalendarEventFeed;
+import com.google.gdata.util.ServiceException;
 import com.test2.R;
 
 import android.app.Activity;
@@ -122,6 +127,8 @@ public class GoogleSyncActivity extends Activity {
 				} else {
 					new Thread(new Runnable() {
 						public void run() {
+							username= "klhoab@gmail.com";
+							password= "977026a1";
 							AndroidCalendar2Activity.getGS().setUserInfo(username, password);
 							pastdayID = rgpast.getCheckedRadioButtonId();
 
@@ -164,6 +171,8 @@ public class GoogleSyncActivity extends Activity {
 								ShowMsgDialog("System","Connected Successfully.");
 								AndroidCalendar2Activity.getGS().getRangeEvents2(
 												(year + "-" + month + "-" + date),past, future);
+								
+								
 								Looper.loop();
 							}
 						}

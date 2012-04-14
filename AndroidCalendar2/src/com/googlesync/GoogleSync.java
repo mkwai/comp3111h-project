@@ -1,6 +1,7 @@
 package com.googlesync;
 
 import com.calendar.AndroidCalendar2Activity;
+import com.google.gdata.client.Query;
 import com.google.gdata.client.calendar.CalendarQuery;
 import com.google.gdata.client.calendar.CalendarService;
 import com.google.gdata.data.DateTime;
@@ -57,8 +58,7 @@ public class GoogleSync {
 	private boolean isGoogleConnected = false;
 
 	// Constructors
-	public GoogleSync() {
-	}
+	public GoogleSync() {}
 
 	public GoogleSync(String userName, String userPassword) {
 		this.userName = userName;
@@ -66,43 +66,21 @@ public class GoogleSync {
 	}
 
 	// setter
-	public void setUserName(String name) {
-		this.userName = name;
-	}
-
-	public void setUserPassword(String password) {
-		this.userPassword = password;
-	}
-
+	public void setUserName(String name) {this.userName = name;}
+	public void setUserPassword(String password) {this.userPassword = password;}
 	public void setUserInfo(String name, String password) {
 		this.userName = name;
 		this.userPassword = password;
 	}
 
-	public void isGoogleConnected(boolean state) {
-		isGoogleConnected = state;
-	}
-
-	public int getCount() {
-		return count;
-	}
+	public void isGoogleConnected(boolean state) {isGoogleConnected = state;}
+	public int getCount() {return count;}
 
 	// getter
-	public String getUserName() {
-		return userName;
-	}
-
-	public String getUserPassword() {
-		return userPassword;
-	}
-
-	public boolean isGoogleConnected() {
-		return isGoogleConnected;
-	}
-
-	public void setCount(int count) {
-		this.count = count;
-	}
+	public String getUserName() {return userName;}
+	public String getUserPassword() {return userPassword;}
+	public boolean isGoogleConnected() {return isGoogleConnected;}
+	public void setCount(int count) {this.count = count;}
 
 	/*
 	 * Start Connection with userName, userPassword, return false if the
@@ -113,21 +91,13 @@ public class GoogleSync {
 		try {
 			if (userName == null || userPassword == null)
 				return false;
-
 			myService.setUserCredentials(userName, userPassword);
 			metafeedUrl = new URL(METAFEED_URL_BASE + userName);
 			eventFeedUrl = new URL(METAFEED_URL_BASE + userName
 					+ EVENT_FEED_URL_SUFFIX);
-		} catch (AuthenticationException e) {
-			// TODO Auto-generated catch block
-			// System.out.println("User password is not matched");
+		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
-			// e.printStackTrace();
-		} catch (MalformedURLException e) {
-			// Bad URL
-			// System.err.println("Uh oh - you've got an invalid URL.");
-			return false;
-			// e.printStackTrace();
 		}
 		return true; // no error
 	}
@@ -143,46 +113,12 @@ public class GoogleSync {
 		}
 
 		try {
-			resultFeed = myService.getFeed(eventFeedUrl,
-					CalendarEventFeed.class);
+			resultFeed = myService.getFeed(eventFeedUrl,CalendarEventFeed.class);
 			total = resultFeed.getEntries().size();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return total;
-	}
-
-	/*
-	 * Get all event from Google Calendar, get the details of each event using
-	 * the function: getEventEntry(entry).
-	 */
-	public void getAllEvents() {
-		CalendarEventFeed resultFeed;
-
-		if (isGoogleConnected() == false) {
-			System.out.println("Connection not started");
-			return;
-		}
-		try {
-			resultFeed = myService.getFeed(eventFeedUrl,
-					CalendarEventFeed.class);
-
-			for (int i = 0; i < resultFeed.getEntries().size(); i++) {
-				CalendarEventEntry entry = resultFeed.getEntries().get(i);
-				getEventEntry(entry); // get each event entry
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			System.out.println("IOEX");
-			e.printStackTrace();
-		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	/*
@@ -195,7 +131,6 @@ public class GoogleSync {
 		try {
 			c.setTime(sdf.parse(dt));
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		c.add(Calendar.DATE, days); // number of days to add
@@ -214,16 +149,9 @@ public class GoogleSync {
 			System.out.println("No entry");
 			return;
 		}
-		
-		//////////////////////////////////
-		System.out.println( entry.getId() );
-		
-		title = entry.getTitle().getPlainText(); // get title
-		description = entry.getPlainTextContent(); // get description
-		location = entry.getLocations().get(0).getValueString(); // get location
-
-		String temp = entry.getId();
-		System.out.println(temp + '\t' + title);
+		title = entry.getTitle().getPlainText(); 
+		description = entry.getPlainTextContent();
+		location = entry.getLocations().get(0).getValueString(); 
 
 		if (entry.getTimes().size() > 0) {
 			When eventTimes = entry.getTimes().get(0);
@@ -254,43 +182,84 @@ public class GoogleSync {
 				remind = null;
 			}
 		}
-
+		
+		// check if record is in the database
 		JSONArray temp2= AndroidCalendar2Activity.getDB().fetchAllNotes(
 				"TimeTable",
 				new String[]{"title","startDate","endDate", "startTime","endTime"}, 
 				new String[] {title,startDate,endDate,startTime,endTime} 
 				) ;
-		
-		// adding the google event to the database
 		if (temp2.length()== 0){
 			eventid = AndroidCalendar2Activity.getDB().GiveEventID();
 			String args[] = { eventid, title, startDate, endDate, startTime,
-					endTime, isPrivate, location, remind };
+					endTime, isPrivate, location, remind/*, "1"*/ };
 			
 			AndroidCalendar2Activity.getDB().insert("TimeTable", args);
 			}
 		
-		
-		 System.out.println(title);
-		 System.out.println(description);
+		// System.out.println(title);
+		// System.out.println(description);
 		 //System.out.println(location);
 		// System.out.println(startDate);
 		 //System.out.println(startTime); 
-		 System.out.println();
-		 
+		
+		
+		System.out.println(); 
+		 String eventId2 = entry.getId().substring(entry.getId().lastIndexOf("/") + 1);
 
-	}
-
+		//////////////////////////////////////////////////////////////////////////////////////////////////////
+		System.out.println( "********EVENTID= " +eventId2 );
+		System.out.println("********EditLink= "+entry.getEditLink());
+		System.out.println("********getHref= "+entry.getEditLink().getHref());
+		System.out.println("********title= "+title);
+		
+	}	
 	/*
-	 * Create google event with String eventTitle, DateTime starttime, DateTime
-	 * endtime
-	 */
+	 private static final String CALENDAR_FEEDS_PREFIX = "https://www.google.com/calendar/feeds/";
+
+	 public void updateAttendeeStatus() throws IOException, ServiceException {
+		 String eventId= "aq5pnd10417quu6n66l43pd5k8";
+		
+		 //https://www.google.com/calendar/feeds/klhoab%40gmail.com/private/full/aq5pnd10417quu6n66l43pd5k8
+
+		    // URL of calendar entry to update.
+		    String eventEntryUrl = CALENDAR_FEEDS_PREFIX + userName + "/private/full/" + eventId;
+		    // Selection criteria to fetch only the attendee status of specified	user.
+		    //String selectAttendee =
+		    //    "@gd:etag,title,gd:who[@email='" + uname + "']";
+
+		    Query partialQuery = new Query(new URL(eventEntryUrl));
+		   // partialQuery.setFields(selectAttendee);
+
+		    
+		    CalendarEventEntry event = myService.getEntry(partialQuery.getUrl(),
+		        CalendarEventEntry.class);
+		    
+		    System.out.println("TITLE!!!!!!!!!!= "+ event.getTitle());
+		    // The participant list will contain exactly one attendee matching
+		    // above partial query selection criteria.
+		   // event.getParticipants().get(0).setAttendeeStatus(selection);
+
+		    // Field selection to update attendeeStatus only.
+		   // String toUpdateFields = "gd:who/gd:attendeeStatus";
+
+		    // Make patch request which returns full representation for the event.
+		   // event = service.patch(
+		   //     new URL(eventEntryUrl), toUpdateFields, event);
+
+		    // Print the updated attendee status.
+		   // OUT.println(event.getTitle().getPlainText() + " updated to: "
+		   //     + event.getParticipants().get(0).getAttendeeStatus());
+		  }
+*/
+	//Create google event with String eventTitle, DateTime starttime, DateTime endtime
 	public void insert(String eventTitle, DateTime startTime, DateTime endTime) {
 		if (isGoogleConnected() == false) {
 			System.out.println("Connection not started");
 			return;
 		}
 		CalendarEventEntry myEntry = new CalendarEventEntry();
+		System.out.println("--------" + myEntry.getId());
 		myEntry.setTitle(new PlainTextConstruct(eventTitle));
 
 		When eventTimes = new When();
@@ -299,17 +268,13 @@ public class GoogleSync {
 		myEntry.addTime(eventTimes);
 		try {
 			myService.insert(eventFeedUrl, myEntry);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ServiceException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 	}
 
-	/*
-	 * Create google event with String eventTitle, String starttime, String
-	 * endtime
-	 */
+	// Create google event with String eventTitle, String starttime, String endtime
 	public void insert(String eventTitle, String startTime, String endTime) {
 		if (isGoogleConnected() == false) {
 			System.out.println("Connection not started");
@@ -331,9 +296,7 @@ public class GoogleSync {
 		}
 	}
 
-	/*
-	 * DELETE ALL EVENTS
-	 */
+	//DELETE ALL EVENTS
 	public void deleteAllEvents() {
 		if (isGoogleConnected() == false) {
 			System.out.println("Connection not started");
@@ -347,14 +310,11 @@ public class GoogleSync {
 				CalendarEventEntry entry = resultFeed.getEntries().get(i);
 				entry.delete();
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ServiceException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}
-
 
 	 //Get google events from a range of days
 	public void getRangeEvents2(String startDate, int passDay, int futureDay) {
@@ -390,15 +350,10 @@ public class GoogleSync {
 					getEventEntry(entry); // get each event entry
 				}
 				startIndex = startIndex + entriesReturned;
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ServiceException e) {
-				// TODO Auto-generated catch block
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-
 	}
 	
 	//delete google events from a range of days
@@ -446,4 +401,36 @@ public class GoogleSync {
 			}
 		}
 	}
+	
+	public void temp(){
+		try {
+			String eventTitle= "NEW EVENT";
+			
+			//URL feedUrl = new URL ("http://www.google.com/calendar/feeds/klhoab%40gmail.com/events/aq5pnd10417quu6n66l43pd5k8");
+			URL feedUrl= new URL ("https://www.google.com/calendar/feeds/klhoab%40gmail.com/private/full/aq5pnd10417quu6n66l43pd5k8");
+
+			//CalendarEventEntry entry = myFeed.getEntries().get(0);
+			//entry.setTitle(new PlainTextConstruct("Important meeting"));
+			
+			//URL editUrl = new URL(entry.getEditLink().getHref());
+			//System.out.println("########EDIT LINK= " +entry.getEditLink().getHref());
+			
+			//myService.insert(eventFeedUrl, entry);
+			//CalendarEventEntry updatedEntry = (CalendarEventEntry)myService.update(feedUrl, entry);
+			
+			/////////////////
+			//System.out.println("########TITLE= " +entry.getTitle());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+			//myService.insert(eventFeedUrl, myEntry);
+			
+			//CalendarEventEntry updatedEntry = (CalendarEventEntry)myService.update(editUrl, myEntry);
+	}	
+		
+	
 }
+
