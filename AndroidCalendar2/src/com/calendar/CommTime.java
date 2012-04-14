@@ -196,6 +196,71 @@ public class CommTime extends Activity{
 		}
 		String buttons = dateFromButton(mStartPeriod.getText().toString(),"dd/MM/yyyy");
 		String buttone = dateFromButton(mEndPeriod.getText().toString(),"dd/MM/yyyy");
+		Date sd = TheDate(buttons);
+		Date ed = TheDate(buttone);
+		
+		int numDays = HowManyDays(TheDate(buttons), TheDate(buttone));
+		timeBoard TheDays = new timeBoard(TheDate(buttons),numDays+1);
+		for(int i = 0;i<ja.length();i++){
+			String jasdate = ja.getJSONObject(i).getString("startDate");
+			String jastime = ja.getJSONObject(i).getString("startTime");
+			String jaedate = ja.getJSONObject(i).getString("endDate");
+			String jaetime = ja.getJSONObject(i).getString("endTime");
+			
+			Date s = TheActDate(jasdate,jastime);
+			Date e = TheActDate(jaedate,jaetime);
+
+			TheDays.addTime(s, timeLength(s,e));
+		}
+		
+		// Apply Filter
+		sd = TheDate(buttons);
+		ed = TheDate(buttone);
+		while(sd.compareTo(ed)<=0){
+			TimeFilter.AddFilterOnTimeBoard(sd, TheDays);
+			sd = nextDay(sd);
+		}
+		
+		
+		sd = TheDate(buttons);
+		ed = TheDate(buttone);
+		while(sd.compareTo(ed)<=0){
+			String thisd = extractDay(sd,Calendar.DATE)+"/"+(extractDay(sd,Calendar.MONTH)+1)
+					+"/"+extractDay(sd, Calendar.YEAR)+" ("+Week2Str(sd)+") ";
+			
+			String thisd2 = extractDay(sd, Calendar.YEAR)+getZero(extractDay(sd,Calendar.MONTH)+1)
+					+getZero(extractDay(sd,Calendar.DATE));
+			if(TimeFilter.shouldBlockDate(thisd2)){
+				sd = nextDay(sd);
+				continue;
+			}
+
+			String [] result = TheDays.getFreeTime(sd);
+			if(result.length==0){
+				sd = nextDay(sd);
+				continue;
+			}
+			
+			new FreeSlot(this, thisd).randomColor();
+			
+			for(int i = 0;i<result.length;i+=2){
+				new FreeSlot(this, result[i]+" to "+result[i+1]);
+			}
+			
+			sd = nextDay(sd);
+		}
+		
+		return null;
+	}
+	
+	// ja has startDate, startTime, endDate, endTime
+	public String DoListing2(JSONArray ja) throws Exception{
+		if(ja.length()==0){
+			Toast.makeText(this, "all days free !", Toast.LENGTH_SHORT).show();
+			return null;
+		}
+		String buttons = dateFromButton(mStartPeriod.getText().toString(),"dd/MM/yyyy");
+		String buttone = dateFromButton(mEndPeriod.getText().toString(),"dd/MM/yyyy");
 		
 		String minsd = ja.getJSONObject(0).getString("startDate");
 		for(int i = 0;i<ja.length();i++){
@@ -268,6 +333,11 @@ public class CommTime extends Activity{
 		return null;
 	}
 	
+	public String Week2Str(Date d){
+		return DateFormat.format("EEE",d)+"";
+		
+	}
+	
 	public class timeBoard{
 		Date initDay;
 		oneDay days[];
@@ -294,7 +364,7 @@ public class CommTime extends Activity{
 					}
 				}
 				if(!isstart){
-					output.add("00:00");
+					output.add("24:00");
 				}
 				
 				return output.toArray(new String[output.size()]);
@@ -311,6 +381,11 @@ public class CommTime extends Activity{
 		public void addTime(Date actdate, long length){
 			try {
 				int pos = HowManyDays(initDay, actdate);
+				if(pos<0){
+					length = length-timeLength(actdate, initDay);
+					actdate = initDay;
+					pos=0;
+				}
 				int hr = extractDay(actdate,Calendar.HOUR_OF_DAY);
 				int min = extractDay(actdate,Calendar.MINUTE)/5;
 				int tl = (int) length;
@@ -358,9 +433,9 @@ public class CommTime extends Activity{
 		
 		String sdate = dateFromButton(sd,"dd/MM/yyyy");
 		String edate = dateFromButton(ed,"dd/MM/yyyy");
-		String condition=" ( startDate between '"+sdate+"' and '"+edate+"' ) " 
+		String condition=" ( ( startDate between '"+sdate+"' and '"+edate+"' ) " 
 						+" OR ( endDate between '"+sdate+"' and '"+edate+"' ) "
-						+" OR ( startDate <= '"+sdate+"' AND endDate >= '"+edate+"' ) "
+						+" OR ( startDate <= '"+sdate+"' AND endDate >= '"+edate+"' ) ) "
 						+" AND ";
 		
 		String allnamesCondi = " ( ";
@@ -371,10 +446,11 @@ public class CommTime extends Activity{
 		}
 		allnamesCondi+=" ) ";
 		condition+=allnamesCondi;
-		
 		friendTimeRecord = AndroidCalendar2Activity.getDB().fetchConditional("FriendTimeTable",condition);
 		
-		condition=" startDate >= '"+sdate+"' AND startDate <= '"+edate+"' ";
+		condition=" ( startDate between '"+sdate+"' and '"+edate+"' ) " 
+				+" OR ( endDate between '"+sdate+"' and '"+edate+"' ) "
+				+" OR ( startDate <= '"+sdate+"' AND endDate >= '"+edate+"' ) ";
 		myTimeRecord=AndroidCalendar2Activity.getDB().fetchConditional("TimeTable", condition);
 		
 		return true;
@@ -405,12 +481,6 @@ public class CommTime extends Activity{
 		return x.toArray(new String[x.size()]);
 	}
 	
-	// convert dp to px
-	private float dp2px(Context t, float dp){
-		float scale = t.getResources().getDisplayMetrics().density;
-		return (dp*scale +0.5f);
-	}
-	
 	private String dateFromButton(String inputdate, String formatOfButton){
 		String returnDate="";
 		SimpleDateFormat df = new SimpleDateFormat(formatOfButton);
@@ -427,7 +497,6 @@ public class CommTime extends Activity{
 		public final int size = 6;
 		Context t;
 		CheckBox[] Cs = new CheckBox[size];
-		String[] ops = {"00000600","06001200","12001800","18002400","sat","sun"};
 		String[] opsName={"MidNight 00:00 to 06:00","Morning 06:00 to 12:00",
 				"AfterNoon 12:00 to 18:00","Night 18:00 to 24:00","Saturday","Sunday"};
 		public FilOptions(Context context) {
@@ -444,8 +513,38 @@ public class CommTime extends Activity{
 			}
 		}
 		
+		public void AddFilterOnTimeBoard(Date thedate, timeBoard tb){
+			String tempd = extractDay(thedate, Calendar.YEAR)+getZero(extractDay(thedate,Calendar.MONTH)+1)
+					+getZero(extractDay(thedate,Calendar.DATE));
+			try {
+				if(Cs[0].isChecked()){
+					Date sd = TheActDate(tempd,"00:00");
+					Date ed = TheActDate(tempd, "06:00");
+					tb.addTime(sd, timeLength(sd,ed));
+				}
+				if(Cs[1].isChecked()){
+					Date sd = TheActDate(tempd,"06:00");
+					Date ed = TheActDate(tempd, "12:00");
+					tb.addTime(sd, timeLength(sd,ed));
+				}
+				if(Cs[2].isChecked()){
+					Date sd = TheActDate(tempd,"12:00");
+					Date ed = TheActDate(tempd, "18:00");
+					tb.addTime(sd, timeLength(sd,ed));
+				}
+				if(Cs[3].isChecked()){
+					Date sd = TheActDate(tempd,"18:00");
+					Date ed = TheActDate(tempd, "24:00");
+					tb.addTime(sd, timeLength(sd,ed));
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
 		// input yyyyMMhh
-		public boolean shouldBlockDate(String d){
+ 		public boolean shouldBlockDate(String d){
 			Date day;
 			try {
 				day = TheDate(d);
@@ -461,17 +560,9 @@ public class CommTime extends Activity{
 	}
 	
 	private class FreeSlot extends TextView{
-		String thisday;
 		FreeSlot(Context t, String content){
 			super(t);
 			super.setText(content);
-			timeslayout.addView(this);
-		}
-		
-		FreeSlot(Context t, String content, String day){
-			super(t);
-			super.setText(content);
-			thisday = day;
 			timeslayout.addView(this);
 		}
 		
