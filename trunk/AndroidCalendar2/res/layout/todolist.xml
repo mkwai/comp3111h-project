@@ -24,7 +24,7 @@
         android:layout_below="@id/todolist_todolist"
         android:layout_margin="10dp"
         android:text="@string/todolist_todolist"
-        android:textSize="25dp" >
+        android:textSize="20dp" >
     </TextView>
 
     <Button
@@ -37,15 +37,27 @@
         android:text="@string/todolist_addtask"
         android:textSize="25dp" />
 
-    <Button
+    <Spinner
         android:id="@+id/todolist_sorting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignRight="@id/todolist_addTask"
         android:layout_below="@id/todolist_addTask"
         android:text="@string/todolist_sorting"
-        android:textSize="25dp" />
+        android:textSize="25dp" >
+       
+        </Spinner>
+        
 
+    <TextView
+        android:id="@+id/todolist_sort_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+		android:layout_toLeftOf="@id/todolist_sorting"
+        android:layout_alignBottom="@id/todolist_today"
+        android:text="@string/todolist_sort_text"
+        android:textSize="15dp" >
+    </TextView>
     <View
         android:id="@+id/middle_view"
         android:layout_width="fill_parent"
