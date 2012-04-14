@@ -185,8 +185,8 @@
                 android:id="@+id/edittask_reminder_radio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/addtask_reminder_text"
-                android:layout_below="@+id/addtask_reminder_text"
+                android:layout_alignRight="@+id/edittask_reminder_text"
+                android:layout_below="@+id/edittask_reminder_text"
                 android:layout_marginRight="43dp"
                 android:orientation="vertical"
                 android:visibility="gone" >
