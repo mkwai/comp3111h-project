@@ -1,12 +1,15 @@
 package com.calendar;
 
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 
 import java.util.Calendar;
 import java.util.Date;
 
 import com.google.gdata.data.DateTime;
+import com.google.gdata.data.calendar.CalendarEventEntry;
+import com.google.gdata.util.ServiceException;
 
 import com.test2.R;
 
@@ -318,6 +321,19 @@ public class EditEvent extends Activity {
 					public void onClick(DialogInterface dialog,
 							int id) {
 						AndroidCalendar2Activity.getDB().delete("TimeTable", eventid);
+						
+						if (AndroidCalendar2Activity.getGS()!= null){
+							System.out.println("*****");
+							System.out.println("*eventid***" + eventid);
+							
+							CalendarEventEntry event= AndroidCalendar2Activity.getGS().getGoogleEvent(eventid);
+							try {
+								event.delete();
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+						
 						finish();
 					}
 				});
@@ -347,7 +363,8 @@ public class EditEvent extends Activity {
 			}
 
 		eventid = extras.getString("eventid");
-		
+	
+				
 		String title = extras.getString("title");
 		if(title !=null)
 			content.setText(title);
