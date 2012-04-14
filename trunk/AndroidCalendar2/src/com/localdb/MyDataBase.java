@@ -244,12 +244,12 @@ public class MyDataBase {
     	}
     	return JA;
     }
-    // generate 36chars random event id
+    // generate 26chars random event id
     public String GiveEventID(){
     	Random x = new Random();
     	String pool = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     	String newid = "";
-    	for(int i = 0;i<36;i++){
+    	for(int i = 0;i<26;i++){
     		newid+=pool.charAt(x.nextInt(36));
     	}
     	JSONArray ja = fetchAllNotes(TimeT.getName(),new String[] {TimeT.getFields()[0]},new String[] {newid});

@@ -154,7 +154,15 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
+        <activity
+            android:name="com.calendar.EditTask"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.calendar.EDITTASK" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name="com.exina.android.calendar.CalendarActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />
