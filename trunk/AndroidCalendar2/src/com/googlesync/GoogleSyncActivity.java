@@ -102,7 +102,7 @@ public class GoogleSyncActivity extends Activity {
 			password = ET_password.getText().toString();
 
 			year = DateFormat.format("yyyy", currentDateCalendar).toString();
-			month = DateFormat.format("MMM", currentDateCalendar).toString();
+			month = DateFormat.format("MM", currentDateCalendar).toString();
 			date = DateFormat.format("dd", currentDateCalendar).toString();
 
 			if (username.length() == 0) {
@@ -127,10 +127,9 @@ public class GoogleSyncActivity extends Activity {
 				} else {
 					new Thread(new Runnable() {
 						public void run() {
-							
 							AndroidCalendar2Activity.getGS().setUserInfo(username, password);
 							pastdayID = rgpast.getCheckedRadioButtonId();
-
+ 
 							if (pastdayID == R.id.gs_past7)
 								past = 7;
 							if (pastdayID == R.id.gs_past30)
@@ -169,9 +168,9 @@ public class GoogleSyncActivity extends Activity {
 								Looper.prepare();
 								ShowMsgDialog("System","Connected Successfully.");
 								AndroidCalendar2Activity.getGS().getRangeEvents2(
-												(year + "-" + month + "-" + date),past, future);
+												(year + "-" + month + "-" + date), past, future);
 								
-								
+								//AndroidCalendar2Activity.getGS().temp2();
 								Looper.loop();
 							}
 						}

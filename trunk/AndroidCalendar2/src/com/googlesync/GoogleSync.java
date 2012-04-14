@@ -40,20 +40,6 @@ public class GoogleSync {
 	private String userName;
 	private String userPassword;
 
-	private String eventid;
-	private String title;
-	private String description;
-	private String location;
-
-	private String startDate;
-	private String startTime;
-	private DateTime startdt;
-	private DateTime enddt;
-	private String endDate;
-	private String endTime;
-	private String isPrivate;
-	private String remind;
-
 	private int count;
 	private boolean isGoogleConnected = false;
 
@@ -121,10 +107,7 @@ public class GoogleSync {
 		return total;
 	}
 
-	/*
-	 * Helper function- add days to a given date in string format, return a new
-	 * string
-	 */
+	//Helper function- add days to a given date in string format, return a new string
 	public String addDays(String dt, int days) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar c = Calendar.getInstance();
@@ -138,50 +121,56 @@ public class GoogleSync {
 		return dt;
 	}
 
-	/*
-	 * Helper function- Get info of each calendar event entry, storing in the
-	 * database
-	 */
+	//Helper function- Get info of each calendar event entry, storing in the database
 	public void getEventEntry(CalendarEventEntry entry) {
 		assert entry != null;
-
 		if (entry == null) {
 			System.out.println("No entry");
 			return;
 		}
-		title = entry.getTitle().getPlainText(); 
-		description = entry.getPlainTextContent();
-		location = entry.getLocations().get(0).getValueString(); 
+		
+		String title = entry.getTitle().getPlainText(); 
+		String description = entry.getPlainTextContent();
+		String location;
+		if (entry.getLocations().get(0).getValueString()== null)
+			location = "";
+		else
+			location= entry.getLocations().get(0).getValueString();
+		
+		String eventid = entry.getId().substring(entry.getId().lastIndexOf("/") + 1);
+		//eventid= entry.getId();
+		 
+		DateTime startdt, enddt;
+		String startDate = null, startTime = null, endDate = null, endTime = null;
 
 		if (entry.getTimes().size() > 0) {
 			When eventTimes = entry.getTimes().get(0);
 			// Check if it is a whole day event
-			if (eventTimes.getStartTime().isDateOnly()) { 			
+			if (eventTimes.getStartTime().isDateOnly()) { 	 		
 				Boolean iswholeday = true;
-			} else {
+			} else { 
 				// example format- "2012-03-01T22:40:00"
 				startdt = eventTimes.getStartTime();
+				enddt = eventTimes.getEndTime(); 
+				
 				String[] t = startdt.toString().split("[T:+\\.-]");
-
 				startDate = t[0] + t[1] + t[2];
 				startTime = t[3] + ":" + t[4];
-
-				enddt = eventTimes.getEndTime();
-				t = null;
-				t = enddt.toString().split("[T:+\\.-]");
-
-				endDate = t[0] + t[1] + t[2];
-				endTime = t[3] + ":" + t[4];
+				
+				String[] t2 = enddt.toString().split("[T:+\\.-]");
+				endDate = t2[0] + t2[1] + t2[2];
+				endTime = t2[3] + ":" + t2[4];
+				
 				System.out.println(startDate);
 				System.out.println(startTime);
 				System.out.println(endDate);
 				System.out.println(endTime);
 				System.out.println();
-
-				isPrivate = "0";
-				remind = null;
 			}
 		}
+		
+		String isPrivate = "0";
+		String remind = ""; 
 		
 		// check if record is in the database
 		JSONArray temp2= AndroidCalendar2Activity.getDB().fetchAllNotes(
@@ -189,31 +178,73 @@ public class GoogleSync {
 				new String[]{"title","startDate","endDate", "startTime","endTime"}, 
 				new String[] {title,startDate,endDate,startTime,endTime} 
 				) ;
-		if (temp2.length()== 0){
-			eventid = AndroidCalendar2Activity.getDB().GiveEventID();
+		if (temp2.length()== 0){		
+			//eventid = AndroidCalendar2Activity.getDB().GiveEventID();
 			String args[] = { eventid, title, startDate, endDate, startTime,
 					endTime, isPrivate, location, remind/*, "1"*/ };
 			
 			AndroidCalendar2Activity.getDB().insert("TimeTable", args);
-			}
+		}
 		
-		// System.out.println(title);
-		// System.out.println(description);
-		 //System.out.println(location);
-		// System.out.println(startDate);
-		 //System.out.println(startTime); 
-		
+		System.out.println("****************");
+		 System.out.println(eventid);
+		 System.out.println(title);
+		 System.out.println(startDate);
+		 System.out.println(endDate);
+		 System.out.println(startTime); 
+		 System.out.println(endTime); 
+		 System.out.println(isPrivate); 
+		 System.out.println(location); 
+		 System.out.println(remind); 
+				
 		
 		System.out.println(); 
-		 String eventId2 = entry.getId().substring(entry.getId().lastIndexOf("/") + 1);
+		 //String eventid2 = entry.getId().substring(entry.getId().lastIndexOf("/") + 1);
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
-		System.out.println( "********EVENTID= " +eventId2 );
+		System.out.println( "********EVENTID= " +eventid );
 		System.out.println("********EditLink= "+entry.getEditLink());
 		System.out.println("********getHref= "+entry.getEditLink().getHref());
 		System.out.println("********title= "+title);
 		
-	}	
+	}
+	public CalendarEventEntry getGoogleEvent( String googleEventId){	
+		 try { 
+			 String eventEntryUrl= "https://www.google.com/calendar/feeds/" + userName+ "/private/full/" + googleEventId ;
+			 Query partialQuery = new Query(new URL(eventEntryUrl));
+			 CalendarEventEntry event = myService.getEntry(partialQuery.getUrl(),CalendarEventEntry.class);
+			 return event;
+			 
+		} catch (Exception e) {
+			System.out.println("no such event ID");
+			return null;
+		}
+	}
+	
+	/*public void temp2( String googleEventId){	
+		 try {
+			 //String eventEntryUrl = "https://www.google.com/calendar/feeds/klhoab@gmail.com/private/full/aq5pnd10417quu6n66l43pd5k8";
+			 
+			 String eventEntryUrl= "https://www.google.com/calendar/feeds/" + userName+ "/private/full/" + googleEventId ;
+			 Query partialQuery = new Query(new URL(eventEntryUrl));
+			 CalendarEventEntry event = myService.getEntry(partialQuery.getUrl(),CalendarEventEntry.class);
+			 
+			 //System.out.println("ooooooEVENTID=  " + event.getId());
+			// System.out.println("ooooooTITLE=  " + event.getTitle().getPlainText());
+			 
+			 event.setTitle(new PlainTextConstruct("NEW"+event.getTitle().getPlainText() )) ;
+			 event.update();
+			 
+			 //check
+			 event = myService.getEntry(partialQuery.getUrl(),CalendarEventEntry.class);
+			 System.out.println("NNNNNoEVENTID=  " + event.getId());
+			 System.out.println("NNNNNoTITLE=  " + event.getTitle().getPlainText());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		 
+	}*/
 	/*
 	 private static final String CALENDAR_FEEDS_PREFIX = "https://www.google.com/calendar/feeds/";
 
@@ -250,7 +281,7 @@ public class GoogleSync {
 		    // Print the updated attendee status.
 		   // OUT.println(event.getTitle().getPlainText() + " updated to: "
 		   //     + event.getParticipants().get(0).getAttendeeStatus());
-		  }
+		  } 
 */
 	//Create google event with String eventTitle, DateTime starttime, DateTime endtime
 	public void insert(String eventTitle, DateTime startTime, DateTime endTime) {
@@ -259,7 +290,8 @@ public class GoogleSync {
 			return;
 		}
 		CalendarEventEntry myEntry = new CalendarEventEntry();
-		System.out.println("--------" + myEntry.getId());
+		//myEntry.setId("abcdefgijklmnopqrstuvwxyz");
+		//System.out.println("--------" + myEntry.getId());
 		myEntry.setTitle(new PlainTextConstruct(eventTitle));
 
 		When eventTimes = new When();

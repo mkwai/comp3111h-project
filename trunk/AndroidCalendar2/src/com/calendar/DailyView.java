@@ -113,7 +113,7 @@ public class DailyView extends Activity {
 				
 				Canvas canvas = new Canvas(screenBitmap);
 				layout.draw(canvas);
-		
+				
 				FileOutputStream fos;
 				try {
 					File exportDirectory = new File("/sdcard/dailyassistant_image/");
@@ -139,8 +139,8 @@ public class DailyView extends Activity {
 				}
 			}
 
-		});
-		*/
+		});*/
+		
 		// text date
 		dailyview_today = (TextView) findViewById(R.id.dailyview_today);
 		dailyview_today.setText("Date: " + dailyDayOfMonth + " / " + dailyMonth
