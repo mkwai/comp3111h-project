@@ -64,7 +64,7 @@ public class BrowserHistoryActivity extends Activity {
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				String siteAddress =  siteInput.getText().toString();
-				if(siteAddress.matches("[a-zA-Z0-9]+(.[a-zA-Z0-9])*")){
+				if(siteAddress.matches("[a-zA-Z0-9]+(.[a-zA-Z0-9])*(/[^\\s]*)?")){
 					if(siteAddress.length()<3) 
 						Toast.makeText(BrowserHistoryActivity.this, "Input address is too short!", Toast.LENGTH_SHORT).show();
 					else if(blockWebsites.contains(siteAddress))
