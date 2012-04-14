@@ -33,12 +33,12 @@
     <string name="editevent_confirm">Confirm</string>
     <string name="editevent_cancel">Cancel</string>
     
-    <color name="background_color">#505050</color>
+    <color name="background_color">#FFFFFF</color>
 
-    <string name="monthlyview_synchronous">Sharing</string>
-    <string name="monthlyview_add_event">+</string>
-    <string name="monthlyview_google">Google Sync.</string>
-    <string name="monthlyview_daily">Daily Schedule</string>
+    <string name="monthlyview_synchronous">Sharing System</string>
+    <string name="monthlyview_addevent">Add Event</string>
+    <string name="monthlyview_google">Google Synchronous</string>
+    <string name="monthlyview_daily">View Daily Schedule</string>
     <string name="monthlyview_monthly">Monthly</string>
     <string name="monthlyview_goto">GoTo</string>
     <string name="monthlyview_todoList">To-do List</string>
@@ -73,15 +73,15 @@
     <string name="addtask_progress_percent">0 % </string>
     <string name="monthlyview_weekDay"></string>
 
-    <color name="view_color">#660099</color>
+    <color name="view_color">#000080</color>
 
     <string name="dailyview_previous">&lt;- previous</string>
     <string name="dailyview_next">next -></string>
-    <string name="monthlyview_previous">&lt;-previous</string>
-    <string name="monthlyview_next">next-></string>
+    <string name="monthlyview_previous">&lt;-</string>
+    <string name="monthlyview_next">-&gt;</string>
     <string name="editevent_delevent">Delete</string>
 	
-    <string name="webCheck">WebCheck</string>
+    <string name="webCheck">Web Hindering</string>
     <string name="siteAdd">Add</string>
     <string name="addtask_5min">5 minutes</string>
     <string name="addtask_30min">30 minutes</string>
@@ -90,4 +90,5 @@
     <string name="addtask_6hour">6 hours</string>
     <string name="addtask_24hour">24 hours</string>
     <string name="todolist_sort_text">sort by</string>
+    <color name="text_color">#000000</color>
 </resources>
