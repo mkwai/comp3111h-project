@@ -20,8 +20,7 @@
     	
  	    <Button android:id="@+id/setOnOff" 
 	   		android:layout_height="wrap_content" 
-	   		android:layout_width="50dip"
-	   		android:text="On" />
+	   		android:layout_width="50dip"/>
 	</LinearLayout>
 	
 	

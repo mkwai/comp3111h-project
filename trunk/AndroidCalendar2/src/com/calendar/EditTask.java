@@ -8,6 +8,7 @@ import java.util.Date;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.Alarm.Alarms;
 import com.test2.R;
 
 import android.app.Activity;
@@ -241,7 +242,43 @@ public class EditTask extends Activity{
 				String condition = " taskID = '"+taskID+"' ";
 				AndroidCalendar2Activity.getDB().updateConditional("TaskTable", condition, fields, args);
 
-
+				/*!!!!!!!!!!!!! Alert User !!!!!!!!!!!!!!!*/
+				if(reminder_setting>0 && progress<100){
+					if(Alarms.contains(taskID)){
+						final long milliS = deadlineCalendar.getTimeInMillis()
+												- reminder_setting*60000L;
+						final String ID = taskID;
+						final String taskTitle = title; 
+						new Thread(new Runnable() {
+							public void run() {
+									Log.i("temp!!", milliS +"");
+									Alarms.addAlarm(EditTask.this, ID, taskTitle, milliS, false);
+							}
+						}).start();
+					}
+					else{
+						final long milliS = deadlineCalendar.getTimeInMillis()
+												- reminder_setting*60000L;
+						final String ID = taskID;
+						final String taskTitle = title; 
+						
+						new Thread(new Runnable() {
+							public void run() {
+									Log.i("temp!!", milliS +"");
+									Alarms.updateAlarm(EditTask.this, ID, taskTitle, milliS, false);
+							}
+						}).start();
+					}
+				}
+				else if ((progress == 100 || reminder_setting<=0) && Alarms.contains(taskID)){
+					final String ID = taskID;
+					new Thread(new Runnable() {
+						public void run() {
+							Alarms.cancelAlarm(EditTask.this, ID);
+						}
+					}).start();
+				}
+				
 				finish();
 			}
 		});
