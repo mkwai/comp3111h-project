@@ -92,7 +92,7 @@ public class CalendarActivity extends Activity implements
 			}
 			
 		});
-		
+		/*
 		bAlarm = (Button) findViewById(R.id.bAlarm);
 		bAlarm.setOnClickListener(new OnClickListener(){
 
@@ -101,7 +101,7 @@ public class CalendarActivity extends Activity implements
 				startActivity(new Intent("com.Alarm.TEST"));
 			}
 			
-		});
+		});*/
 		// button synchronous
 		bSynchronous = (Button) findViewById(R.id.bSynchronous);
 		bSynchronous.setOnClickListener(new OnClickListener() {
