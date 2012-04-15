@@ -209,6 +209,12 @@
         </activity>
         <receiver android:name="com.Alarm.AlamrReceiver" android:process=":remote"></receiver>
         
+       <service android:name="com.Alarm.AlarmService" android:enabled="true" />  
+		<service android:name="com.Alarm.AlarmService">  
+            <intent-filter>  
+                <action android:name="AlermService"></action>  
+            </intent-filter>  
+        </service>
     </application>
 
 </manifest>

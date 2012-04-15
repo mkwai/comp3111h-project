@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.Alarm.Alarms;
 import com.google.gdata.data.DateTime;
 import com.google.gdata.data.calendar.CalendarEventEntry;
 import com.google.gdata.util.ServiceException;
@@ -227,7 +228,54 @@ public class EditEvent extends Activity {
 				String condition=" eventID = '"+eventid+"' ";
 				
 				AndroidCalendar2Activity.getDB().updateConditional("TimeTable", condition, fields, args);
-
+				
+				/*!!!!!!!!!!!!! Alert User !!!!!!!!!!!!!!!*/
+				if(remind.equals("1") && locat.length()<=0){
+					if (!Alarms.contains(eventid)){
+						final int dayHour = Integer.parseInt(endTime.substring(0, 2));
+						final int dayMin = Integer.parseInt(endTime.substring(3, 5));
+						final String ID = eventid;
+						new Thread(new Runnable() {
+							public void run() {
+								
+									Calendar temp = (Calendar) endingCalendar.clone();
+									temp.set(Calendar.HOUR_OF_DAY, dayHour);
+									temp.set(Calendar.MINUTE, dayMin);
+									
+									Log.i("temp!!", temp.getTimeInMillis()+"");
+									Alarms.addAlarm(EditEvent.this, ID, title, temp.getTimeInMillis(), true);
+														
+							}
+						}).start();
+					}
+					
+					else {
+						final int dayHour = Integer.parseInt(endTime.substring(0, 2));
+						final int dayMin = Integer.parseInt(endTime.substring(3, 5));
+						final String ID = eventid;
+						new Thread(new Runnable() {
+							public void run() {
+								
+									Calendar temp = (Calendar) endingCalendar.clone();
+									temp.set(Calendar.HOUR_OF_DAY, dayHour);
+									temp.set(Calendar.MINUTE, dayMin);
+									
+									Log.i("temp!!", temp.getTimeInMillis()+"");
+									Alarms.updateAlarm(EditEvent.this, ID, title, temp.getTimeInMillis(), true);
+														
+							}
+						}).start();
+					}
+				}
+				else if (remind.equals("0") && locat.length()<=0 && Alarms.contains(eventid)){
+					final String ID = eventid;
+					new Thread(new Runnable() {
+						public void run() {
+							Alarms.cancelAlarm(EditEvent.this, ID);
+						}
+					}).start();
+				}
+				
 				
 				// "2012-03-01T22:40:00"
 				final String sdt = startDate2 + "T" + startTime.substring(0, 2)
