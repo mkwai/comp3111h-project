@@ -195,37 +195,43 @@
                     android:id="@+id/edittask_5min"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/addtask_5min" />
+                    android:text="@string/addtask_5min" 
+                    android:textColor="@color/text_color"/>
 
                 <RadioButton
                     android:id="@+id/edittask_30min"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/addtask_30min" />
+                    android:text="@string/addtask_30min" 
+                    android:textColor="@color/text_color"/>
 
                 <RadioButton
                     android:id="@+id/edittask_1hour"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/addtask_1hour" />
+                    android:text="@string/addtask_1hour" 
+                    android:textColor="@color/text_color"/>
 
                 <RadioButton
                     android:id="@+id/edittask_2hour"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/addtask_2hour" />
+                    android:text="@string/addtask_2hour"
+                    android:textColor="@color/text_color" />
 
                 <RadioButton
                     android:id="@+id/edittask_6hour"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/addtask_6hour" />
+                    android:text="@string/addtask_6hour"
+                    android:textColor="@color/text_color" />
 
                 <RadioButton
                     android:id="@+id/edittask_24hour"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/addtask_24hour" />
+                    android:text="@string/addtask_24hour" 
+                    android:textColor="@color/text_color"/>
             </RadioGroup>
         </RelativeLayout>
 

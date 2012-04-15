@@ -39,7 +39,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
-public class EditTask extends Activity{
+public class EditTask extends Activity {
 	private Button deleteButton;
 	private Button deadlineDateButton;
 	private Button deadlineTimeButton;
@@ -52,9 +52,9 @@ public class EditTask extends Activity{
 	private RadioGroup e;
 	private CheckBox deadline;
 	private TextView reminder_text;
-	//reminder in terms of MINUTES
+	// reminder in terms of MINUTES
 	private int reminder_setting;
-	
+
 	private Calendar currentDateCalendar = Calendar.getInstance();
 	private Calendar deadlineCalendar = Calendar.getInstance();
 
@@ -64,9 +64,9 @@ public class EditTask extends Activity{
 	private SeekBar progressBar;
 	private TextView progressPercent;
 	private int progress = 0;
-	
+
 	private String taskID;
-	
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// set to full screen
@@ -74,48 +74,59 @@ public class EditTask extends Activity{
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.edittask);
-		
+
 		title_edit = (EditText) findViewById(R.id.edittask_title_edit);
 		location = (EditText) findViewById(R.id.edittask_location_edit);
 		reminder = (CheckBox) findViewById(R.id.edittask_reminder_checkBox);
 		reminder_text = (TextView) findViewById(R.id.edittask_reminder_text);
 		deadline = (CheckBox) findViewById(R.id.edittask_deadline_checkBox);
 		e = (RadioGroup) findViewById(R.id.edittask_reminder_radio);
-		
+
 		// progress setting
 		progressPercent = (TextView) findViewById(R.id.edittask_progressPercent);
 		progressBar = (SeekBar) findViewById(R.id.edittask_progressBar);
 
-		progressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-					public void onStopTrackingTouch(SeekBar seekBar) {}
-					public void onStartTrackingTouch(SeekBar seekBar) {}
-					public void onProgressChanged(SeekBar seekBar, int p, boolean fromUser) {
+		progressBar
+				.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+					public void onStopTrackingTouch(SeekBar seekBar) {
+					}
+
+					public void onStartTrackingTouch(SeekBar seekBar) {
+					}
+
+					public void onProgressChanged(SeekBar seekBar, int p,
+							boolean fromUser) {
 						progressPercent.setText(p + " % ");
 						progress = p;
 					}
-		});
+				});
 
 		// deadline setting
 		deadlineDateButton = (Button) findViewById(R.id.edittask_deadlinedate_button);
 		deadlineTimeButton = (Button) findViewById(R.id.edittask_deadlinetime_button);
-		
-		CharSequence currentYear = DateFormat.format("yyyy",currentDateCalendar);
-		CharSequence currentMonth = DateFormat.format("MMM",currentDateCalendar);
+
+		CharSequence currentYear = DateFormat.format("yyyy",
+				currentDateCalendar);
+		CharSequence currentMonth = DateFormat.format("MMM",
+				currentDateCalendar);
 		CharSequence currentDate = DateFormat.format("dd", currentDateCalendar);
 		CharSequence currentHour = DateFormat.format("kk", currentDateCalendar);
-		int currentMinute = Integer.parseInt((String) (DateFormat.format("mm",currentDateCalendar)));
+		int currentMinute = Integer.parseInt((String) (DateFormat.format("mm",
+				currentDateCalendar)));
 		currentMinute = (currentMinute / 5) * 5;
-		
+
 		// convert the minutes in current calendar to 5 minute interval
 		currentDateCalendar.set(Calendar.MINUTE, currentMinute);
 		deadlineCalendar = currentDateCalendar;
-	
-		CharSequence currentMinuteConverted = currentMinute <= 5 ? 
-				"0"+Integer.toString(currentMinute) : Integer.toString(currentMinute);
 
-		deadlineDateButton.setText(currentMonth + " " + currentDate + " , " + currentYear);
+		CharSequence currentMinuteConverted = currentMinute <= 5 ? "0"
+				+ Integer.toString(currentMinute) : Integer
+				.toString(currentMinute);
+
+		deadlineDateButton.setText(currentMonth + " " + currentDate + " , "
+				+ currentYear);
 		deadlineTimeButton.setText(currentHour + ":" + currentMinuteConverted);
-		
+
 		deadlineDateButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
 				showDialog(DEADLINE_DATE_DIALOG);
@@ -129,7 +140,8 @@ public class EditTask extends Activity{
 
 		deadline.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
 				if (deadline.isChecked()) {
 					deadlineDateButton.setVisibility(0);
 					deadlineTimeButton.setVisibility(0);
@@ -145,7 +157,7 @@ public class EditTask extends Activity{
 			}
 
 		});
-		
+
 		reminder.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
@@ -155,41 +167,68 @@ public class EditTask extends Activity{
 					e.setVisibility(8);
 			}
 		});
-	
 
-		// get params from prevous activity
-		try{
+		// get params from previous activity
+		try {
 			Bundle extras = getIntent().getExtras();
 			taskID = extras.getString("taskID");
-			JSONArray ja = AndroidCalendar2Activity.getDB().fetchAllNotes("TaskTable", new String[]{"taskID"}, new String[]{taskID});
+			JSONArray ja = AndroidCalendar2Activity.getDB().fetchAllNotes(
+					"TaskTable", new String[] { "taskID" },
+					new String[] { taskID });
 			JSONObject taskJO = ja.getJSONObject(0);
 			title_edit.setText(taskJO.getString("title"));
 			location.setText(taskJO.getString("location"));
 			progress = Integer.parseInt(taskJO.getString("progress"));
 			progressPercent.setText(progress + " % ");
-			progressBar.setProgress(progressBar.getMax()*progress/100);
+			progressBar.setProgress(progressBar.getMax() * progress / 100);
 			String tempdD = taskJO.getString("deadlineDate");
 			String tempdT = taskJO.getString("deadlineTime");
-			if(tempdD.equals("0") && tempdT.equals("0")){
+			if (tempdD.equals("0") && tempdT.equals("0")) {
 				deadline.setChecked(false);
-			}else{
-				Date tempD = TheActDate(tempdD,tempdT);
-				deadlineDateButton.setText(DateFormat.format("MMM dd , yyyy", tempD));
+			} else {
+				Date tempD = TheActDate(tempdD, tempdT);
+				deadlineDateButton.setText(DateFormat.format("MMM dd , yyyy",
+						tempD));
 				deadlineTimeButton.setText(DateFormat.format("hh:mm", tempD));
 			}
-			if(taskJO.getString("reminder").equals("0"))
+			if (taskJO.getString("reminder").equals("0"))
 				reminder.setChecked(false);
-			else
+			else{
 				reminder.setChecked(true);
-		}catch(Exception e){
+				//
+				int reminderID = Integer.parseInt(taskJO.getString("reminder"));
+				// reminder_setting <- database choice
+				switch (reminderID) {
+				case 5:
+					e.check(R.id.edittask_5min);
+					break;
+				case 30:
+					e.check(R.id.edittask_30min);
+						break;
+				case 60:
+					e.check(R.id.edittask_1hour);
+					break;
+				case 120:
+					e.check(R.id.edittask_2hour);
+					break;
+				case 360:
+					e.check(R.id.edittask_6hour);
+					break;
+				case 1440:
+					e.check(R.id.edittask_24hour);
+					break;
+				}
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		// cancel/confirm button
 		cancelButton = (Button) findViewById(R.id.edittask_cancel_button);
 		confirmButton = (Button) findViewById(R.id.edittask_confirm_button);
 		cancelButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
+				
 				finish();
 			}
 		});
@@ -198,7 +237,9 @@ public class EditTask extends Activity{
 			public void onClick(View arg0) {
 				String title = title_edit.getText().toString();
 				if (title.length() == 0) {
-					Toast.makeText(EditTask.this,"You Should enter valid context/title",Toast.LENGTH_SHORT).show();
+					Toast.makeText(EditTask.this,
+							"You Should enter valid context/title",
+							Toast.LENGTH_SHORT).show();
 					return;
 				}
 
@@ -206,7 +247,8 @@ public class EditTask extends Activity{
 				String deadlineDate = "";
 				SimpleDateFormat df = new SimpleDateFormat("MMM dd , yyyy");
 				try {
-					Date ddate = df.parse(deadlineDateButton.getText().toString());
+					Date ddate = df.parse(deadlineDateButton.getText()
+							.toString());
 					deadlineDate = DateFormat.format("yyyyMMdd", ddate) + "";
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -214,65 +256,81 @@ public class EditTask extends Activity{
 
 				String locat = location.getText().toString();
 				int reminderID = e.getCheckedRadioButtonId();
-				//reminder_setting <- radio group choice
-				switch(reminderID){
-				case  R.id.addtask_5min: reminder_setting = 5; break;
-				case  R.id.addtask_30min: reminder_setting = 30; break;
-				case  R.id.addtask_1hour: reminder_setting = 60; break;
-				case  R.id.addtask_2hour: reminder_setting = 120; break;
-				case  R.id.addtask_6hour: reminder_setting = 360; break;
-				case  R.id.addtask_24hour: reminder_setting = 1440; break;
-				default: reminder_setting = 0;
+				// reminder_setting <- radio group choice
+				switch (reminderID) {
+				case R.id.edittask_5min:
+					reminder_setting = 5;
+					break;
+				case R.id.edittask_30min:
+					reminder_setting = 30;
+					break;
+				case R.id.edittask_1hour:
+					reminder_setting = 60;
+					break;
+				case R.id.edittask_2hour:
+					reminder_setting = 120;
+					break;
+				case R.id.edittask_6hour:
+					reminder_setting = 360;
+					break;
+				case R.id.edittask_24hour:
+					reminder_setting = 1440;
+					break;
+				default:
+					reminder_setting = 0;
 				}
-				
-				if(!deadline.isChecked()){
+
+				if (!deadline.isChecked()) {
 					deadlineTime = "0";
 					deadlineDate = "0";
 					reminder_setting = 0;
 				}
-				if(!reminder.isChecked()){
+				if (!reminder.isChecked()) {
 					reminder_setting = 0;
 				}
-				
-				// update
-				String args[] = {title, deadlineDate,deadlineTime,
-						locat,progress+"",reminder_setting+""};
-				String fields[] = {"title","deadlineDate","deadlineTime",
-						"location", "progress", "reminder"};
-				String condition = " taskID = '"+taskID+"' ";
-				AndroidCalendar2Activity.getDB().updateConditional("TaskTable", condition, fields, args);
 
-				/*!!!!!!!!!!!!! Alert User !!!!!!!!!!!!!!!*/
-				if(reminder_setting>0 && progress<100){
-					final long milliS = deadlineCalendar.getTimeInMillis() - reminder_setting*60000L;
+				// update
+				String args[] = { title, deadlineDate, deadlineTime, locat,
+						progress + "", reminder_setting + "" };
+				String fields[] = { "title", "deadlineDate", "deadlineTime",
+						"location", "progress", "reminder" };
+				String condition = " taskID = '" + taskID + "' ";
+				AndroidCalendar2Activity.getDB().updateConditional("TaskTable",
+						condition, fields, args);
+				Log.i("db", title + " " + reminder_setting);
+				
+				/* !!!!!!!!!!!!! Alert User !!!!!!!!!!!!!!! */
+				if (reminder_setting > 0 && progress < 100) {
+					final long milliS = deadlineCalendar.getTimeInMillis()
+							- reminder_setting * 60000L;
 					final String ID = taskID;
-					final String taskTitle = title; 
-					
-					if(!Alarms.contains(taskID)){
+					final String taskTitle = title;
+
+					if (!Alarms.contains(taskID)) {
 						new Thread(new Runnable() {
 							public void run() {
-									Log.i("temp!!", milliS +"");
-									Alarms.addAlarm(EditTask.this, ID, taskTitle, milliS, false);
+								Log.i("temp!!", milliS + "");
+								Alarms.addAlarm(EditTask.this, ID, taskTitle,
+										milliS, false);
 							}
 						}).start();
-					}
-					else if(milliS >= System.currentTimeMillis()){
+					} else if (milliS >= System.currentTimeMillis()) {
 						new Thread(new Runnable() {
 							public void run() {
-									Log.i("temp!!", milliS +"");
-									Alarms.updateAlarm(EditTask.this, ID, taskTitle, milliS, false);
+								Log.i("temp!!", milliS + "");
+								Alarms.updateAlarm(EditTask.this, ID,
+										taskTitle, milliS, false);
 							}
 						}).start();
-					}
-					else{
+					} else {
 						new Thread(new Runnable() {
 							public void run() {
 								Alarms.cancelAlarm(EditTask.this, ID);
 							}
 						}).start();
 					}
-				}
-				else if ((progress == 100 || reminder_setting<=0) && Alarms.contains(taskID)){
+				} else if ((progress == 100 || reminder_setting <= 0)
+						&& Alarms.contains(taskID)) {
 					final String ID = taskID;
 					new Thread(new Runnable() {
 						public void run() {
@@ -280,40 +338,40 @@ public class EditTask extends Activity{
 						}
 					}).start();
 				}
-				
+
 				finish();
 			}
 		});
-		
+
 		// delete button
 		deleteButton = (Button) findViewById(R.id.edittask_delete);
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage("Are you sure to delete this event ?");
 		builder.setCancelable(false);
 		builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						AndroidCalendar2Activity.getDB().delete("TaskTable", taskID);
-						finish();
-					}
-				});
-	
+			public void onClick(DialogInterface dialog, int id) {
+				AndroidCalendar2Activity.getDB().delete("TaskTable", taskID);
+				finish();
+			}
+		});
+
 		builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog,int id) {
-					}
-				});
-		
-		deleteButton.setOnClickListener(new OnClickListener(){
+			public void onClick(DialogInterface dialog, int id) {
+			}
+		});
+
+		deleteButton.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				AlertDialog alert = builder.create();
 				alert.show();
 			}
-			
+
 		});
-		
+
 	}
-	
+
 	// convert month or day
 	private String getZero(int x) {
 		if (String.valueOf(x).length() < 2) {
@@ -321,26 +379,27 @@ public class EditTask extends Activity{
 		}
 		return String.valueOf(x);
 	}
-	
+
 	// convert to date format
-	public Date TheDate(String d) throws ParseException{
+	public Date TheDate(String d) throws ParseException {
 		return new SimpleDateFormat("yyyyMMdd").parse(d);
 	}
-	
-	public Date TheActDate(String d, String hm) throws Exception{
+
+	public Date TheActDate(String d, String hm) throws Exception {
 		Date sd = new Date();
-		String []HourMin = hm.split(":");
-		long thetime = TheDate(d).getTime()+Integer.parseInt(HourMin[0])*60*60*1000+Integer.parseInt(HourMin[1])*60*1000;
+		String[] HourMin = hm.split(":");
+		long thetime = TheDate(d).getTime() + Integer.parseInt(HourMin[0]) * 60
+				* 60 * 1000 + Integer.parseInt(HourMin[1]) * 60 * 1000;
 		sd.setTime(thetime);
 		return sd;
 	}
-	
-	public int extractDay(Date d, int field){
+
+	public int extractDay(Date d, int field) {
 		Calendar temp = Calendar.getInstance();
 		temp.setTime(d);
 		return temp.get(field);
 	}
-	
+
 	// call when create dialog
 	protected Dialog onCreateDialog(int id) {
 
@@ -460,5 +519,4 @@ public class EditTask extends Activity{
 		return nextMinute;
 	}
 
-	
 }
