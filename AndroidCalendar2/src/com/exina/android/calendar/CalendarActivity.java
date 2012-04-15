@@ -41,7 +41,7 @@ public class CalendarActivity extends Activity implements
 
 	LinearLayout calendarL;
 	Button bGoTo, bAddEvent, bSynchronous, bDaily, bMonthlyb, bTodoList,
-			bGoogle, bPrevious, bNext, bWebCheck;
+			bGoogle, bPrevious, bNext, bWebCheck, bAlarm;
 	TextView monthlyview_month;
 	public static final int SET_DATE_DIALOG = 0;
 
@@ -88,7 +88,17 @@ public class CalendarActivity extends Activity implements
 
 			@Override
 			public void onClick(View arg0) {
-				startActivity(new Intent("com.history.BrowserHistoryActivity"));
+				startActivity(new Intent("com.history.BHA"));
+			}
+			
+		});
+		
+		bAlarm = (Button) findViewById(R.id.bAlarm);
+		bAlarm.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				startActivity(new Intent("com.Alarm.TEST"));
 			}
 			
 		});
