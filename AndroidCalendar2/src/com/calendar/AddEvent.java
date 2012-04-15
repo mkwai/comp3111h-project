@@ -7,7 +7,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 import com.Alarm.Alarms;
+import com.Alarm.LocationBasedAlarm;
 import com.google.gdata.data.DateTime;
+import com.location.CityBean;
 
 import com.test2.R;
 
@@ -44,7 +46,7 @@ public class AddEvent extends Activity {
 	private Button startingTimeButton;
 	private Button endingTimeButton;
 	private Button searchLoc;
-
+	private CityBean CB = new CityBean();
 	// for date set dialog
 	public static final int STARTING_DATE_DIALOG = 0;
 	public static final int STARTING_TIME_DIALOG = 1;
@@ -205,11 +207,19 @@ public class AddEvent extends Activity {
 							Toast.LENGTH_SHORT).show();
 					return;
 				}
-
-				String isPrivate = privateEvent.isChecked() ? "1" : "0";
-				String locat = location.getText().toString();
-				String remind = reminder.isChecked() ? "1" : "0";
 				
+				String isPrivate = privateEvent.isChecked() ? "1" : "0";
+				
+				String locat = location.getText().toString();
+				if (!(locat.length()==0 || locat.equals(CB.getCityName()))) {
+					Toast.makeText(AddEvent.this,
+							"Search valid address before add!",
+							Toast.LENGTH_SHORT).show();
+					return;
+				}
+				
+				String remind = reminder.isChecked() ? "1" : "0";
+								
 				int dayHour = Integer.parseInt(endTime.substring(0, 2));
 				int dayMin = Integer.parseInt(endTime.substring(3, 5));
 				endingCalendar.set(Calendar.HOUR_OF_DAY, dayHour);
@@ -229,8 +239,6 @@ public class AddEvent extends Activity {
 						public void run() {
 							
 								Calendar temp = (Calendar) endingCalendar.clone();
-
-								
 								Log.i("temp!!", temp.getTimeInMillis()+"");
 								Alarms.addAlarm(AddEvent.this, ID, title, milliSecond, true);
 													
@@ -238,7 +246,10 @@ public class AddEvent extends Activity {
 					}).start();
 				}
 				AndroidCalendar2Activity.getDB().insert("TimeTable", args);
-
+				
+				if(locat.length()>0){
+					LocationBasedAlarm.addList(CB);
+				}
 				//For google sync. eg, "2012-03-01T22:40:00"
 				final String sdt = startDate2 + "T" + startTime.substring(0, 2)
 						+ ":" + startTime.substring(3, 5) + ":00";
@@ -530,9 +541,13 @@ public class AddEvent extends Activity {
 		if (requestCode == CODE && resultCode == Activity.RESULT_OK) {
 
 			String placename = data.getExtras().getString("placename");
-			String lat = data.getExtras().getString("placelat");
-			String lng = data.getExtras().getString("placelng");
-
+			double lat = data.getExtras().getDouble("placelat");
+			double lng = data.getExtras().getDouble("placelng");
+			
+			CB.setCityName(placename);
+			CB.setLat(lat);
+			CB.setLon(lng);
+			
 			location.setText(placename);
 
 			/*

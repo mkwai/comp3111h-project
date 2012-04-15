@@ -16,7 +16,7 @@ public class Alarms {
 	static private ArrayList<String> alarmID =  new ArrayList<String>();
 	static private int assignId = 0;
 	static private int eventCount = 0;
-	final static int MAXINT = 2147483647;
+	final static int MAXINT = 2147483646;
     static private void setAlarm(Context context, AlarmBean alarmAdd){
     		
     		Log.i("Alarm", alarmAdd.getTitle()+"  "+ alarmAdd.getID() 
