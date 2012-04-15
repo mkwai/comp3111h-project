@@ -54,25 +54,25 @@ public class MyDataBase {
     private static class TimeTable implements Table{
     	public String[] getFields(){
     		return new String[] {"eventID", "title","startDate","endDate", "startTime",
-    				"endTime", "private", "location","reminder"};
+    				"endTime", "private", "location","reminder","milliS"};
     	}
 
     	public String getName(){return "TimeTable";}
     	public String getCreate(){
     		return "create table TimeTable "+
-    				"(eventID INT, title TEXT, startDate INT, endDate INT, startTime TEXT, endTime TEXT, private INT, location TEXT, reminder TEXT);";
+    				"(eventID INT, title TEXT, startDate INT, endDate INT, startTime TEXT, endTime TEXT, private INT, location TEXT, reminder TEXT, milliS TEXT);";
     	}
     }
 
     private static class TaskTable implements Table{
     	public String[] getFields(){
-    		return new String[] {"taskID", "title","deadlineDate","deadlineTime","location", "progress", "reminder"};
+    		return new String[] {"taskID", "title","deadlineDate","deadlineTime","location", "progress", "reminder","milliS"};
     	}
 
     	public String getName(){return "TaskTable";}
     	public String getCreate(){
     		return "create table TaskTable "+
-    				"(taskID INT, title TEXT, deadlineDate INT, deadlineTime TEXT, location TEXT, progress INT, reminder INT);";
+    				"(taskID INT, title TEXT, deadlineDate INT, deadlineTime TEXT, location TEXT, progress INT, reminder INT, milliS TEXT);";
     	}
     }
     

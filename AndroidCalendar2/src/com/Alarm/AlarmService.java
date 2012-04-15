@@ -27,20 +27,17 @@ public class AlarmService extends Service{
 		super.onCreate();
 		Log.i("SERVICE", "onCreate................");
 		
-		//Toast.makeText(PopupMessage.this, "onCreate................", Toast.LENGTH_LONG).show();
 	}
 	
 	public void onStart(Intent intent, int startid){
 		Log.i("SERVICE", "Start!!!!!!!!!!!!");
 		
-		//Toast.makeText(PopupMessage.this, "You should not access " + site + " in this time!" , Toast.LENGTH_LONG).show();
 		Alert();
 	}
 	
 	public void onDestroy()
 	{
 		Log.i("SERVICE", "onDestroy.................");
-		//Toast.makeText(PopupMessage.this, "onDestroy.................", Toast.LENGTH_LONG).show();
 	}
 	@Override
 	public IBinder onBind(Intent arg0) {

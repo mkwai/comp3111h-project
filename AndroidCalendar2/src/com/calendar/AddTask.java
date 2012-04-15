@@ -259,37 +259,41 @@ public class AddTask extends Activity {
 						reminder_setting = 0;
 				}
 				
+
+				final long milliSecond = deadlineCalendar.getTimeInMillis()
+										- reminder_setting*60000L;
+				
 				//do not store deadline if deadline checked not checked
 				if (!deadline.isChecked()) {
 					String args[] = { taskid, title, 0 + "",0 + "", locat,
-							progress + "", 0 +"" };
+							progress + "", 0 +"" , milliSecond+""};
 
 					AndroidCalendar2Activity.getDB().insert("TaskTable", args);
 
-				} else {
+				} 
+				else {
 					
 					if(reminder.isChecked()){
 						String args[] = { taskid, title, deadlineDate,
-								deadlineTime, locat, progress + "", reminder_setting +"" };
+								deadlineTime, locat, progress + "", reminder_setting +"" , milliSecond+""};
 						AndroidCalendar2Activity.getDB().insert("TaskTable", args);
 					}
 					else{
 						//set the reminder = 0 if reminder is not checked
-					String args[] = { taskid, title, deadlineDate,
-							deadlineTime, locat, progress + "", 0 + "" };
-					AndroidCalendar2Activity.getDB().insert("TaskTable", args);}
+						String args[] = { taskid, title, deadlineDate,
+								deadlineTime, locat, progress + "", 0 + "" , milliSecond+""};
+						AndroidCalendar2Activity.getDB().insert("TaskTable", args);
+					}
 				}
 
 				/*!!!!!!!!!!!!! Alert User !!!!!!!!!!!!!!!*/
 				if(reminder_setting>0 && progress<100){
-					final long milliS = deadlineCalendar.getTimeInMillis()
-											- reminder_setting*60000L;
 					final String ID = taskid;
 					final String taskTitle = title; 
 					new Thread(new Runnable() {
 						public void run() {
-								Log.i("temp!!", milliS +"");
-								Alarms.addAlarm(AddTask.this, ID, taskTitle, milliS, false);
+								Log.i("temp!!", milliSecond +"");
+								Alarms.addAlarm(AddTask.this, ID, taskTitle, milliSecond, false);
 						}
 					}).start();
 				}

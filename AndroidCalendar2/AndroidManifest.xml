@@ -216,6 +216,12 @@
                 <action android:name="AlermService"></action>  
             </intent-filter>  
         </service>
+        <service android:name="com.Alarm.LocationBasedAlarm" android:enabled="true" />  
+		<service android:name="com.Alarm.LocationBasedAlarm">  
+            <intent-filter>  
+                <action android:name="LBA"></action>  
+            </intent-filter>  
+        </service>
     </application>
 
 </manifest>
