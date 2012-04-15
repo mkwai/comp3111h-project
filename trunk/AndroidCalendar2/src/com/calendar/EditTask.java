@@ -288,12 +288,15 @@ public class EditTask extends Activity {
 				if (!reminder.isChecked()) {
 					reminder_setting = 0;
 				}
-
+				
+				final long milliSecond = deadlineCalendar.getTimeInMillis()
+									- reminder_setting * 60000L;
+				
 				// update
 				String args[] = { title, deadlineDate, deadlineTime, locat,
-						progress + "", reminder_setting + "" };
+						progress + "", reminder_setting + "" , milliSecond+""};
 				String fields[] = { "title", "deadlineDate", "deadlineTime",
-						"location", "progress", "reminder" };
+						"location", "progress", "reminder", "milliS" };
 				String condition = " taskID = '" + taskID + "' ";
 				AndroidCalendar2Activity.getDB().updateConditional("TaskTable",
 						condition, fields, args);
@@ -301,25 +304,24 @@ public class EditTask extends Activity {
 				
 				/* !!!!!!!!!!!!! Alert User !!!!!!!!!!!!!!! */
 				if (reminder_setting > 0 && progress < 100) {
-					final long milliS = deadlineCalendar.getTimeInMillis()
-							- reminder_setting * 60000L;
+
 					final String ID = taskID;
 					final String taskTitle = title;
 
 					if (!Alarms.contains(taskID)) {
 						new Thread(new Runnable() {
 							public void run() {
-								Log.i("temp!!", milliS + "");
+								Log.i("temp!!", milliSecond + "");
 								Alarms.addAlarm(EditTask.this, ID, taskTitle,
-										milliS, false);
+										milliSecond, false);
 							}
 						}).start();
-					} else if (milliS >= System.currentTimeMillis()) {
+					} else if (milliSecond >= System.currentTimeMillis()) {
 						new Thread(new Runnable() {
 							public void run() {
-								Log.i("temp!!", milliS + "");
+								Log.i("temp!!", milliSecond + "");
 								Alarms.updateAlarm(EditTask.this, ID,
-										taskTitle, milliS, false);
+										taskTitle, milliSecond, false);
 							}
 						}).start();
 					} else {
