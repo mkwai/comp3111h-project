@@ -221,10 +221,18 @@ public class EditEvent extends Activity {
 				String isPrivate = privateEvent.isChecked() ? "1" : "0";
 				String locat = location.getText().toString();
 				String remind = reminder.isChecked() ? "1" : "0";
+				
+
+				final int dayHour = Integer.parseInt(endTime.substring(0, 2));
+				final int dayMin = Integer.parseInt(endTime.substring(3, 5));
+				endingCalendar.set(Calendar.HOUR_OF_DAY, dayHour);
+				endingCalendar.set(Calendar.MINUTE, dayMin);
+				final long milliSecond = endingCalendar.getTimeInMillis();
+				
 				String args[] = {title, startDate, endDate,
-						startTime, endTime, isPrivate, locat, remind };
+						startTime, endTime, isPrivate, locat, remind, milliSecond+""};
 				String fields[] = {"title", "startDate", "endDate", 
-						"startTime", "endTime", "private", "location", "reminder"};
+						"startTime", "endTime", "private", "location", "reminder", "milliS"};
 				String condition=" eventID = '"+eventid+"' ";
 				
 				AndroidCalendar2Activity.getDB().updateConditional("TimeTable", condition, fields, args);
@@ -241,27 +249,23 @@ public class EditEvent extends Activity {
 				
 				/*!!!!!!!!!!!!! Alert User !!!!!!!!!!!!!!!*/
 				if(remind.equals("1") && locat.length()<=0){
-					final int dayHour = Integer.parseInt(endTime.substring(0, 2));
-					final int dayMin = Integer.parseInt(endTime.substring(3, 5));
 					final String ID = eventid;
-					endingCalendar.set(Calendar.HOUR_OF_DAY, dayHour);
-					endingCalendar.set(Calendar.MINUTE, dayMin);
 					
 					if (!Alarms.contains(eventid)){
 
 						new Thread(new Runnable() {
 							public void run() {
 								Log.i("temp!!", endingCalendar.getTimeInMillis()+"");
-								Alarms.addAlarm(EditEvent.this, ID, title, endingCalendar.getTimeInMillis(), true);					
+								Alarms.addAlarm(EditEvent.this, ID, title, milliSecond, true);					
 							}
 						}).start();
 					}
 					
-					else if(endingCalendar.getTimeInMillis() >= System.currentTimeMillis()){
+					else if(milliSecond >= System.currentTimeMillis()){
 						new Thread(new Runnable() {
 							public void run() {
 									Log.i("temp!!", endingCalendar.getTimeInMillis()+"");
-									Alarms.updateAlarm(EditEvent.this, ID, title, endingCalendar.getTimeInMillis(), true);		
+									Alarms.updateAlarm(EditEvent.this, ID, title, milliSecond, true);		
 							}
 						}).start();
 					}

@@ -209,26 +209,30 @@ public class AddEvent extends Activity {
 				String isPrivate = privateEvent.isChecked() ? "1" : "0";
 				String locat = location.getText().toString();
 				String remind = reminder.isChecked() ? "1" : "0";
+				
+				int dayHour = Integer.parseInt(endTime.substring(0, 2));
+				int dayMin = Integer.parseInt(endTime.substring(3, 5));
+				endingCalendar.set(Calendar.HOUR_OF_DAY, dayHour);
+				endingCalendar.set(Calendar.MINUTE, dayMin);
+				final long milliSecond = endingCalendar.getTimeInMillis();
+				
 				String args[] = { eventid, title, startDate, endDate,
-						startTime, endTime, isPrivate, locat, remind/*, "1"*/ };
+						startTime, endTime, isPrivate, locat, remind, milliSecond+"" };
 
 				Log.i("done", startDate + " " + startTime + " " + endDate + " "
 						+ endTime);
 				
 				/*!!!!!!!!!!!!! Alert User !!!!!!!!!!!!!!!*/
 				if(remind.equals("1") && locat.length()<=0){
-					final int dayHour = Integer.parseInt(endTime.substring(0, 2));
-					final int dayMin = Integer.parseInt(endTime.substring(3, 5));
 					final String ID = eventid;
 					new Thread(new Runnable() {
 						public void run() {
 							
 								Calendar temp = (Calendar) endingCalendar.clone();
-								temp.set(Calendar.HOUR_OF_DAY, dayHour);
-								temp.set(Calendar.MINUTE, dayMin);
+
 								
 								Log.i("temp!!", temp.getTimeInMillis()+"");
-								Alarms.addAlarm(AddEvent.this, ID, title, temp.getTimeInMillis(), true);
+								Alarms.addAlarm(AddEvent.this, ID, title, milliSecond, true);
 													
 						}
 					}).start();

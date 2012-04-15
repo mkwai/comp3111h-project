@@ -43,6 +43,9 @@ public class AndroidCalendar2Activity extends Activity {
 		
 		// get an instance of GoogleSync, username and password will be set later
 		mgs = new GoogleSync();
+		Intent LAlert = new Intent();
+		LAlert.setAction("LBA");
+		this.startService(LAlert);
 	}
 
 	@Override
