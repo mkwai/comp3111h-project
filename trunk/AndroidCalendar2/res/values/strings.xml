@@ -12,7 +12,7 @@
     <string name="addevent_reminder">Reminder</string>
     <string name="addevent_restrict">Restrict facebook</string>
     <string name="addevent_private_event">Private Event</string>
-    <string name="addevent_contact_person">Contatct Person</string>
+    <string name="addevent_contact_person">Contatct</string>
     <string name="addevent_optional">optional field</string>
     <string name="addevent_contact_person_hint">Enter Contact Person</string>
     <string name="addevent_confirm">Confirm</string>
@@ -27,7 +27,7 @@
     <string name="editevent_reminder">Reminder</string>
     <string name="editevent_restrict">Restrict facebook</string>
     <string name="editevent_private_event">Private Event</string>
-    <string name="editevent_contact_person">Contatct Person</string>
+    <string name="editevent_contact_person">Contatct</string>
     <string name="editevent_optional">optional field</string>
     <string name="editevent_contact_person_hint">Enter Contact Person</string>
     <string name="editevent_confirm">Confirm</string>

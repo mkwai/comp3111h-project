@@ -23,7 +23,12 @@ import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Contacts.People;
+import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.text.Editable;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -46,6 +51,7 @@ public class AddEvent extends Activity {
 	private Button startingTimeButton;
 	private Button endingTimeButton;
 	private Button searchLoc;
+	private Button searchContact;
 	private CityBean CB = new CityBean();
 	// for date set dialog
 	public static final int STARTING_DATE_DIALOG = 0;
@@ -63,7 +69,9 @@ public class AddEvent extends Activity {
 	final static String DURATION_INFOS = "duration_infos";
 	final static String COUNTRY_CODE = "country_code";
 	private final static int CODE = 3;
-
+	private final static int CONTACT_CODE = 4;
+	
+	
 	// variable for storing data
 	private EditText content;
 	private EditText location;
@@ -96,7 +104,7 @@ public class AddEvent extends Activity {
 		endingDateButton = (Button) findViewById(R.id.addevent_ending_date_button);
 		endingTimeButton = (Button) findViewById(R.id.addevent_ending_time_button);
 		searchLoc = (Button) findViewById(R.id.SearchLoc);
-
+		searchContact= (Button) findViewById(R.id.addevent_search_contact);
 		// setting up default starting/ending date/time
 
 		CharSequence currentYear = DateFormat.format("yyyy",
@@ -211,6 +219,7 @@ public class AddEvent extends Activity {
 				String isPrivate = privateEvent.isChecked() ? "1" : "0";
 				
 				String locat = location.getText().toString();
+				//***should be not necessary to search?***
 				if (!(locat.length()==0 || locat.equals(CB.getCityName()))) {
 					Toast.makeText(AddEvent.this,
 							"Search valid address before add!",
@@ -219,15 +228,19 @@ public class AddEvent extends Activity {
 				}
 				
 				String remind = reminder.isChecked() ? "1" : "0";
-								
+				
+				
+				
 				int dayHour = Integer.parseInt(endTime.substring(0, 2));
 				int dayMin = Integer.parseInt(endTime.substring(3, 5));
 				endingCalendar.set(Calendar.HOUR_OF_DAY, dayHour);
 				endingCalendar.set(Calendar.MINUTE, dayMin);
 				final long milliSecond = endingCalendar.getTimeInMillis();
 				
+				String contact = contactPerson.getText().toString();
+				
 				String args[] = { eventid, title, startDate, endDate,
-						startTime, endTime, isPrivate, locat, remind, milliSecond+"" };
+						startTime, endTime, isPrivate, locat, remind, milliSecond+"" ,contact};
 
 				Log.i("done", startDate + " " + startTime + " " + endDate + " "
 						+ endTime);
@@ -323,6 +336,20 @@ public class AddEvent extends Activity {
 				intent.putExtras(bundle);
 				startActivityForResult(intent, CODE);
 			}
+		});
+
+		searchContact.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+			
+				Intent intent = new Intent(Intent.ACTION_PICK,
+						People.CONTENT_URI);
+
+				startActivityForResult(intent,CONTACT_CODE);
+			}
+			
 		});
 
 	}
@@ -557,8 +584,18 @@ public class AddEvent extends Activity {
 			 * onClick(DialogInterface dialoginterface, int i){ } }).show();
 			 */
 		}
+		
+		if (requestCode == CONTACT_CODE && resultCode == Activity.RESULT_OK) {
+			Uri contactData = data.getData();
+			Cursor c = managedQuery(contactData,null,null,null,null);
+			if(c.moveToFirst()){
+				String name = c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+				
+				contactPerson.setText(name);
+			}
+		}
 	}
-
+ 
 	// lower bound
 	private int restoreMinute(int minute) {
 		// initialize intervals[] to {0,5,10,...,55}

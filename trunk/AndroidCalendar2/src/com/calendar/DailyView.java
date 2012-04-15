@@ -454,7 +454,7 @@ public class DailyView extends Activity {
 								+ "\n" + "End:		" + en + "   "
 								+ itemOB.getString("endTime") + "\n"
 								+ "Location:   " + itemOB.getString("location")
-								+ "\n";
+								+ "\n" + "Contact:	" + itemOB.getString("contact");
 						builder.setMessage(info);
 						builder.setCancelable(true);
 
@@ -496,6 +496,7 @@ public class DailyView extends Activity {
 									public void onClick(DialogInterface dialog,
 											int id) {
 										try {
+											Log.i("123", "000111123");
 											// pass the info to the edit event
 											// page
 											Intent i = new Intent(
@@ -513,8 +514,12 @@ public class DailyView extends Activity {
 													itemOB.getString("endTime"));
 											i.putExtra("location", itemOB
 													.getString("location"));
+											i.putExtra("contact", itemOB
+													.getString("contact"));
+											
+											Log.i("123", "111123");
 											startActivity(i);
-											finish();
+											finish(); 
 										} catch (Exception e) {
 
 										}

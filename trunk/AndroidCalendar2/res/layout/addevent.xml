@@ -57,7 +57,8 @@
                     android:layout_marginBottom="5dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
-                    android:hint="@string/addevent_content_hint" >
+                    android:hint="@string/addevent_content_hint" 
+                    android:maxLength="30">
                 </EditText>
             </LinearLayout>
             <!-- starting time -->
@@ -157,7 +158,8 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
                     android:layout_weight="0.82"
-                    android:hint="@string/addevent_location_hint" >
+                    android:hint="@string/addevent_location_hint" 
+                    android:maxLength="100">
                 </EditText>
 
                 <Button
@@ -229,13 +231,21 @@
 
                 <EditText
                     android:id="@+id/addevent_contact_person_edit"
-                    android:layout_width="fill_parent"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
-                    android:hint="@string/addevent_contact_person_hint" >
+                    android:layout_weight="0.82"
+                    android:hint="@string/addevent_contact_person_hint" 
+                    android:maxLength="20">
                 </EditText>
+
+                <Button
+                    android:id="@+id/addevent_search_contact"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Search" />
             </LinearLayout>
             <!-- private event setting -->
 
@@ -254,7 +264,7 @@
                     android:layout_marginTop="5dp"
                     android:text="@string/addevent_private_event"
                     android:textSize="20dp" >
-                >
+                >
                 </TextView>
 
                 <CheckBox
