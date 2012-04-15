@@ -171,6 +171,9 @@ public class GoogleSyncActivity extends Activity {
 												(year + "-" + month + "-" + date), past, future);
 								
 								//AndroidCalendar2Activity.getGS().temp2();
+								
+								//temp= AndroidCalendar2Activity.getDB().getTable("TimeTable");
+								
 								Looper.loop();
 							}
 						}

@@ -99,7 +99,7 @@ public class DailyView extends Activity {
 			}
 
 		});
-		/*
+		
 		// button export jpg
 		bExportjpg= (Button) findViewById(R.id.exportjpg);
 		bExportjpg.setOnClickListener(new OnClickListener() {
@@ -108,22 +108,27 @@ public class DailyView extends Activity {
 				
 				LinearLayout layout = (LinearLayout) findViewById(R.id.daily_linearlayout);
 				
-				Bitmap screenBitmap = Bitmap.createBitmap(layout.getWidth(), layout.getHeight(),
-						Bitmap.Config.ARGB_8888);
+				Bitmap screenBitmap = Bitmap.createBitmap(layout.getMeasuredWidth(), layout.getMeasuredHeight()
+									,Bitmap.Config.ARGB_8888);
 				
 				Canvas canvas = new Canvas(screenBitmap);
+				//canvas.scale(1, 2);
 				layout.draw(canvas);
+				
+				//layout.
 				
 				FileOutputStream fos;
 				try {
 					File exportDirectory = new File("/sdcard/dailyassistant_image/");
-					
+					System.out.println("open file directory");
 					if (!exportDirectory.exists())
 						exportDirectory.mkdirs();
 					
 					String filename= "dailyview.jpg";
 					
+					System.out.println("output file dailyview.jpg");
 					File outputFile = new File(exportDirectory, filename);
+					
 					fos = new FileOutputStream(outputFile);
 
 					screenBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
@@ -139,7 +144,7 @@ public class DailyView extends Activity {
 				}
 			}
 
-		});*/
+		});
 		
 		// text date
 		dailyview_today = (TextView) findViewById(R.id.dailyview_today);
