@@ -229,6 +229,16 @@ public class EditEvent extends Activity {
 				
 				AndroidCalendar2Activity.getDB().updateConditional("TimeTable", condition, fields, args);
 				
+				
+				//For google sync. eg, "2012-03-01T22:40:00"
+				final String sdt = startDate2 + "T" + startTime.substring(0, 2) + ":" + startTime.substring(3, 5) + ":00";
+				final String edt = endDate2 + "T" + endTime.substring(0, 2) + ":" + endTime.substring(3, 5) + ":00";
+				System.out.println("SDT=== " +sdt);
+				System.out.println("EDT=== " +edt);
+				
+				AndroidCalendar2Activity.getGS().updateGoogleEvent(eventid, title, sdt, edt);
+				
+				
 				/*!!!!!!!!!!!!! Alert User !!!!!!!!!!!!!!!*/
 				if(remind.equals("1") && locat.length()<=0){
 					if (!Alarms.contains(eventid)){
@@ -273,35 +283,36 @@ public class EditEvent extends Activity {
 						public void run() {
 							Alarms.cancelAlarm(EditEvent.this, ID);
 						}
-					}).start();
+					}).start(); 
 				}
 				
 				
 				// "2012-03-01T22:40:00"
-				final String sdt = startDate2 + "T" + startTime.substring(0, 2)
-						+ ":" + startTime.substring(3, 5) + ":00";
-				final String edt = endDate2 + "T" + endTime.substring(0, 2)
-						+ ":" + endTime.substring(3, 5) + ":00";
-
-				// sync to google calendar, if the connection with google is started 
-				if (AndroidCalendar2Activity.getGS() != null
-						&& AndroidCalendar2Activity.getGS().isGoogleConnected()) {
-
+//				final String sdt = startDate2 + "T" + startTime.substring(0, 2)
+//						+ ":" + startTime.substring(3, 5) + ":00";
+//				final String edt = endDate2 + "T" + endTime.substring(0, 2)
+//						+ ":" + endTime.substring(3, 5) + ":00";
+//
+//				// sync to google calendar, if the connection with google is started 
+//				if (AndroidCalendar2Activity.getGS() != null
+//						&& AndroidCalendar2Activity.getGS().isGoogleConnected()) {
+//
 //					String[] args2= new String [args.length+1];
 //					for (int i=0;i< args.length; i++)
 //							args2[i]= args[i];
 //					args2[args2.length-1]= "1"; 
 //					
 //					AndroidCalendar2Activity.getDB().insert("GoogleTable", args2);
-					
-					new Thread(new Runnable() {
-						public void run() {
-							AndroidCalendar2Activity.getGS().insert(title,
-									DateTime.parseDateTime(sdt),
-									DateTime.parseDateTime(edt));
-						}
-					}).start();
-				}
+//					
+//					new Thread(new Runnable() {
+//						public void run() {
+//							AndroidCalendar2Activity.getGS().insert(title,
+//									DateTime.parseDateTime(sdt),
+//									DateTime.parseDateTime(edt));
+//						}
+//					}).start();
+//				}
+				
 				finish();
 			}
 		});
@@ -371,15 +382,9 @@ public class EditEvent extends Activity {
 						AndroidCalendar2Activity.getDB().delete("TimeTable", eventid);
 						
 						if (AndroidCalendar2Activity.getGS()!= null){
-							System.out.println("*****");
-							System.out.println("*eventid***" + eventid);
-							
-							CalendarEventEntry event= AndroidCalendar2Activity.getGS().getGoogleEvent(eventid);
-							try {
-								event.delete();
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
+							//System.out.println("*****");
+							//System.out.println("*eventid***" + eventid);
+							AndroidCalendar2Activity.getGS().deleteGoogleEvent(eventid);
 						}
 						
 						finish();

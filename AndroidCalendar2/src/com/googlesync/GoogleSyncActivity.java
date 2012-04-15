@@ -101,6 +101,7 @@ public class GoogleSyncActivity extends Activity {
 			username = ET_username.getText().toString();
 			password = ET_password.getText().toString();
 
+			
 			year = DateFormat.format("yyyy", currentDateCalendar).toString();
 			month = DateFormat.format("MM", currentDateCalendar).toString();
 			date = DateFormat.format("dd", currentDateCalendar).toString();
@@ -127,6 +128,7 @@ public class GoogleSyncActivity extends Activity {
 				} else {
 					new Thread(new Runnable() {
 						public void run() {
+							
 							AndroidCalendar2Activity.getGS().setUserInfo(username, password);
 							pastdayID = rgpast.getCheckedRadioButtonId();
  

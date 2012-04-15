@@ -235,7 +235,7 @@ public class AddEvent extends Activity {
 				}
 				AndroidCalendar2Activity.getDB().insert("TimeTable", args);
 
-				// "2012-03-01T22:40:00"
+				//For google sync. eg, "2012-03-01T22:40:00"
 				final String sdt = startDate2 + "T" + startTime.substring(0, 2)
 						+ ":" + startTime.substring(3, 5) + ":00";
 				final String edt = endDate2 + "T" + endTime.substring(0, 2)
@@ -244,13 +244,6 @@ public class AddEvent extends Activity {
 				// if the connection with google calendar is started 
 				if (AndroidCalendar2Activity.getGS() != null
 						&& AndroidCalendar2Activity.getGS().isGoogleConnected()) {
-					
-//					String[] args2= new String [args.length+1];
-//					for (int i=0;i< args.length; i++)
-//							args2[i]= args[i];
-//					args2[args2.length-1]= "1"; 
-//					
-//					AndroidCalendar2Activity.getDB().insert("GoogleTable", args2);
 					
 					new Thread(new Runnable() {
 						public void run() {
