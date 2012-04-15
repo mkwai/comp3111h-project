@@ -6,6 +6,7 @@ import java.util.Date;
 
 import org.json.JSONArray;
 
+import com.Alarm.Alarms;
 import com.test2.R;
 
 import android.app.Activity;
@@ -279,6 +280,19 @@ public class AddTask extends Activity {
 					AndroidCalendar2Activity.getDB().insert("TaskTable", args);}
 				}
 
+				/*!!!!!!!!!!!!! Alert User !!!!!!!!!!!!!!!*/
+				if(reminder_setting>0 && progress<100){
+					final long milliS = deadlineCalendar.getTimeInMillis()
+											- reminder_setting*60000L;
+					final String ID = taskid;
+					final String taskTitle = title; 
+					new Thread(new Runnable() {
+						public void run() {
+								Log.i("temp!!", milliS +"");
+								Alarms.addAlarm(AddTask.this, ID, taskTitle, milliS, false);
+						}
+					}).start();
+				}
 				finish();
 
 			}

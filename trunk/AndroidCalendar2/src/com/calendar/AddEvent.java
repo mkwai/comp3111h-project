@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.Alarm.Alarms;
 import com.google.gdata.data.DateTime;
 
 import com.test2.R;
@@ -213,7 +214,25 @@ public class AddEvent extends Activity {
 
 				Log.i("done", startDate + " " + startTime + " " + endDate + " "
 						+ endTime);
-
+				
+				/*!!!!!!!!!!!!! Alert User !!!!!!!!!!!!!!!*/
+				if(remind.equals("1") && locat.length()<=0){
+					final int dayHour = Integer.parseInt(endTime.substring(0, 2));
+					final int dayMin = Integer.parseInt(endTime.substring(3, 5));
+					final String ID = eventid;
+					new Thread(new Runnable() {
+						public void run() {
+							
+								Calendar temp = (Calendar) endingCalendar.clone();
+								temp.set(Calendar.HOUR_OF_DAY, dayHour);
+								temp.set(Calendar.MINUTE, dayMin);
+								
+								Log.i("temp!!", temp.getTimeInMillis()+"");
+								Alarms.addAlarm(AddEvent.this, ID, title, temp.getTimeInMillis(), true);
+													
+						}
+					}).start();
+				}
 				AndroidCalendar2Activity.getDB().insert("TimeTable", args);
 
 				// "2012-03-01T22:40:00"

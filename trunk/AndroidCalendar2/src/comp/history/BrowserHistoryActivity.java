@@ -1,20 +1,4 @@
 package comp.history;
-/*
-import java.util.Calendar;
-import java.util.Timer;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.PopupWindow;
-import android.widget.TextView;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;*/
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -64,7 +48,8 @@ public class BrowserHistoryActivity extends Activity {
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				String siteAddress =  siteInput.getText().toString();
-				if(siteAddress.matches("[a-zA-Z0-9]+(.[a-zA-Z0-9])*(/[^\\s]*)?")){
+				Log.i("added?", siteAddress);
+				if(siteAddress.matches("[a-zA-Z0-9]+(.[a-zA-Z0-9]+)*(/[^\\s]*)?")){
 					if(siteAddress.length()<3) 
 						Toast.makeText(BrowserHistoryActivity.this, "Input address is too short!", Toast.LENGTH_SHORT).show();
 					else if(blockWebsites.contains(siteAddress))
@@ -81,6 +66,10 @@ public class BrowserHistoryActivity extends Activity {
 		});
         
         turnOnOff = (Button) findViewById(R.id.setOnOff);
+        
+		if(turn) turnOnOff.setText("Off");
+		else turnOnOff.setText("On");
+		
         turnOnOff.setOnClickListener(new OnClickListener() {
 
 			@Override
