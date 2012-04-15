@@ -244,11 +244,11 @@ public class EditTask extends Activity{
 
 				/*!!!!!!!!!!!!! Alert User !!!!!!!!!!!!!!!*/
 				if(reminder_setting>0 && progress<100){
-					if(Alarms.contains(taskID)){
-						final long milliS = deadlineCalendar.getTimeInMillis()
-												- reminder_setting*60000L;
-						final String ID = taskID;
-						final String taskTitle = title; 
+					final long milliS = deadlineCalendar.getTimeInMillis() - reminder_setting*60000L;
+					final String ID = taskID;
+					final String taskTitle = title; 
+					
+					if(!Alarms.contains(taskID)){
 						new Thread(new Runnable() {
 							public void run() {
 									Log.i("temp!!", milliS +"");
@@ -256,16 +256,18 @@ public class EditTask extends Activity{
 							}
 						}).start();
 					}
-					else{
-						final long milliS = deadlineCalendar.getTimeInMillis()
-												- reminder_setting*60000L;
-						final String ID = taskID;
-						final String taskTitle = title; 
-						
+					else if(milliS >= System.currentTimeMillis()){
 						new Thread(new Runnable() {
 							public void run() {
 									Log.i("temp!!", milliS +"");
 									Alarms.updateAlarm(EditTask.this, ID, taskTitle, milliS, false);
+							}
+						}).start();
+					}
+					else{
+						new Thread(new Runnable() {
+							public void run() {
+								Alarms.cancelAlarm(EditTask.this, ID);
 							}
 						}).start();
 					}

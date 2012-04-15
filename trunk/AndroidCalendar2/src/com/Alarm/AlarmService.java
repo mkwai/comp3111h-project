@@ -64,7 +64,7 @@ public class AlarmService extends Service{
 		String tickerText = top + title + end;
 		tickerText = tickerText+"\n"+tickerText+"\n"+tickerText;
 		//Notification picture
-		int icon = R.drawable.ic_launcher;
+		int icon = Alarms.isEvent(temp) ? R.drawable.event : R.drawable.task;
 		 
 		String contentTitle="My Daily Assistant notification";
 		String contentText=top + title + end;
