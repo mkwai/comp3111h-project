@@ -241,38 +241,34 @@ public class EditEvent extends Activity {
 				
 				/*!!!!!!!!!!!!! Alert User !!!!!!!!!!!!!!!*/
 				if(remind.equals("1") && locat.length()<=0){
+					final int dayHour = Integer.parseInt(endTime.substring(0, 2));
+					final int dayMin = Integer.parseInt(endTime.substring(3, 5));
+					final String ID = eventid;
+					endingCalendar.set(Calendar.HOUR_OF_DAY, dayHour);
+					endingCalendar.set(Calendar.MINUTE, dayMin);
+					
 					if (!Alarms.contains(eventid)){
-						final int dayHour = Integer.parseInt(endTime.substring(0, 2));
-						final int dayMin = Integer.parseInt(endTime.substring(3, 5));
-						final String ID = eventid;
+
 						new Thread(new Runnable() {
 							public void run() {
-								
-									Calendar temp = (Calendar) endingCalendar.clone();
-									temp.set(Calendar.HOUR_OF_DAY, dayHour);
-									temp.set(Calendar.MINUTE, dayMin);
-									
-									Log.i("temp!!", temp.getTimeInMillis()+"");
-									Alarms.addAlarm(EditEvent.this, ID, title, temp.getTimeInMillis(), true);
-														
+								Log.i("temp!!", endingCalendar.getTimeInMillis()+"");
+								Alarms.addAlarm(EditEvent.this, ID, title, endingCalendar.getTimeInMillis(), true);					
 							}
 						}).start();
 					}
 					
-					else {
-						final int dayHour = Integer.parseInt(endTime.substring(0, 2));
-						final int dayMin = Integer.parseInt(endTime.substring(3, 5));
-						final String ID = eventid;
+					else if(endingCalendar.getTimeInMillis() >= System.currentTimeMillis()){
 						new Thread(new Runnable() {
 							public void run() {
-								
-									Calendar temp = (Calendar) endingCalendar.clone();
-									temp.set(Calendar.HOUR_OF_DAY, dayHour);
-									temp.set(Calendar.MINUTE, dayMin);
-									
-									Log.i("temp!!", temp.getTimeInMillis()+"");
-									Alarms.updateAlarm(EditEvent.this, ID, title, temp.getTimeInMillis(), true);
-														
+									Log.i("temp!!", endingCalendar.getTimeInMillis()+"");
+									Alarms.updateAlarm(EditEvent.this, ID, title, endingCalendar.getTimeInMillis(), true);		
+							}
+						}).start();
+					}
+					else{
+						new Thread(new Runnable() {
+							public void run() {
+								Alarms.cancelAlarm(EditEvent.this, ID);
 							}
 						}).start();
 					}
