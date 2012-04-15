@@ -41,6 +41,14 @@
             android:layout_gravity="right"
             android:text="@string/dailyview_addevent" >
         </Button>
+
+        <Button
+            android:id="@+id/exportjpg"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="Export jpg" />
+
     </LinearLayout>
 
     <View
