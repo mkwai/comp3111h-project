@@ -107,7 +107,6 @@ public class DailyView extends Activity {
 			public void onClick(View arg0) {
 				
 				LinearLayout layout = (LinearLayout) findViewById(R.id.daily_linearlayout);
-				
 				Bitmap screenBitmap = Bitmap.createBitmap(layout.getMeasuredWidth(), layout.getMeasuredHeight()
 									,Bitmap.Config.ARGB_8888);
 				
