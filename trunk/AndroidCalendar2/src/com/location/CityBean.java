@@ -7,7 +7,11 @@ public class CityBean implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 
-	public CityBean(){}
+	public CityBean(){
+		this.cityName = new String();
+		this.lat = 0.0;
+		this.lng = 0.0;
+	}
 	
 	public CityBean(String cityName, Double lat, Double lng) {
 		super();
