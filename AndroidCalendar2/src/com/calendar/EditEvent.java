@@ -28,7 +28,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.provider.Contacts.People;
 import android.text.Editable;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -52,6 +56,8 @@ public class EditEvent extends Activity {
 	private Button endingTimeButton;
 	private Button searchLoc;
 	private Button delete;
+	private Button searchContact;
+
 	private CityBean CB = new CityBean();
 	 
 	// for date set dialog
@@ -73,6 +79,7 @@ public class EditEvent extends Activity {
 	final static String DURATION_INFOS = "duration_infos";
 	final static String COUNTRY_CODE = "country_code";
 	private final static int CODE = 3;
+	private final static int CONTACT_CODE = 4;
 
 	// variable for storing data
 	private EditText content;
@@ -89,7 +96,7 @@ public class EditEvent extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+ 
 		setContentView(R.layout.editevent);
 
 		content = (EditText) findViewById(R.id.editevent_content_edit);
@@ -107,6 +114,7 @@ public class EditEvent extends Activity {
 		endingTimeButton = (Button) findViewById(R.id.editevent_ending_time_button);
 		searchLoc = (Button) findViewById(R.id.SearchLoc);
 		delete = (Button) findViewById(R.id.editevent_delevent_button);
+		searchContact= (Button) findViewById(R.id.editevent_search_contact);
 
 
 		
@@ -177,7 +185,7 @@ public class EditEvent extends Activity {
 							"Maximum 30 characters in title",
 							Toast.LENGTH_SHORT).show();
 					return;
-				}
+				} 
 				String startTime = startingTimeButton.getText().toString();
 				String endTime = endingTimeButton.getText().toString();
 
@@ -239,22 +247,27 @@ public class EditEvent extends Activity {
 				endingCalendar.set(Calendar.MINUTE, dayMin);
 				final long milliSecond = endingCalendar.getTimeInMillis();
 				
-				String args[] = {title, startDate, endDate,
-						startTime, endTime, isPrivate, locat, remind, milliSecond+""};
-				String fields[] = {"title", "startDate", "endDate", 
-						"startTime", "endTime", "private", "location", "reminder", "milliS"};
-				String condition=" eventID = '"+eventid+"' ";
 				
+				String contact = contactPerson.getText().toString();
+				
+				String args[] = {title, startDate, endDate,
+						startTime, endTime, isPrivate, locat, remind, milliSecond+"",contact};
+				String fields[] = {"title", "startDate", "endDate", 
+						"startTime", "endTime", "private", "location", "reminder", "milliS", "contact"};
+				String condition=" eventID = '"+eventid+"' ";
+
 				AndroidCalendar2Activity.getDB().updateConditional("TimeTable", condition, fields, args);
 				
-				
-				//For google sync. eg, "2012-03-01T22:40:00"
+
+					//For google sync. eg, "2012-03-01T22:40:00"
 				final String sdt = startDate2 + "T" + startTime.substring(0, 2) + ":" + startTime.substring(3, 5) + ":00";
 				final String edt = endDate2 + "T" + endTime.substring(0, 2) + ":" + endTime.substring(3, 5) + ":00";
 				System.out.println("SDT=== " +sdt);
 				System.out.println("EDT=== " +edt);
+
 				
-				AndroidCalendar2Activity.getGS().updateGoogleEvent(eventid, title, sdt, edt);
+				// ******dickson: bug ??*********			
+	//			AndroidCalendar2Activity.getGS().updateGoogleEvent(eventid, title, sdt, edt);
 				
 				
 				/*!!!!!!!!!!!!! Alert User !!!!!!!!!!!!!!!*/
@@ -381,7 +394,19 @@ public class EditEvent extends Activity {
 				startActivityForResult(intent, CODE);
 			}
 		});
-		
+		searchContact.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+			
+				Intent intent = new Intent(Intent.ACTION_PICK,
+						People.CONTENT_URI);
+
+				startActivityForResult(intent,CONTACT_CODE);
+			}
+			
+		});
 		
 		///
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -475,6 +500,10 @@ public class EditEvent extends Activity {
 		if(loc !=null)
 			location.setText(loc);
 			
+		Log.i("123", "123");
+		String con = extras.getString("contact");
+		if(con !=null)
+			contactPerson.setText(con);
 		
 		///
 	}
@@ -708,6 +737,16 @@ public class EditEvent extends Activity {
 			 * DialogInterface.OnClickListener() { public void
 			 * onClick(DialogInterface dialoginterface, int i){ } }).show();
 			 */
+		}
+		
+		if (requestCode == CONTACT_CODE && resultCode == Activity.RESULT_OK) {
+			Uri contactData = data.getData();
+			Cursor c = managedQuery(contactData,null,null,null,null);
+			if(c.moveToFirst()){
+				String name = c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+				
+				contactPerson.setText(name);
+			}
 		}
 	}
 

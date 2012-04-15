@@ -213,9 +213,9 @@ public class AddTask extends Activity {
 				String taskid = AndroidCalendar2Activity.getDB().GiveEventID();
 
 				String title = title_edit.getText().toString();
-				if (title.length() == 0) {
+				if (title.length() == 0 || title.startsWith(" ")) {
 					Toast.makeText(AddTask.this,
-							"You Should enter valid context/title",
+							"You Should enter a valid title",
 							Toast.LENGTH_SHORT).show();
 					return;
 				}
@@ -406,22 +406,24 @@ public class AddTask extends Activity {
 
 	// lower bound
 	private int restoreMinute(int minute) {
+		// initialize intervals[] to {0,5,10,...,55}
 		int intervals[] = new int[12];
 		int startmin = 0;
-		for (int i = 0; i < 11; i++) {
+		for (int i = 0; i < 12; i++) {
 			intervals[i] = startmin;
-			startmin += 5;
+			startmin = startmin + 5;
 		}
 
-		int nextMinute = 0;
+		// find closest & smaller value of minute in interval
+
 		for (int i = 11; i >= 0; i--) {
 			if (minute > intervals[i]) {
-				nextMinute = intervals[i];
-				break;
+				return intervals[i];
+
 			}
 		}
-
-		return nextMinute;
+		return 0;
 	}
+
 
 }

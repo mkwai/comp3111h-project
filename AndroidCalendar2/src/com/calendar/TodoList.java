@@ -339,6 +339,10 @@ public class TodoList extends Activity {
 			String t0 = (String) ((HashMap) arg0).get("progress");
 			String t1 = (String) ((HashMap) arg1).get("progress");
 
+			if(t0.equals("100 %"))
+				return 1;
+			if(t1.equals("100 %"))
+				return -1;
 			return t0.compareTo(t1);
 		}
 

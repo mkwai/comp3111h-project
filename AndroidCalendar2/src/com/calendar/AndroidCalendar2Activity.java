@@ -47,14 +47,13 @@ public class AndroidCalendar2Activity extends Activity {
 		LAlert.setAction("LBA");
 		this.startService(LAlert);
 	}
-
+ 
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-
-	//	startActivity(new Intent("com.calendar.MONTHLYVIEW"));
-
+	//	startActivity(new Intent(Intent.ACTION_VIEW).setDataAndType(null, CalendarActivity.MIME_TYPE));
+		
 	}
 
 
