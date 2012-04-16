@@ -40,22 +40,25 @@ INNER TEST 2 TEST CASES
 
 ----
 
-*Location-based Alarm (ref. spec 9) + Add/Edit Event (ref. spec 2)*
+*Linkage between Photos Taken and Events (ref. spec 8)*
 
-1.       Click “Add Event” button and the adding event page displayed, Enter “Comp3111H Meeting” in the name field. Set the starting time be 35 minutes later than current time and set the ending time two hour after current time. Enter “Causeway Bay” into the location field. Select Causeway Bay as the location. Tick the alarm reminder option. Is the new event “Comp3111H Meeting” added in the daily schedule successfully?
+1.    Add an event with title "test1", set the starting time be the current time and the ending time  be 1 hour later. Then take several photos using the phone camera. Back to the Daily Scheulde view, click the event, click the button “view photo” in the dialog box, are the photos appeared in the list?
 
-2.       Open the GPS of the phone and wait for a while. Is there any departure message pop up to alert the user?
+2.     Add another event, "test2" which start 1 hour later, are those photos appeared in the list of this events?
 
+3.    Delete one of the photo. Is the list of photo renew?
 
-3.       Edit the event “Comp3111H Meeting”. Reset the title to “heLloHahA” and the starting time to 35 minutes later than current time. Other fields remain unchanged. Click “Set”. Is the event be edited successfully with the new event title and starting time on the schedule?
+4.     Edit "test1", minus one hour in the start time and end time. Then view photo again. Can those photo be view via "test1" ?
 
-4.       Close the GPS of the phone and wait for a while. Is there any departure message pop up to alert the user?
+----
 
-5.   	Add another event. Enter “private event” in the title field and set the starting time be 5:30pm and the ending time be 7:45pm of the day. In the contact person field, Click “….”. Can user select a contact person from the contact list in the phone or SIM card into the field?
+* Add/Edit Event (ref. spec 2)*
 
-6.   	Delete the contact person just added. Enter  “Peter Chan 12345678!@#”(21 characters) in the contact field this time. Can the contact person be successfully set?
+1.   	Add an event. Enter “private event” in the title field and set the starting time be 5:30pm and the ending time be 7:45pm of the day. In the contact person field, Click “….”. Can user select a contact person from the contact list in the phone or SIM card into the field?
 
-7.   	Re-enter “Peter Chan=]” into the contact person field. Tick the private event option. Click “Add”. Can the event added displayed in the schedule?
+2.   	Delete the contact person just added. Enter  “Peter Chan 12345678!@#”(21 characters) in the contact field this time. Can the contact person be successfully set?
+
+3.   	Re-enter “Peter Chan=]” into the contact person field. Tick the private event option. Click “Add”. Can the event added displayed in the schedule?
 
 ----
 
