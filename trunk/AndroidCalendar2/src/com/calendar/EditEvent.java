@@ -257,7 +257,7 @@ public class EditEvent extends Activity {
 				String condition=" eventID = '"+eventid+"' ";
 
 				AndroidCalendar2Activity.getDB().updateConditional("TimeTable", condition, fields, args);
-				
+				 
 
 					//For google sync. eg, "2012-03-01T22:40:00"
 				final String sdt = startDate2 + "T" + startTime.substring(0, 2) + ":" + startTime.substring(3, 5) + ":00";
@@ -266,8 +266,9 @@ public class EditEvent extends Activity {
 				System.out.println("EDT=== " +edt);
 
 				
-				// ******dickson: bug ??*********			
-	//			AndroidCalendar2Activity.getGS().updateGoogleEvent(eventid, title, sdt, edt);
+				// ******dickson:  bug ??*********		
+				if (AndroidCalendar2Activity.getGS() != null)
+					AndroidCalendar2Activity.getGS().updateGoogleEvent(eventid, title, sdt, edt);
 				
 				
 				/*!!!!!!!!!!!!! Alert User !!!!!!!!!!!!!!!*/
