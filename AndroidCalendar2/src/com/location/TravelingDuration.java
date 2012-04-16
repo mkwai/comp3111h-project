@@ -22,6 +22,16 @@ public class TravelingDuration implements Serializable{
 		this.destination =  destination;
 	}
 	
+	public TravelingDuration(TravelingDuration TD){
+		this.destination = TD.getDestination();
+		this.timeTaken = TD.getTimeTaken();
+		this.totalSecond = TD.getTotalSecond();
+		this.day = TD.getDay();
+		this.hour = TD.getHour();
+		this.minute = TD.getMinute();
+		this.second = TD.getSecond();
+	}
+	
 	public String getDestination() {
 		return destination;
 	}
