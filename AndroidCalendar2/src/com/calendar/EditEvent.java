@@ -241,11 +241,11 @@ public class EditEvent extends Activity {
 				String remind = reminder.isChecked() ? "1" : "0";
 				
 
-				final int dayHour = Integer.parseInt(endTime.substring(0, 2));
-				final int dayMin = Integer.parseInt(endTime.substring(3, 5));
-				endingCalendar.set(Calendar.HOUR_OF_DAY, dayHour);
-				endingCalendar.set(Calendar.MINUTE, dayMin);
-				final long milliSecond = endingCalendar.getTimeInMillis();
+				final int dayHour = Integer.parseInt(startTime.substring(0, 2));
+				final int dayMin = Integer.parseInt(startTime.substring(3, 5));
+				startingCalendar.set(Calendar.HOUR_OF_DAY, dayHour);
+				startingCalendar.set(Calendar.MINUTE, dayMin);
+				final long milliSecond = startingCalendar.getTimeInMillis();
 				
 				
 				String contact = contactPerson.getText().toString();

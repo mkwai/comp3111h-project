@@ -231,11 +231,11 @@ public class AddEvent extends Activity {
 				
 				
 				
-				int dayHour = Integer.parseInt(endTime.substring(0, 2));
-				int dayMin = Integer.parseInt(endTime.substring(3, 5));
-				endingCalendar.set(Calendar.HOUR_OF_DAY, dayHour);
-				endingCalendar.set(Calendar.MINUTE, dayMin);
-				final long milliSecond = endingCalendar.getTimeInMillis();
+				int dayHour = Integer.parseInt(startTime.substring(0, 2));
+				int dayMin = Integer.parseInt(startTime.substring(3, 5));
+				startingCalendar.set(Calendar.HOUR_OF_DAY, dayHour);
+				startingCalendar.set(Calendar.MINUTE, dayMin);
+				final long milliSecond = startingCalendar.getTimeInMillis();
 				
 				String contact = contactPerson.getText().toString();
 				
@@ -539,6 +539,8 @@ public class AddEvent extends Activity {
 					});
 
 			// set minute
+			if(currentMinute<0 || currentMinute >=60 )
+				currentMinute = 0;
 			timePicker.setCurrentMinute(currentMinute);
 			if (currentMinute == 60)
 				timePicker.setCurrentHour(hourOfDay + 1);
