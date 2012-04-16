@@ -418,6 +418,14 @@ public class EditEvent extends Activity {
 							int id) {
 						AndroidCalendar2Activity.getDB().delete("TimeTable", eventid);
 						
+						if( Alarms.contains(eventid)){
+							final String ID = eventid;
+							new Thread(new Runnable() {
+								public void run() {
+									Alarms.cancelAlarm(EditEvent.this, ID);
+								}
+							}).start(); 
+						}
 						if (AndroidCalendar2Activity.getGS()!= null){
 							//System.out.println("*****");
 							//System.out.println("*eventid***" + eventid);
