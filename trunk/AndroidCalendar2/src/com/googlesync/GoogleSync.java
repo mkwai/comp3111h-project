@@ -266,7 +266,7 @@ public class GoogleSync {
 		}
 	}
 
-*/
+*/ 
 	public void updateGoogleEvent( final String googleEventId, final String eventTitle, 
 									final String startDateTime, final String endDateTime){	
 		 new Thread(new Runnable() {
@@ -277,7 +277,7 @@ public class GoogleSync {
 					 Looper.prepare();
 					 Query partialQuery = new Query(new URL(eventEntryUrl));
 					 CalendarEventEntry event = myService.getEntry(partialQuery.getUrl(),CalendarEventEntry.class);
-					 
+					
 					 event.setTitle(new PlainTextConstruct(eventTitle));
 					 
 					 //some problems here
