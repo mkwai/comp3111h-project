@@ -9,7 +9,7 @@ public class LocationAlarmReceiver extends BroadcastReceiver{
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		// TODO Auto-generated method stub
-		LAlert.setAction("AlermService");
+		LAlert.setAction("LAlermService");
 		context.startService(LAlert);
 
 	}
