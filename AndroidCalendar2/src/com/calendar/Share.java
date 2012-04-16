@@ -147,7 +147,6 @@ public class Share extends Activity{
 
 						JSONArray shareevents = new JSONArray(); //array of event record
 						String condition=" startDate >= '"+startDate+"' AND startDate <= '"+endDate+"' AND private = '0' ";
-						System.out.println(condition);
 						try{
 							JSONArray ja = AndroidCalendar2Activity.getDB().fetchConditional("TimeTable", condition);
 							System.out.println(ja.length());
@@ -164,6 +163,7 @@ public class Share extends Activity{
 								JSONObject jo = ja.getJSONObject(i);
 								if(jo.getString("private")!="1"){
 									jo.remove("private");jo.remove("reminder");jo.remove("eventID");
+									jo.remove("milliS"); jo.remove("contact");
 									shareevents.put(jo);
 								}
 							}
