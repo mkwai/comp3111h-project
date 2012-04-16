@@ -133,8 +133,9 @@ public class GoogleSyncActivity extends Activity {
 				} else {
 					new Thread(new Runnable() {
 						public void run() {
+							
 							AndroidCalendar2Activity.getGS().setUserInfo(username, password);
-							pastdayID = rgpast.getCheckedRadioButtonId();
+								pastdayID = rgpast.getCheckedRadioButtonId();
  
 							if (pastdayID == R.id.gs_past7)
 								past = 7;
