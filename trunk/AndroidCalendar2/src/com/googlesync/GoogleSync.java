@@ -163,11 +163,11 @@ public class GoogleSync {
 				endDate = t2[0] + t2[1] + t2[2];
 				endTime = t2[3] + ":" + t2[4];
 				
-				System.out.println(startDate);
-				System.out.println(startTime);
-				System.out.println(endDate);
-				System.out.println(endTime);
-				System.out.println();
+				//System.out.println(startDate);
+				//System.out.println(startTime);
+				//System.out.println(endDate);
+				//System.out.println(endTime);
+				//System.out.println();
 			}
 		}
 		
@@ -175,6 +175,43 @@ public class GoogleSync {
 		String remind = ""; 
 		String milliS= "";
 		String contact= "";
+		
+		
+		// check if record is in the database
+		JSONArray temp= AndroidCalendar2Activity.getDB().fetchAllNotes(
+				"TimeTable", new String[]{"eventid"}, new String[] {eventid} ) ; 
+		if (temp.length()==0 ){  // new event
+			System.out.println("new event: ");
+			String args[] = { eventid, title, startDate, endDate, startTime,
+				endTime, isPrivate, location, remind, milliS, contact};
+			AndroidCalendar2Activity.getDB().insert("TimeTable", args); 
+			AndroidCalendar2Activity.getDB().insert("RefTable", new String[] { eventid});
+		}
+		else{	// old google event -> update record
+			JSONArray temp2= AndroidCalendar2Activity.getDB().fetchAllNotes(
+					"TimeTable",new String[]{"eventid"}, new String[] {eventid} ) ;
+			System.out.println("old event -> update record: ");
+			
+			String args[] = {title, startDate, endDate,
+					startTime, endTime, isPrivate, location, remind, milliS+"",contact};
+			String fields[] = {"title", "startDate", "endDate", 
+					"startTime", "endTime", "private", "location", "reminder", "milliS", "contact"};
+			String condition=" eventID = '"+eventid+"' ";
+			
+			AndroidCalendar2Activity.getDB().updateConditional("TimeTable", condition, fields, args);
+			
+			//	} 
+
+			//if (temp2.length()== 0){ 
+			/*else{
+				System.out.println("old event -detail correct, update data: ");
+				String condition= "eventid = '" +eventid + "'" ; 
+				String fields[] = { "title","startDate","endDate", "startTime","endTime"};
+				String args[] = { title,startDate,endDate,startTime,endTime};
+				AndroidCalendar2Activity.getDB().updateConditional("TimeTable", condition, fields, args);
+			}*/
+		}
+		
 		
 		// check if record is in the database
 		JSONArray temp2= AndroidCalendar2Activity.getDB().fetchAllNotes(
@@ -407,6 +444,7 @@ public class GoogleSync {
 		myEntry.addTime(eventTimes);
 		try {
 			myService.insert(eventFeedUrl, myEntry);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

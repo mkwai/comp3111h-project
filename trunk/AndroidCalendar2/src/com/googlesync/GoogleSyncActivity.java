@@ -3,7 +3,12 @@ package com.googlesync;
 import java.io.IOException;
 import java.util.Calendar;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.calendar.AndroidCalendar2Activity;
+import com.google.gdata.data.DateTime;
 import com.google.gdata.data.PlainTextConstruct;
 import com.google.gdata.data.calendar.CalendarEventEntry;
 import com.google.gdata.data.calendar.CalendarEventFeed;
@@ -128,7 +133,6 @@ public class GoogleSyncActivity extends Activity {
 				} else {
 					new Thread(new Runnable() {
 						public void run() {
-							
 							AndroidCalendar2Activity.getGS().setUserInfo(username, password);
 							pastdayID = rgpast.getCheckedRadioButtonId();
  
@@ -169,6 +173,39 @@ public class GoogleSyncActivity extends Activity {
 								AndroidCalendar2Activity.getGS().isGoogleConnected(true);
 								Looper.prepare();
 								ShowMsgDialog("System","Connected Successfully.");
+								
+								// insert records from local database to google calendar
+								/*
+								 JSONArray ja = AndroidCalendar2Activity.getDB().fetchConditional("RefTable","");
+								 
+								for (int i = 0; i < ja.length(); i++) {
+									try {
+										JSONObject jo = ja.getJSONObject(i);
+										String googleid= jo.getString("googleID");
+										
+										JSONArray temp= AndroidCalendar2Activity.getDB().fetchAllNotes(
+												"TimeTable", new String[]{"eventid"}, new String[] {googleid} ) ; 
+										for(int j=0; j<temp.length(); j++){
+											JSONObject tempo = temp.getJSONObject(j);
+											
+											String title= tempo.getString("title");
+											/*
+											AndroidCalendar2Activity.getGS().insert(title,
+													DateTime.parseDateTime(sdt),
+													DateTime.parseDateTime(edt));
+											
+											String condition= " eventid = '"+googleid+"'  "; 
+											String fields[] = { eventid};
+											String args[] = { eventid};
+											AndroidCalendar2Activity.getDB().updateConditional("TimeTable", condition, fields, args);
+											
+										}
+										
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+								}*/
+								
 								AndroidCalendar2Activity.getGS().getRangeEvents2(
 												(year + "-" + month + "-" + date), past, future);
 								
