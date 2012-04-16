@@ -75,7 +75,7 @@
                         android:layout_width="135dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical" >
-
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -88,38 +88,44 @@
                             android:id="@+id/gs_past7"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/gs_day1" />
+                            android:text="@string/gs_day1"
+                            android:textColor="@color/text_color" />
 
                         <RadioButton
                             android:id="@+id/gs_past30"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"
-                            android:text="@string/gs_day2" />
+                            android:text="@string/gs_day2"
+                            android:textColor="@color/text_color" />
 
                         <RadioButton
                             android:id="@+id/gs_past60"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/gs_day3" />
+                            android:text="@string/gs_day3"
+                            android:textColor="@color/text_color" />
 
                         <RadioButton
                             android:id="@+id/gs_past90"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/gs_day4" />
+                            android:text="@string/gs_day4"
+                            android:textColor="@color/text_color" />
 
                         <RadioButton
                             android:id="@+id/gs_past180"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/gs_day5" />
+                            android:text="@string/gs_day5"
+                            android:textColor="@color/text_color" />
 
                         <RadioButton
                             android:id="@+id/gs_past365"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/gs_day6" />
+                            android:text="@string/gs_day6"
+                            android:textColor="@color/text_color" />
                     </RadioGroup>
                 </LinearLayout>
 
@@ -128,7 +134,7 @@
                     android:layout_width="150dp"
                     android:layout_height="fill_parent"
                     android:orientation="vertical" >
-
+
                     <RadioGroup
                         android:id="@+id/gs_rgfuture"
                         android:layout_width="match_parent"
@@ -147,40 +153,45 @@
                             android:id="@+id/gs_future7"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/gs_day1" />
+                            android:text="@string/gs_day1"
+                            android:textColor="@color/text_color" />
 
                         <RadioButton
                             android:id="@+id/gs_future30"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"
-                            android:text="@string/gs_day2" />
+                            android:text="@string/gs_day2"
+                            android:textColor="@color/text_color" />
 
                         <RadioButton
                             android:id="@+id/gs_future60"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/gs_day3" />
+                            android:text="@string/gs_day3"
+                            android:textColor="@color/text_color" />
 
                         <RadioButton
                             android:id="@+id/gs_future90"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/gs_day4" />
+                            android:text="@string/gs_day4"
+                            android:textColor="@color/text_color" />
 
                         <RadioButton
                             android:id="@+id/gs_future180"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/gs_day5" />
+                            android:text="@string/gs_day5"
+                            android:textColor="@color/text_color" />
 
                         <RadioButton
                             android:id="@+id/gs_future365"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/gs_day6" />
+                            android:text="@string/gs_day6"
+                            android:textColor="@color/text_color" />
                     </RadioGroup>
-
                 </LinearLayout>
             </LinearLayout>
 
