@@ -194,6 +194,8 @@ public class TodoList extends Activity {
 							"deadlineTime");
 					tempReminder = temp.getJSONObject(i).getString("reminder");
 
+					
+					
 					item.put("taskID", tempId);
 					item.put("title", tempTitle);
 					item.put("progress", tempProgress + " %");
@@ -233,7 +235,7 @@ public class TodoList extends Activity {
 						String reminder = list.get(arg2).get("reminder");
 						Log.i("re", reminder);
 
-						if (deadlineDate.length() != 8) {
+						if (deadlineDate.length()<=1) {
 							deadlineDate = "NA";
 							deadlineTime = "";
 

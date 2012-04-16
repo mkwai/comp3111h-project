@@ -72,7 +72,7 @@ public class MyDataBase {
     	public String getName(){return "TaskTable";}
     	public String getCreate(){
     		return "create table TaskTable "+
-    				"(taskID INT, title TEXT, deadlineDate INT, deadlineTime TEXT, location TEXT, progress INT, reminder INT, milliS TEXT);";
+    				"(taskID INT, title TEXT, deadlineDate TEXT, deadlineTime TEXT, location TEXT, progress INT, reminder INT, milliS TEXT);";
     	}
     }
     
