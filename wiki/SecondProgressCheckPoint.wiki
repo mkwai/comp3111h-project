@@ -16,6 +16,7 @@ INNER TEST 2 TEST CASES
 
 
 5.     Edit the task “123abc#$%”.  Enter “Taskssss” in the title field. Set the progress to 99%. Enter “HKUST =]” in the location field and then select the deadline time to more than 10 minutes after the current time. Tick the reminder setting and set it to alarm “5 minutes” before the deadline time. Click “Confirm”. Can the task be edited and displayed in the to-do list successfully?
+
  
 6.     Wait for a while. Is there an alarm reminder occur 5 minutes before the deadline time (5 minutes later)? 
 
