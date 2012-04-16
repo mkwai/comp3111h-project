@@ -357,12 +357,14 @@ public class AddTask extends Activity {
 	private class MyTimePickerDialog extends TimePickerDialog {
 
 		private int currentMinute = 0;
+		private int currentHour = 0;
 
 		public MyTimePickerDialog(Context context, OnTimeSetListener callBack,
 				int hourOfDay, int minute, boolean is24HourView) {
 			super(context, callBack, hourOfDay, minute, is24HourView);
 			// TODO Auto-generated constructor stub
 			currentMinute = restoreMinute(minute);
+			currentHour = hourOfDay;
 		}
 
 		public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
@@ -375,9 +377,10 @@ public class AddTask extends Activity {
 			// do calculation of next time
 			if (currentMinute == 0 && minute == 59) {
 				currentMinute = 55;
-			} else
+			} else				
 				currentMinute = ((currentMinute - minute) > 0) ? currentMinute - 5
-						: currentMinute + 5;
+					: ((currentMinute - minute) < 0 ? currentMinute + 5
+							: currentMinute);
 
 			timePicker
 					.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
