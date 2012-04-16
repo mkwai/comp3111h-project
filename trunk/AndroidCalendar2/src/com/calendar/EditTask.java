@@ -352,6 +352,14 @@ public class EditTask extends Activity {
 		builder.setCancelable(false);
 		builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
+				if(Alarms.contains(taskID)){
+					final String ID = taskID;
+					new Thread(new Runnable() {
+						public void run() {
+							Alarms.cancelAlarm(EditTask.this, ID);
+						}
+					}).start();
+				}
 				AndroidCalendar2Activity.getDB().delete("TaskTable", taskID);
 				finish();
 			}

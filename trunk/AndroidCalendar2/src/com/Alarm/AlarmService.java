@@ -53,7 +53,7 @@ public class AlarmService extends Service{
 		int id = Alarms.getID(temp);
 		String top =  Alarms.isEvent(temp)? "Event " : "Task ";
 		String end = Alarms.isEvent(temp)? " starts." : " needs to be finished!";
-		Log.i("right", title + " "+ id);
+		Log.i("right", title + " "+ id); 
 		
 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		
