@@ -119,9 +119,9 @@ public class LocationBasedAlarm extends Service{
 				Intent intent = new Intent(LocationBasedAlarm.this,LocationAlarmReceiver.class);
 				PendingIntent pi = PendingIntent.getBroadcast(LocationBasedAlarm.this, LocID, intent, 0);
 				AlarmManager am = (AlarmManager) getSystemService(Service.ALARM_SERVICE);
-				am.cancel(pi);
+				am.cancel(pi);*/
 				
-				Log.i("Loc Alarm", "cancel");*/
+				Log.i("Loc Alarm", "cancel");
 			}
 		}
 	}
