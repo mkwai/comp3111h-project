@@ -159,7 +159,7 @@ public class AddEvent extends Activity {
 				// TODO Auto-generated method stub
 				// sent data to database
 
-				String eventid = AndroidCalendar2Activity.getDB().GiveEventID();
+				final String eventid = AndroidCalendar2Activity.getDB().GiveEventID();
 				final String title = content.getText().toString();
 				if (title.length() == 0) {
 					Toast.makeText(AddEvent.this,
@@ -263,7 +263,7 @@ public class AddEvent extends Activity {
 				if(locat.length()>0){
 					LocationBasedAlarm.addList(CB);
 				}
-				//For google sync. eg, "2012-03-01T22:40:00"
+				//For google sync. eg, "2012-03-01T22:40:00" 
 				final String sdt = startDate2 + "T" + startTime.substring(0, 2)
 						+ ":" + startTime.substring(3, 5) + ":00";
 				final String edt = endDate2 + "T" + endTime.substring(0, 2)
@@ -275,9 +275,21 @@ public class AddEvent extends Activity {
 					
 					new Thread(new Runnable() {
 						public void run() {
-							AndroidCalendar2Activity.getGS().insert(title,
+							// insert to google calendar and get googleEventID
+							String googleEventID= AndroidCalendar2Activity.getGS().insert(
+									title,
 									DateTime.parseDateTime(sdt),
-									DateTime.parseDateTime(edt));
+									DateTime.parseDateTime(edt)
+								);
+							// if successful
+							System.out.println("OLD ID= "+ eventid);
+							if (googleEventID!= ""){
+								String fields[] = {"eventID"};
+								String args[] = {googleEventID};
+								String condition=" eventID = '"+eventid+"' ";
+								AndroidCalendar2Activity.getDB().updateConditional("TimeTable", condition, fields, args);
+							}
+							System.out.println("NEW ID= "+ googleEventID);
 						}
 					}).start();
 				}

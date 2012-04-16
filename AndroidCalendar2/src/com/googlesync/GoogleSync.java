@@ -185,7 +185,7 @@ public class GoogleSync {
 			String args[] = { eventid, title, startDate, endDate, startTime,
 				endTime, isPrivate, location, remind, milliS, contact};
 			AndroidCalendar2Activity.getDB().insert("TimeTable", args); 
-			AndroidCalendar2Activity.getDB().insert("RefTable", new String[] { eventid});
+			//AndroidCalendar2Activity.getDB().insert("RefTable", new String[] { eventid});
 		}
 		else{	// old google event -> update record
 			JSONArray temp2= AndroidCalendar2Activity.getDB().fetchAllNotes(
@@ -211,10 +211,14 @@ public class GoogleSync {
 				AndroidCalendar2Activity.getDB().updateConditional("TimeTable", condition, fields, args);
 			}*/
 		}
-		
+		System.out.println(); 
+		System.out.println("EVENTID= " +eventid );
+		System.out.println("EditLink= "+entry.getEditLink());
+		System.out.println("getHref= "+entry.getEditLink().getHref());
+		System.out.println("title= "+title);
 		
 		// check if record is in the database
-		JSONArray temp2= AndroidCalendar2Activity.getDB().fetchAllNotes(
+		/*JSONArray temp2= AndroidCalendar2Activity.getDB().fetchAllNotes(
 				"TimeTable",
 				new String[]{"title","startDate","endDate", "startTime","endTime"}, 
 				new String[] {title,startDate,endDate,startTime,endTime} 
@@ -237,16 +241,13 @@ public class GoogleSync {
 		 System.out.println(isPrivate); 
 		 System.out.println(location); 
 		 System.out.println(remind); 
-				
 		
-		System.out.println(); 
+		
+	
 		 //String eventid2 = entry.getId().substring(entry.getId().lastIndexOf("/") + 1);
-
+		*/
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
-		System.out.println( "********EVENTID= " +eventid );
-		System.out.println("********EditLink= "+entry.getEditLink());
-		System.out.println("********getHref= "+entry.getEditLink().getHref());
-		System.out.println("********title= "+title);
+		
 		
 	}
 	public CalendarEventEntry getGoogleEvent( String googleEventId){	
@@ -428,14 +429,12 @@ public class GoogleSync {
 		  } 
 */
 	//Create google event with String eventTitle, DateTime starttime, DateTime endtime
-	public void insert(String eventTitle, DateTime startTime, DateTime endTime) {
-		if (isGoogleConnected() == false) {
+	public String insert(String eventTitle, DateTime startTime, DateTime endTime) {
+		if (isGoogleConnected() == false) { 
 			System.out.println("Connection not started");
-			return;
+			return "";
 		}
 		CalendarEventEntry myEntry = new CalendarEventEntry();
-		//myEntry.setId("abcdefgijklmnopqrstuvwxyz");
-		//System.out.println("--------" + myEntry.getId());
 		myEntry.setTitle(new PlainTextConstruct(eventTitle));
 
 		When eventTimes = new When();
@@ -443,15 +442,23 @@ public class GoogleSync {
 		eventTimes.setEndTime(endTime);
 		myEntry.addTime(eventTimes);
 		try {
-			myService.insert(eventFeedUrl, myEntry);
+			System.out.println("Insert a google calendar event! \"" + eventTitle+ "\"");
 			
+			// retrieve eventID after insert
+			CalendarEventEntry entry= myService.insert(eventFeedUrl, myEntry);
+			String eventid = entry.getId().substring(entry.getId().lastIndexOf("/") + 1);
+			//System.out.println("TITLE (INSERT)= " + eventTitle);
+			//System.out.println("ID (INSERT)= " + eventID);
+			
+			return eventid;
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "";
 		}
 		
 	}
 
-	// Create google event with String eventTitle, String starttime, String endtime
+	/* Create google event with String eventTitle, String starttime, String endtime
 	public void insert(String eventTitle, String startTime, String endTime) {
 		if (isGoogleConnected() == false) {
 			System.out.println("Connection not started");
@@ -465,13 +472,16 @@ public class GoogleSync {
 		eventTimes.setEndTime(DateTime.parseDateTime(endTime));
 		myEntry.addTime(eventTimes);
 		try {
-			myService.insert(eventFeedUrl, myEntry);
+			String eventID= myService.insert(eventFeedUrl, myEntry).getId();
+			System.out.print("TITLE (INSERT)= " + eventTitle);
+			System.out.print("ID (INSERT)= " + eventID);
+			//myService.insert(eventFeedUrl, myEntry);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ServiceException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	//DELETE ALL EVENTS
 	public void deleteAllEvents() {
