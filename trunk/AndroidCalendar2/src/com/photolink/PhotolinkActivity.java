@@ -36,8 +36,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
-
-public class PhotolinkActivity extends Activity implements OnItemClickListener{
+ 
+public class PhotolinkActivity extends Activity /*implements OnItemClickListener*/{
 	private static final String LIST_STATE = "listState";
 	private Parcelable mListState = null;
 	ListView imagelist;
@@ -205,7 +205,15 @@ public class PhotolinkActivity extends Activity implements OnItemClickListener{
 		imagelist = (ListView) findViewById(R.id.pl_PhoneImagesList);
 		imagecursor = managedQuery(uri, proj, selection, selectionArgs, sortOrder);
 		count = imagecursor.getCount();
+		total.setText(Integer.toString(count));
 
+		imagelist = (ListView) findViewById(R.id.pl_PhoneImagesList);
+		imagelist.setAdapter(new ImagesAdapter(getApplicationContext()));
+
+		imagelist.setOnItemClickListener(imagegridlistener);
+
+		
+		/*
 		
 		total.setText(Integer.toString(count));
 			
@@ -216,7 +224,7 @@ public class PhotolinkActivity extends Activity implements OnItemClickListener{
 			ImageBean temp = new ImageBean(imageName, id);
 			arrayList.add(temp);
 		}
-		
+		*/
 		
 		//imagelist.setAdapter(new ArrayAdapter<ImageBean>(this, R.layout.photolink, arrayList));
 		//imagelist.setOnItemClickListener(this);
@@ -227,11 +235,11 @@ public class PhotolinkActivity extends Activity implements OnItemClickListener{
 		//imagelist.setOnItemClickListener(imagegridlistener);
 	}
 	
-	
+	/*
 	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, final int position,long id) {
-		/*
+		
 		
 		Thread t = new Thread(new Runnable(){
 			public void run() {
@@ -254,9 +262,9 @@ public class PhotolinkActivity extends Activity implements OnItemClickListener{
 		});
 		
 		t.start();
-		*/
+		
 	}
-	
+	*/
 	private OnItemClickListener imagegridlistener = new OnItemClickListener() {
 		public void onItemClick(AdapterView parent, View v, int position,
 				long id) {

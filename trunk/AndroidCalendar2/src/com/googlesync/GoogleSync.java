@@ -46,7 +46,7 @@ public class GoogleSync {
 	private boolean isGoogleConnected = false;
 
 	// Constructors
-	public GoogleSync() {}
+	public GoogleSync() {} 
 
 	public GoogleSync(String userName, String userPassword) {
 		this.userName = userName;
@@ -173,6 +173,8 @@ public class GoogleSync {
 		
 		String isPrivate = "0";
 		String remind = ""; 
+		String milliS= "";
+		String contact= "";
 		
 		// check if record is in the database
 		JSONArray temp2= AndroidCalendar2Activity.getDB().fetchAllNotes(
@@ -183,7 +185,7 @@ public class GoogleSync {
 		if (temp2.length()== 0){		
 			//eventid = AndroidCalendar2Activity.getDB().GiveEventID();
 			String args[] = { eventid, title, startDate, endDate, startTime,
-					endTime, isPrivate, location, remind/*, "1"*/ };
+					endTime, isPrivate, location, remind, milliS, contact};
 			
 			AndroidCalendar2Activity.getDB().insert("TimeTable", args);
 		} 
