@@ -70,9 +70,9 @@ public class EditTask extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// set to full screen
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//		requestWindowFeature(Window.FEATURE_NO_TITLE);
+//		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.edittask);
 
 		title_edit = (EditText) findViewById(R.id.edittask_title_edit);

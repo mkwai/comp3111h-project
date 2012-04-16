@@ -297,7 +297,8 @@ public class TodoList extends Activity {
 												"com.calendar.EDITTASK");
 										i.putExtra("taskID", tid);
 										startActivity(i);
-										finish();
+										listview.invalidateViews();
+										//finish();
 									}
 								});
 						AlertDialog alert = builder.create();
