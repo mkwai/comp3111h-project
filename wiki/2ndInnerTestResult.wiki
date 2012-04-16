@@ -17,7 +17,7 @@
 ==Hindering the Access of Specific Websites==
 || *test case* || *result* || *condition* ||
 ||1||it works but then it redirect to m.yahoo.com in the device automatically immdiately|| passed since no system problem||
- ||2 ||yes|| passed||
+||2 ||yes|| passed||
 ||3|| yes|| passed||
 
 
