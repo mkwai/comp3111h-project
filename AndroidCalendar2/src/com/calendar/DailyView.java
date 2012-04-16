@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.Alarm.AlarmService;
 import com.commTimeCal.TimeCal;
 import com.test2.R;
 
@@ -118,7 +119,7 @@ public class DailyView extends Activity {
 				
 				FileOutputStream fos;
 				try {
-					File exportDirectory = new File("/sdcard/dailyassistant_image/");
+					File exportDirectory = new File("/sdcard/dailyassistant_image/"); 
 					System.out.println("open file directory");
 					if (!exportDirectory.exists())
 						exportDirectory.mkdirs();
@@ -136,6 +137,7 @@ public class DailyView extends Activity {
 					fos.close();
 					fos = null;
 					
+					Toast.makeText(DailyView.this, "Finish", Toast.LENGTH_SHORT).show();  
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
