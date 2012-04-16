@@ -482,7 +482,8 @@ public class EditTask extends Activity {
 				currentMinute = 55;
 			} else
 				currentMinute = ((currentMinute - minute) > 0) ? currentMinute - 5
-						: currentMinute + 5;
+					: ((currentMinute - minute) < 0 ? currentMinute + 5
+							: currentMinute);
 
 			timePicker
 					.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
