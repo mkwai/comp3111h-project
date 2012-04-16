@@ -33,7 +33,7 @@ INNER TEST 2 TEST CASES
 
 *Hindering the Access of Specific Websites (ref. spec 7)*
 
-1.     Click “Web Hindering”. Enter “hk.yahoo.com” and “www.facebook.com” into the field of websites that wanted to be restricted. Close the app and access www.facebook.com. Keep going to different pages in www.yahoo.com.hk  Is there a message box reminder pop out everytime the page refresh?
+1.     Click “Web Hindering”. Enter “hk.yahoo.com” and “www.facebook.com” into the field of websites that wanted to be restricted. Close the app and access hk.yahoo.com. Keep going to different pages in www.yahoo.com.hk  Is there a message box reminder pop out everytime the page refresh?
 
 2.     Go to www.ust.hk and browsing different pages of www.ust.hk. Can it be browsed successfully without any obstacles?
 
