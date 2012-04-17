@@ -55,7 +55,7 @@ public class BrowserHistoryActivity extends Activity {
 				else if (siteAddress.substring(0, 7).equalsIgnoreCase("http://"))
 					Toast.makeText(BrowserHistoryActivity.this, "No need to enter https", Toast.LENGTH_SHORT).show();
 
-				else if(siteAddress.matches("[a-zA-Z0-9]+(.[a-zA-Z0-9]+)*(/[^\\s]*)?")){
+				else if(siteAddress.matches("[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)*(/[^\\s]*)?")){
 					if(siteAddress.length()<3) 
 						Toast.makeText(BrowserHistoryActivity.this, "Input address is too short!", Toast.LENGTH_SHORT).show();
 					else if(blockWebsites.contains(siteAddress.toLowerCase()))
