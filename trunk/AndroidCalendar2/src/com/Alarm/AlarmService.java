@@ -32,7 +32,7 @@ public class AlarmService extends Service{
 	public void onStart(Intent intent, int startid){
 		Log.i("SERVICE", "Start!!!!!!!!!!!!");
 		
-		Alert();
+		Alert(intent.getExtras().getString(Alarms.TITLE), intent.getExtras().getBoolean(Alarms.ISEVENT));
 	}
 	
 	public void onDestroy()
@@ -45,15 +45,15 @@ public class AlarmService extends Service{
 		return null;
 	}
 	
-	private void Alert(){
+	private void Alert(String title, boolean isEvent){
 		Log.i("duck", "left");
 		
-		int temp = Alarms.getCount();
-		String title = Alarms.getTitle(temp);
-		int id = Alarms.getID(temp);
-		String top =  Alarms.isEvent(temp)? "Event " : "Task ";
-		String end = Alarms.isEvent(temp)? " starts." : " needs to be finished!";
-		Log.i("right", title + " "+ id); 
+//		int temp = Alarms.getCount();
+//		String title = Alarms.getTitle(temp);
+//		int id = Alarms.getID(temp);
+		String top =  isEvent? "Event " : "Task ";
+		String end = isEvent? " starts." : " needs to be finished!";
+		Log.i("right", title + " "+ (isEvent? "E":"T")); 
 		
 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		
@@ -61,7 +61,7 @@ public class AlarmService extends Service{
 		String tickerText = top + title + end;
 		tickerText = tickerText+"\n"+tickerText+"\n"+tickerText;
 		//Notification picture
-		int icon = Alarms.isEvent(temp) ? R.drawable.event : R.drawable.task;
+		int icon = isEvent ? R.drawable.event : R.drawable.task;
 		 
 		String contentTitle="My Daily Assistant notification";
 		String contentText=top + title + end;
@@ -79,7 +79,7 @@ public class AlarmService extends Service{
 		notification.flags |= Notification.FLAG_AUTO_CANCEL;
 		notification.setLatestEventInfo(AlarmService.this, contentTitle, contentText, contentIntent);
 		//show notification
-		mNotificationManager.notify(id, notification);
+		mNotificationManager.notify(Alarms.getCount(), notification);
 		
 		Toast.makeText(AlarmService.this, contentText, Toast.LENGTH_LONG).show();  
 		

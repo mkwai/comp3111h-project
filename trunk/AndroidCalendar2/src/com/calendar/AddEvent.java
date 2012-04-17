@@ -251,8 +251,6 @@ public class AddEvent extends Activity {
 					new Thread(new Runnable() {
 						public void run() {
 							
-								Calendar temp = (Calendar) endingCalendar.clone();
-								Log.i("temp!!", temp.getTimeInMillis()+"");
 								Alarms.addAlarm(AddEvent.this, ID, title, milliSecond, true);
 													
 						}
