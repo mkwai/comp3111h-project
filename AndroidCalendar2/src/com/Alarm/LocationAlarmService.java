@@ -29,7 +29,7 @@ public class LocationAlarmService extends Service{
 	public void onStart(Intent intent, int startid){
 		Log.i("SERVICE", "Start!!!!!!!!!!!!");
 		
-		Alert();
+		Alert(intent.getExtras().getString(Alarms.TITLE));
 	}
 	
 	public void onDestroy()
@@ -42,20 +42,20 @@ public class LocationAlarmService extends Service{
 		return null;
 	}
 	
-	private void Alert(){
+	private void Alert(String title){
 		Log.i("duck", "right");
 		
 		
 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		
 		//Notification 
-		String tickerText = /*top + title + end*/ "LAlarm";
+		String tickerText = /*top + title + end*/ title;
 		tickerText = tickerText+"\n"+tickerText+"\n"+tickerText;
 		//Notification picture
 		int icon = R.drawable.event;
 		 
 		String contentTitle="My Daily Assistant notification";
-		String contentText = /*top + title + end*/ "LAlarm";
+		String contentText = /*top + title + end*/ title;
 		 
 		//Notification for activity
 		Intent notificationIntent = new Intent(LocationAlarmService.this, this.getClass());

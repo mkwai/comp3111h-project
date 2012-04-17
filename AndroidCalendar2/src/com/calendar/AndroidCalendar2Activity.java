@@ -2,6 +2,7 @@ package com.calendar;
 
 import com.exina.android.calendar.CalendarActivity;
 
+import com.google.gdata.data.DateTime;
 import com.googlesync.GoogleSync;
 import com.localdb.*;
 
@@ -43,9 +44,10 @@ public class AndroidCalendar2Activity extends Activity {
 		
 		// get an instance of GoogleSync, username and password will be set later
 		mgs = new GoogleSync();
-/*		Intent LAlert = new Intent();
-		LAlert.setAction("LBA");
-		this.startService(LAlert);*/
+		
+		Intent LBA = new Intent();
+		LBA.setAction("LBA");
+		startService(LBA);
 	}
  
 	@Override
