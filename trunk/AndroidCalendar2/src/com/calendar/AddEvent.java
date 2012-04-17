@@ -52,7 +52,7 @@ public class AddEvent extends Activity {
 	private Button endingTimeButton;
 	private Button searchLoc;
 	private Button searchContact;
-	private CityBean CB = new CityBean();
+	private String locatChecked;
 	// for date set dialog
 	public static final int STARTING_DATE_DIALOG = 0;
 	public static final int STARTING_TIME_DIALOG = 1;
@@ -220,7 +220,7 @@ public class AddEvent extends Activity {
 				
 				String locat = location.getText().toString();
 				//***should be not necessary to search?***
-				if (!(locat.length()==0 || locat.equals(CB.getCityName()))) {
+				if (!(locat.length()==0 || locat.equals(locatChecked))) {
 					Toast.makeText(AddEvent.this,
 							"Search valid address before add!",
 							Toast.LENGTH_SHORT).show();
@@ -258,9 +258,7 @@ public class AddEvent extends Activity {
 				}
 				AndroidCalendar2Activity.getDB().insert("TimeTable", args);
 				
-				if(locat.length()>0){
-					LocationBasedAlarm.addList(CB);
-				}
+
 				//For google sync. eg, "2012-03-01T22:40:00" 
 				final String sdt = startDate2 + "T" + startTime.substring(0, 2)
 						+ ":" + startTime.substring(3, 5) + ":00";
@@ -583,10 +581,8 @@ public class AddEvent extends Activity {
 			double lat = data.getExtras().getDouble("placelat");
 			double lng = data.getExtras().getDouble("placelng");
 			
-			CB.setCityName(placename);
-			CB.setLat(lat);
-			CB.setLon(lng);
-			
+			locatChecked = placename;
+						
 			location.setText(placename);
 
 			/*

@@ -58,7 +58,7 @@ public class EditEvent extends Activity {
 	private Button delete;
 	private Button searchContact;
 
-	private CityBean CB = new CityBean();
+	private String locatChecked;
 	 
 	// for date set dialog
 	public static final int STARTING_DATE_DIALOG = 0;
@@ -231,7 +231,7 @@ public class EditEvent extends Activity {
 				String isPrivate = privateEvent.isChecked() ? "1" : "0";
 				
 				String locat = location.getText().toString();
-				if (!(locat.length()==0 || locat.equals(CB.getCityName()))) {
+				if (!(locat.length()==0 || locat.equals(locatChecked))) {
 					Toast.makeText(EditEvent.this,
 							"Search valid address before add!",
 							Toast.LENGTH_SHORT).show();
@@ -310,9 +310,6 @@ public class EditEvent extends Activity {
 					}).start(); 
 				}
 				
-				if(locat.length()>0){
-					LocationBasedAlarm.addList(CB);
-				}
 				// "2012-03-01T22:40:00"
 //				final String sdt = startDate2 + "T" + startTime.substring(0, 2)
 //						+ ":" + startTime.substring(3, 5) + ":00";
@@ -506,8 +503,10 @@ public class EditEvent extends Activity {
 		}
 		
 		String loc = extras.getString("location");
-		if(loc !=null)
+		if(loc !=null){
+			locatChecked = loc;
 			location.setText(loc);
+		}
 			
 		Log.i("123", "123");
 		String con = extras.getString("contact");
@@ -734,9 +733,7 @@ public class EditEvent extends Activity {
 			double lat = data.getExtras().getDouble("placelat");
 			double lng = data.getExtras().getDouble("placelng");
 
-			CB.setCityName(placename);
-			CB.setLat(lat);
-			CB.setLon(lng);
+			locatChecked = placename;
 			
 			location.setText(placename);
 

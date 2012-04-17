@@ -209,6 +209,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        
         <receiver android:name="com.Alarm.AlamrReceiver" android:process=":remote"></receiver>
         
        <service android:name="com.Alarm.AlarmService" android:enabled="true" />  
@@ -217,6 +218,8 @@
                 <action android:name="AlermService"></action>  
             </intent-filter>  
         </service>
+        
+		 <receiver android:name="com.Alarm.LocationAlarmReceiver" android:process=":remote"></receiver>
         
         <service android:name="com.Alarm.LocationBasedAlarm" android:enabled="true" />  
 		<service android:name="com.Alarm.LocationBasedAlarm">  

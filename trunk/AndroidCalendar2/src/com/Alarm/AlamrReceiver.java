@@ -19,11 +19,11 @@ public class AlamrReceiver extends BroadcastReceiver {
 		Alert.setAction("AlermService");
 		
 		/*transfer info*/
-		Bundle bundle = new Bundle();
+/*		Bundle bundle = new Bundle();
 		bundle.putString(Alarms.TITLE, intent.getExtras().getString(Alarms.TITLE));
-		bundle.putBoolean(Alarms.ISEVENT, intent.getExtras().getBoolean(Alarms.ISEVENT));
+		bundle.putBoolean(Alarms.ISEVENT, intent.getExtras().getBoolean(Alarms.ISEVENT));*/
+		Alert.putExtras(intent.getExtras());
 		
-		Alert.putExtras(bundle);
 		context.startService(Alert);
 
 	}

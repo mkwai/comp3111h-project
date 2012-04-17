@@ -23,7 +23,7 @@ import com.test2.R;
 public class BrowserHistoryActivity extends Activity {
 	
 	private ArrayList<String> blockWebsites = new ArrayList<String>();
-	private Intent testing = new Intent();
+	private Intent PopupMessageService = new Intent();
 	private int numOfLoop = 0;
 	static private boolean turn = false; 
 	
@@ -39,7 +39,7 @@ public class BrowserHistoryActivity extends Activity {
         setContentView(R.layout.browserhistory);
         //blockWebsites.add("facebook.com");
         siteInput = (EditText) findViewById(R.id.siteAddress);
-        testing.setAction("PopupMessage");
+        PopupMessageService.setAction("PopupMessage");
         
         siteAdd= (Button) findViewById(R.id.siteAdd);
         siteAdd.setOnClickListener(new OnClickListener() {
@@ -131,7 +131,7 @@ public class BrowserHistoryActivity extends Activity {
 					    		hindering = true;
 					    		Log.i("conflict", blockWebsites.get(i));
 					    		PopupMessage.setSite(blockWebsites.get(i));
-					    		startService(testing);
+					    		startService(PopupMessageService);
 					    	}
 					    }	
 					    
