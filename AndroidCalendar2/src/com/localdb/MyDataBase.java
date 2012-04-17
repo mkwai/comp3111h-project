@@ -40,14 +40,13 @@ public class MyDataBase {
     
     private static class GoogleTable implements Table{
     	public String[] getFields(){
-    		return new String[] {"eventID", "title","startDate","endDate", "startTime",
-    				"endTime", "private", "location","reminder", "googled"};
+    		return new String[] {"eventID"};
     	}
 
     	public String getName(){return "GoogleTable";}
     	public String getCreate(){
     		return "create table GoogleTable "+
-    				"(eventID INT, title TEXT, startDate INT, endDate INT, startTime TEXT, endTime TEXT, private INT, location TEXT, reminder TEXT, googled TEXT);";
+    				"(eventID INT);";
     	}
     }
 

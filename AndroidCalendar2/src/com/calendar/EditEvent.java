@@ -259,17 +259,32 @@ public class EditEvent extends Activity {
 				AndroidCalendar2Activity.getDB().updateConditional("TimeTable", condition, fields, args);
 				 
 
-					//For google sync. eg, "2012-03-01T22:40:00"
+				//For google sync. eg, "2012-03-01T22:40:00"
 				final String sdt = startDate2 + "T" + startTime.substring(0, 2) + ":" + startTime.substring(3, 5) + ":00";
 				final String edt = endDate2 + "T" + endTime.substring(0, 2) + ":" + endTime.substring(3, 5) + ":00";
 				System.out.println("SDT=== " +sdt);
 				System.out.println("EDT=== " +edt);
 
-				
-				// ******dickson:  bug ??*********		
-				if (AndroidCalendar2Activity.getGS() != null)
-					AndroidCalendar2Activity.getGS().updateGoogleEvent(eventid, title, sdt, edt);
-				
+				if (AndroidCalendar2Activity.getGS() != null 
+						&& AndroidCalendar2Activity.getGS().isGoogleConnected()){
+					new Thread(new Runnable() {
+						public void run() {
+							// update to google calendar and get googleEventID
+							String googleEventID= AndroidCalendar2Activity.getGS().updateGoogleEvent(
+									eventid, title, 
+									DateTime.parseDateTime(sdt), DateTime.parseDateTime(edt));
+							// if successful
+							System.out.println("OLD ID= "+ eventid);
+							if (googleEventID!= ""){
+								String fields[] = {"eventID"};
+								String args[] = {googleEventID};
+								String condition=" eventID = '"+eventid+"' ";
+								AndroidCalendar2Activity.getDB().updateConditional("TimeTable", condition, fields, args);
+							}
+							System.out.println("NEW ID= "+ googleEventID);
+						}
+					}).start();
+				}				
 				
 				/*!!!!!!!!!!!!! Alert User !!!!!!!!!!!!!!!*/
 				if(remind.equals("1") && locat.length()<=0){

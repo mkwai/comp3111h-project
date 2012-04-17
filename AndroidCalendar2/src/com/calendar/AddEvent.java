@@ -277,8 +277,9 @@ public class AddEvent extends Activity {
 									DateTime.parseDateTime(sdt),
 									DateTime.parseDateTime(edt)
 								);
-							// if successful
+							
 							System.out.println("OLD ID= "+ eventid);
+							// if successful, update ID
 							if (googleEventID!= ""){
 								String fields[] = {"eventID"};
 								String args[] = {googleEventID};
@@ -288,6 +289,11 @@ public class AddEvent extends Activity {
 							System.out.println("NEW ID= "+ googleEventID);
 						}
 					}).start();
+				}
+				else{
+					// mark the event is not sync with event ID 
+					String args2[] = { eventid};
+					AndroidCalendar2Activity.getDB().insert("GoogleTable", args2);
 				}
 				finish();
 			}
