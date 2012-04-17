@@ -58,6 +58,8 @@ public class PopupMessage extends Service {
     	toast.setDuration(Toast.LENGTH_LONG);
 
     	toast.show();
+    	toast.show();
+    	toast.show();
     }
     
     static void setSite(String temp){

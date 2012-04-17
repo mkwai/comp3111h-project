@@ -49,16 +49,23 @@ public class BrowserHistoryActivity extends Activity {
 				// TODO Auto-generated method stub
 				String siteAddress =  siteInput.getText().toString();
 				Log.i("added?", siteAddress);
-				if(siteAddress.matches("[a-zA-Z0-9]+(.[a-zA-Z0-9]+)*(/[^\\s]*)?")){
+				
+				if(siteAddress.substring(0, 7).equalsIgnoreCase("http://"))
+					Toast.makeText(BrowserHistoryActivity.this, "No need to enter http", Toast.LENGTH_SHORT).show();
+				else if (siteAddress.substring(0, 7).equalsIgnoreCase("http://"))
+					Toast.makeText(BrowserHistoryActivity.this, "No need to enter https", Toast.LENGTH_SHORT).show();
+
+				else if(siteAddress.matches("[a-zA-Z0-9]+(.[a-zA-Z0-9]+)*(/[^\\s]*)?")){
 					if(siteAddress.length()<3) 
 						Toast.makeText(BrowserHistoryActivity.this, "Input address is too short!", Toast.LENGTH_SHORT).show();
-					else if(blockWebsites.contains(siteAddress))
+					else if(blockWebsites.contains(siteAddress.toLowerCase()))
 						Toast.makeText(BrowserHistoryActivity.this, "Input address exists!", Toast.LENGTH_SHORT).show();
 					else{
-						blockWebsites.add(siteAddress);
+						blockWebsites.add(siteAddress.toLowerCase());
 						Toast.makeText(BrowserHistoryActivity.this, "Address added", Toast.LENGTH_SHORT).show();
 					}
 				}
+
 				else Toast.makeText(BrowserHistoryActivity.this, "Please enter a valid address!", Toast.LENGTH_SHORT).show();
 
 			} 
