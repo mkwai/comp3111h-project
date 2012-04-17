@@ -133,6 +133,8 @@ public class GoogleSyncActivity extends Activity {
 				} else {
 					new Thread(new Runnable() {
 						public void run() {
+							username= "klhoab@gmail.com";
+							password= "977026a1";
 							
 							AndroidCalendar2Activity.getGS().setUserInfo(username, password);
 								pastdayID = rgpast.getCheckedRadioButtonId();
@@ -172,40 +174,70 @@ public class GoogleSyncActivity extends Activity {
 								Looper.loop();
 							} else {
 								AndroidCalendar2Activity.getGS().isGoogleConnected(true);
+								
 								Looper.prepare();
 								ShowMsgDialog("System","Connected Successfully.");
 								
-								// insert records from local database to google calendar
-								/*
-								 JSONArray ja = AndroidCalendar2Activity.getDB().fetchConditional("RefTable","");
-								 
+								JSONArray ja = AndroidCalendar2Activity.getDB().fetchConditional("GoogleTable","");
+								System.out.println("# of (unsync)=" + ja.length());
+								
 								for (int i = 0; i < ja.length(); i++) {
+									JSONObject jo;
 									try {
-										JSONObject jo = ja.getJSONObject(i);
-										String googleid= jo.getString("googleID");
+										jo = ja.getJSONObject(i);
+										
+										String eventid= jo.getString("eventID");
+										System.out.println("Eventid (unsync)=" + eventid);
 										
 										JSONArray temp= AndroidCalendar2Activity.getDB().fetchAllNotes(
-												"TimeTable", new String[]{"eventid"}, new String[] {googleid} ) ; 
-										for(int j=0; j<temp.length(); j++){
+											"TimeTable", new String[]{"eventid"}, new String[] {eventid} ) ; 
+									
+										for (int j=0; j<temp.length(); j++){
 											JSONObject tempo = temp.getJSONObject(j);
-											
 											String title= tempo.getString("title");
-											/*
-											AndroidCalendar2Activity.getGS().insert(title,
-													DateTime.parseDateTime(sdt),
-													DateTime.parseDateTime(edt));
+											String startDate= tempo.getString("startDate");
+											String startTime= tempo.getString("startTime");
+											String endDate= tempo.getString("endDate");
+											String endTime= tempo.getString("endTime");
 											
-											String condition= " eventid = '"+googleid+"'  "; 
-											String fields[] = { eventid};
-											String args[] = { eventid};
-											AndroidCalendar2Activity.getDB().updateConditional("TimeTable", condition, fields, args);
+											System.out.println("Title(unsync)=" + title);
 											
-										}
+											startDate= startDate.substring(0,4)+ "-"
+													+ startDate.substring(4,6)+ "-" 
+													+startDate.substring(6,8);
+											
+											endDate= endDate.substring(0,4)+ "-"
+													+ endDate.substring(4,6)+ "-" 
+													+endDate.substring(6,8);
 										
+											final String sdt = startDate + "T" + startTime.substring(0, 2)
+													+ ":" + startTime.substring(3, 5) + ":00";
+											final String edt = endDate + "T" + endTime.substring(0, 2)
+													+ ":" + endTime.substring(3, 5) + ":00";
+											
+											//sdt(unsync)=20120418T01:25:00
+											//edt(unsync)=20120418T02:25:00
+
+											// DateTime Format = "2012-03-01T22:40:00" 
+											System.out.println("sdt(unsync)=" + sdt);
+											System.out.println("edt(unsync)=" + edt);
+											
+											String googleEventID= AndroidCalendar2Activity.getGS().insert(
+													title,
+													DateTime.parseDateTime(sdt),
+													DateTime.parseDateTime(edt)
+												);
+											if (googleEventID!= ""){
+												String fields[] = {"eventID"};
+												String args[] = {googleEventID};
+												String condition=" eventID = '"+eventid+"' ";
+												AndroidCalendar2Activity.getDB().updateConditional("TimeTable", condition, fields, args);
+											}
+										}
 									} catch (Exception e) {
 										e.printStackTrace();
 									}
-								}*/
+								}
 								
 								AndroidCalendar2Activity.getGS().getRangeEvents2(
 												(year + "-" + month + "-" + date), past, future);
