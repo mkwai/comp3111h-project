@@ -5,6 +5,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -12,6 +13,8 @@ import java.util.ArrayList;
 
 public class Alarms {
 	
+	final static String TITLE = "title";
+	final static String ISEVENT = "isEvent";
 	static private ArrayList<AlarmBean> alarmInfo = new ArrayList<AlarmBean>();
 	static private ArrayList<String> alarmID =  new ArrayList<String>();
 	static private int assignId = 0;
@@ -22,6 +25,12 @@ public class Alarms {
     		Log.i("Alarm", alarmAdd.getTitle()+"  "+ alarmAdd.getID() 
     				+ "  " + alarmAdd.getMillisecond() + "  " + System.currentTimeMillis());
 			Intent intent = new Intent(context, AlamrReceiver.class);
+			/*transfer Info*/
+			Bundle bundle = new Bundle();
+			bundle.putString(TITLE, alarmAdd.getTitle());
+			bundle.putBoolean(ISEVENT, alarmAdd.isEvent());
+			intent.putExtras(bundle);
+			
 			PendingIntent pi = PendingIntent.getBroadcast(context, 
 					alarmAdd.getID(), intent, 0);
 			AlarmManager am = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
@@ -45,11 +54,17 @@ public class Alarms {
     }
     
     static public void updateAlarm(Context context, 
-    		String eventID, String title, long milliS, boolean event){
+    		String eventID, String title, long milliS, boolean isEvent){
     	
     	int requestCode = alarmID.indexOf(eventID);
     	
 		Intent intent = new Intent(context, AlamrReceiver.class);
+		/*transfer Info*/
+		Bundle bundle = new Bundle();
+		bundle.putString(TITLE, title);
+		bundle.putBoolean(ISEVENT, isEvent);
+		intent.putExtras(bundle);
+		
 		PendingIntent pi = PendingIntent.getBroadcast(context, 
 				alarmInfo.get(requestCode).getID(), intent, 0);
 		AlarmManager am = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
@@ -82,7 +97,10 @@ public class Alarms {
     }
     
     static public int getCount(){
-    	return eventCount++;
+    	int get = eventCount;
+    	eventCount++;
+    	eventCount %= MAXINT;
+    	return get;
     }
     
     static public String getTitle(int position){
