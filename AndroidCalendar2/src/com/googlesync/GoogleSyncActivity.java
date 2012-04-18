@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,7 +51,8 @@ public class GoogleSyncActivity extends Activity {
 	private String username = "";
 	private String password = "";
 	static protected Calendar currentDateCalendar = Calendar.getInstance();
-
+	private Timer timer1= new Timer();
+	
 	private Button sync;
 	private Button disconnect;
 	private EditText ET_username;
@@ -169,8 +172,7 @@ public class GoogleSyncActivity extends Activity {
 								future = 365;
 
 							if (AndroidCalendar2Activity.getGS().GoogleLogin() == false) {
-								AndroidCalendar2Activity.getGS()
-										.isGoogleConnected(false);
+								AndroidCalendar2Activity.getGS().isGoogleConnected(false);
 								Looper.prepare();
 								ShowMsgDialog("System","User name and password not match.");
 								Looper.loop();
@@ -232,12 +234,12 @@ public class GoogleSyncActivity extends Activity {
 												AndroidCalendar2Activity.getDB().updateConditional(
 														"TimeTable",condition,fields, args);
 											}
+											AndroidCalendar2Activity.getDB().delete("GoogleAddTable", eventid);
 										}
 									} catch (Exception e) {
 										e.printStackTrace();
 									}
 								}
-								AndroidCalendar2Activity.getDB().delete("GoogleAddTable", null);
 								
 								// upload un-sync records (update)
 								ja = AndroidCalendar2Activity.getDB().fetchConditional("GoogleUpdateTable", "");
@@ -292,13 +294,13 @@ public class GoogleSyncActivity extends Activity {
 											}
 											System.out.println("NEW ID(unsync->update)= "+ googleEventID);
 										}
+										AndroidCalendar2Activity.getDB().delete("GoogleUpdateTable", eventid);
 										
 									}
 									catch(Exception e){
 										e.printStackTrace();
 									}
 								}
-								AndroidCalendar2Activity.getDB().delete("GoogleUpdateTable", null);
 								
 								// upload un-sync records (delete)
 								ja = AndroidCalendar2Activity.getDB().fetchConditional("GoogleDeleteTable", "");
@@ -340,16 +342,15 @@ public class GoogleSyncActivity extends Activity {
 	
 											AndroidCalendar2Activity.getGS().deleteGoogleEvent(eventid);
 										}
+										AndroidCalendar2Activity.getDB().delete("GoogleDeleteTable", eventid);
 										
 									}
 									catch(Exception e){
 										e.printStackTrace();
 									}
 								}
-								AndroidCalendar2Activity.getDB().delete("GoogleDeleteTable", null);
 								
-								
-								// check if record is deleted online
+								// Sync from google (check if any record is deleted online)
 								String todayDate = year + "-" + month + "-" + date;
 								System.out.println("(online) todayDate: "+ todayDate);
 								
@@ -390,7 +391,9 @@ public class GoogleSyncActivity extends Activity {
 
 								// AndroidCalendar2Activity.getGS().temp2();
 								// AndroidCalendar2Activity.getDB().getTable("TimeTable");
-
+								
+								timer1.scheduleAtFixedRate(new backgroundGoogleSync(), 0, 15000);
+								
 								Looper.loop();
 							}
 						}
@@ -399,7 +402,48 @@ public class GoogleSyncActivity extends Activity {
 			}
 		}
 	};
+	private class backgroundGoogleSync extends TimerTask{
+		public void run() {
+			// Sync from google (check if any record is deleted online)
+			String todayDate = year + "-" + month + "-" + date;
+			System.out.println("(background) todayDate: "+ todayDate);
+			
+			String dateFrom= AndroidCalendar2Activity.getGS().addDays(todayDate, -past);
+			String dateTo= AndroidCalendar2Activity.getGS().addDays(todayDate, future);
+			
+			//dateFrom: 2012-03-19
+			dateFrom= dateFrom.substring(0,4)+ dateFrom.substring(5,7) + dateFrom.substring(8,10);
+			dateTo= dateTo.substring(0,4)+ dateTo.substring(5,7) + dateTo.substring(8,10);
+			
+			System.out.println("(background) dateFrom: "+ dateFrom);
+			System.out.println("(background) dateTo: "+dateTo);
+			
+			String condition = " startDate >= '" + dateFrom + "' AND startDate <= '"
+					+ dateTo + "' ";
+			try {
+				JSONArray ja = AndroidCalendar2Activity.getDB().fetchConditional("TimeTable",
+						condition);
+				for (int i = 0; i < ja.length(); i++) {
+					JSONObject jo = ja.getJSONObject(i);
 
+					String id= jo.getString("eventID");
+					System.out.println("(background) eventID: "+id);
+					if (AndroidCalendar2Activity.getGS().getGoogleEvent(id)== null){
+						System.out.println("(deleting) eventID: "+ id);
+						AndroidCalendar2Activity.getDB().delete("TimeTable",id);
+					}
+				}
+
+			} catch (Exception e) {
+				Log.i("error", e.toString());
+			}
+		
+			// Sync from google (insert/ update)
+			AndroidCalendar2Activity.getGS().getRangeEvents2(
+					(year + "-" + month + "-" + date), past, future);
+		}
+		
+	}
 	private void ShowMsgDialog(String title, String msg) {
 		AlertDialog.Builder MyAlertDialog = new AlertDialog.Builder(this);
 		MyAlertDialog.setTitle(title);
