@@ -290,9 +290,10 @@ public class CalendarActivity extends Activity implements
 			// use when "set" press
 			public void onDateSet(DatePicker view, int year, int monthOfYear,
 					int dayOfMonth) {
-				if (year < 1950 || year > 2050) {
+				if (year < 1900 || year > 2100) {
 					ShowMsgDialog("ALERT", "The selected date is out of range!");
-				} else {
+				} else 
+				{
 
 					Calendar date = Calendar.getInstance();
 					date.set(year, monthOfYear, dayOfMonth);
