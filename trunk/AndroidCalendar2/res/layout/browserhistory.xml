@@ -23,6 +23,11 @@
 	   		android:layout_width="50dip"/>
 	</LinearLayout>
 	
+    	<ListView
+			android:id="@+id/webAddressList"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+		/>
 	
 
 </LinearLayout>
