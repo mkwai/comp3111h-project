@@ -176,8 +176,10 @@ public class GoogleSync {
 		// check if record is in the database
 		JSONArray temp= AndroidCalendar2Activity.getDB().fetchAllNotes(
 				"TimeTable", new String[]{"eventid"}, new String[] {eventid} ) ; 
+		
 		if (temp.length()==0 ){  // new event
 			System.out.println("new event: ");
+			
 			String args[] = { eventid, title, startDate, endDate, startTime,
 				endTime, isPrivate, location, remind, milliS, contact};
 			AndroidCalendar2Activity.getDB().insert("TimeTable", args); 
