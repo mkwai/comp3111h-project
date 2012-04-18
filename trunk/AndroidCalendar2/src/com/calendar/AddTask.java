@@ -390,6 +390,8 @@ public class AddTask extends Activity {
 					});
 
 			// set minute
+			if(currentMinute<0 || currentMinute >=60 )
+				currentMinute = 0;
 			timePicker.setCurrentMinute(currentMinute);
 			if (currentMinute == 60)
 				timePicker.setCurrentHour(hourOfDay + 1);
