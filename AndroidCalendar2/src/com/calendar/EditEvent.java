@@ -258,7 +258,6 @@ public class EditEvent extends Activity {
 
 				AndroidCalendar2Activity.getDB().updateConditional("TimeTable", condition, fields, args);
 				 
-
 				//For google sync. eg, "2012-03-01T22:40:00"
 				final String sdt = startDate2 + "T" + startTime.substring(0, 2) + ":" + startTime.substring(3, 5) + ":00";
 				final String edt = endDate2 + "T" + endTime.substring(0, 2) + ":" + endTime.substring(3, 5) + ":00";
@@ -285,6 +284,11 @@ public class EditEvent extends Activity {
 						}
 					}).start();
 				}				
+				else{
+					// mark the event is not sync with event ID 
+					String args2[] = { eventid};
+					AndroidCalendar2Activity.getDB().insert("GoogleUpdateTable", args2);
+				}
 				
 				/*!!!!!!!!!!!!! Alert User !!!!!!!!!!!!!!!*/
 				if(remind.equals("1") && locat.length()<=0){
@@ -340,7 +344,7 @@ public class EditEvent extends Activity {
 //							args2[i]= args[i];
 //					args2[args2.length-1]= "1"; 
 //					
-//					AndroidCalendar2Activity.getDB().insert("GoogleTable", args2);
+//					AndroidCalendar2Activity.getDB().insert("GoogleAddTable", args2);
 //					
 //					new Thread(new Runnable() {
 //						public void run() {
@@ -439,12 +443,16 @@ public class EditEvent extends Activity {
 								}
 							}).start(); 
 						}
-						if (AndroidCalendar2Activity.getGS()!= null){
+						if (AndroidCalendar2Activity.getGS()!= null
+								&& AndroidCalendar2Activity.getGS().isGoogleConnected()){
 							//System.out.println("*****");
 							//System.out.println("*eventid***" + eventid);
 							AndroidCalendar2Activity.getGS().deleteGoogleEvent(eventid);
 						}
-						
+						else{
+							String args2[] = { eventid};
+							AndroidCalendar2Activity.getDB().insert("GoogleDeleteTable", args2);
+						}
 						finish();
 					}
 				});

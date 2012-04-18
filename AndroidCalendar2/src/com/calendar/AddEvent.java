@@ -293,7 +293,7 @@ public class AddEvent extends Activity {
 				else{
 					// mark the event is not sync with event ID 
 					String args2[] = { eventid};
-					AndroidCalendar2Activity.getDB().insert("GoogleTable", args2);
+					AndroidCalendar2Activity.getDB().insert("GoogleAddTable", args2);
 				}
 				finish();
 			}
