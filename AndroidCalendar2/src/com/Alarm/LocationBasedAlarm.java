@@ -27,16 +27,17 @@ import android.os.IBinder;
 import android.util.Log;
 
 public class LocationBasedAlarm extends Service{
+	final static String TIMEREQUIRED = "timeRequired";
+	final static String DESTINATION = "destination";
 	private Timer timer1 = new Timer();
-//	private Timer timer2 = new Timer();
-//	private LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-	final private int LocID = 2147483647;
+	private Timer timer2 = new Timer();
+	final static int LocID = 2147483647;
 	private double mylat = 0.0;
 	private double mylng = 0.0;
 	private String title;
 	private String desAddress;
 	private long milliSecond;
-	String args = new String();
+	String args;
 	TravelingDuration TD;
 	private Intent intent;
 	
@@ -50,7 +51,7 @@ public class LocationBasedAlarm extends Service{
 		Log.i("SERVICE", "Start!!!!!!!!!!!!");
 		this.intent = intent;
 		timer1.scheduleAtFixedRate(new trackLocationAlert(), 0, 10000);
-		//timer2.scheduleAtFixedRate(new currentLocation(), 0, 300000);
+		timer2.scheduleAtFixedRate(new currentLocation(), 0, 300000);
 		
 	}
 	
@@ -75,100 +76,111 @@ public class LocationBasedAlarm extends Service{
 			if(latObject != null){
 				
 				Log.v("Loc", "latObject != null");
-				
-				try{
-				if(latObject.getJSONObject(0)!=null){
-					Log.v("Loc", "JSONObject(0)!=null");
-					
-					JSONObject tempObj = (JSONObject) latObject.getJSONObject(0);
-					
-					/* testing */
-					Intent intent = new Intent(LocationBasedAlarm.this, LocationAlarmReceiver.class);
-					/*transfer Info*/
-					Bundle bundle = new Bundle();
-					bundle.putString(Alarms.TITLE, tempObj.getString("title"));
-					intent.putExtras(bundle);
-					
-					PendingIntent pi = PendingIntent.getBroadcast(LocationBasedAlarm.this, 
-							LocID, intent, 0);
-					AlarmManager am = (AlarmManager) getSystemService(Service.ALARM_SERVICE);
-					//set Alarm
-					am.set(AlarmManager.RTC_WAKEUP, 0, pi);
-				}}catch(Exception e){}
-			}
-/*			if(latObject != null){
-				JSONObject temp = (JSONObject) latObject.opt(0);
-				if(temp != null){
+				for(int i = 0 ; i<latObject.length();i++){
 					try{
-						title = temp.getString("title");
-						milliSecond = temp.getLong("milliS");
-						desAddress = temp.getString("location");
-						Log.i("locationBaseAlarm", title + " "+ desAddress + " "+ milliSecond);
-					}catch(Exception e){
-						Log.i("LA", "here");
-						e.printStackTrace();
-					}*/
-					
-//					desAddress = desAddress.replace(' ', '+');
-					
-/*					if(mylat != 0.0 && mylng != 0.0){
-						args = "http://maps.google.com/maps/api/directions/json?origin=" + desAddress
-						+ "&destination=" + mylat + "," + mylng + "&sensor=false";
-						
-						Log.i("LA", "in MY");
-					}
-					else{		*/		
-						//between ust
-//						String args = "http://maps.google.com/maps/api/directions/json?origin=" + desAddress
-//						+ "&destination=" + 22.336659+ "," + 114.266725 + "&sensor=false";
-//					}
-					
-//					TD = new TravelingDuration(Utils.getDuration(args, desAddress));
-//					Log.i("LocAlarm", "ms " + milliSecond 
-//							+"TD  "+ TD.getTotalSecond()*1000 + 
-//							"current  " + System.currentTimeMillis());
-//					if(TD.getTotalSecond() != -1 && 
-//							(milliSecond <= System.currentTimeMillis() + TD.getTotalSecond()*1000 /*to millisecond*/)){
-//			    		Log.i("LocAlarm", title +"  "+ TD.getTotalSecond() + "  " + System.currentTimeMillis());
-//						Intent intent = new Intent(LocationBasedAlarm.this, LocationAlarmReceiver.class);
-//						PendingIntent pi = PendingIntent.getBroadcast(LocationBasedAlarm.this, 
-//								/*LocID*/0, intent, 0);
-//						AlarmManager am = (AlarmManager) getSystemService(Service.ALARM_SERVICE);
-						//set Alarm
-//						am.set(AlarmManager.RTC_WAKEUP, /*System.currentTimeMillis() - TD.getTotalSecond()*/0 , pi);
-//					}
-//				}
+						if(latObject.getJSONObject(i)!=null){
+							Log.v("Loc", "JSONObject(" + i + ")!=null");
+							
+							JSONObject tempObj = (JSONObject) latObject.getJSONObject(0);
+							
+							String title = tempObj.getString("title");
+							String des = tempObj.getString("location");
+							long milliS = tempObj.getLong("milliS");
+							Log.v("Loc", title +" "+ des +" "+ milliS);
+							
+							//Core part!!!
+							TravelingDuration TD = getTD(des);
+
+							Log.i("Loc TD in run", TD.getTimeRequired());
+
+							
+							if( TD.getTotalSecond() != -1 && 
+									(milliS <= System.currentTimeMillis() + TD.getMilliS()) ){
+								Intent intent = new Intent(LocationBasedAlarm.this, LocationAlarmReceiver.class);
+								
+								/*transfer Info*/
+								Bundle bundle = new Bundle();
+								bundle.putString(Alarms.TITLE, title);
+								bundle.putString(TIMEREQUIRED, TD.getTimeRequired());
+								bundle.putString(DESTINATION, TD.getDestination());
+								intent.putExtras(bundle);
+								
+								PendingIntent pi = PendingIntent.getBroadcast(LocationBasedAlarm.this, 
+										LocID, intent, 0);
+								AlarmManager am = (AlarmManager) getSystemService(Service.ALARM_SERVICE);
+								//set Alarm
+								am.set(AlarmManager.RTC_WAKEUP, milliS - TD.getMilliS() , pi);
+								
+								break;
+							}
+						}
+						else{
+							Log.v("Loc", "JSONObject(0)==null");
+							//cancel alarm if currently no object
+							Intent intent = new Intent(LocationBasedAlarm.this,LocationAlarmReceiver.class);
+							PendingIntent pi = PendingIntent.getBroadcast(LocationBasedAlarm.this, LocID, intent, 0);
+							AlarmManager am = (AlarmManager) getSystemService(Service.ALARM_SERVICE);
+							am.cancel(pi);
+						}
+					}catch(Exception e){e.printStackTrace();}
+				}
+			}
+		}
+		
+		private TravelingDuration getTD(String des){
+			TravelingDuration TD = new TravelingDuration(des);
+			String inputAddress = des.replace(' ', '+');
+			
+			if(mylat != 0.0 && mylng != 0.0){
+				args = "http://maps.google.com/maps/api/directions/json?origin=" + inputAddress
+				+ "&destination=" + mylat + "," + mylng + "&sensor=false";
 				
-/*			}
-			else{*/
-/*				//cancel alarm 
-				Intent intent = new Intent(LocationBasedAlarm.this,LocationAlarmReceiver.class);
-				PendingIntent pi = PendingIntent.getBroadcast(LocationBasedAlarm.this, LocID, intent, 0);
-				AlarmManager am = (AlarmManager) getSystemService(Service.ALARM_SERVICE);
-				am.cancel(pi);*/
-				
-/*				Log.i("Loc Alarm", "cancel");
-			}*/
+				Log.i("Loc", "in MY" + " " + args);
+			}
+			else{			
+				//between ust
+				args = "http://maps.google.com/maps/api/directions/json?origin=" + inputAddress
+				+ "&destination=" + 22.336659+ "," + 114.266725 + "&sensor=false";
+
+				Log.i("Loc", "testing" + " " + args);
+			}
+			
+			TD = Utils.getDuration(args, des);
+			Log.i("Loc TD", TD.getTimeRequired());
+			
+			return TD;
 		}
 	}
 	
 
-/*	
+	
 	private class currentLocation extends TimerTask{
 
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
+			
+			Log.i("currentLocation", "in");
+			
 			Criteria criteria = new Criteria();
+			LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 			String bestProvider = locationManager.getBestProvider(criteria, false);
-			Location location = locationManager.getLastKnownLocation(bestProvider);
-			if(location != null){
-				mylat = location.getLatitude();
-				mylng = location.getLongitude();
+			if(bestProvider != null){
+				Location location = locationManager.getLastKnownLocation(bestProvider);
+				if(location != null){
+					
+					Log.i("currentLocation", "get");
+					mylat = location.getLatitude();
+					mylng = location.getLongitude();
+				}
+				else{
+					Log.i("currentLocation", "not get");
+				}
 			}
+			else Log.i("currentLocation", "bestProvider = null");
 			
 			
 		}
 		
-	}*/
+	}
 }

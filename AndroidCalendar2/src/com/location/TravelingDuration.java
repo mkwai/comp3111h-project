@@ -45,6 +45,9 @@ public class TravelingDuration implements Serializable{
 	public int getTotalSecond() {
 		return totalSecond;
 	}
+	public long getMilliS() {
+		return (long)1000*totalSecond;
+	}
 	public int getSecond() {
 		return second;
 	}
@@ -80,5 +83,28 @@ public class TravelingDuration implements Serializable{
 			this.day = 0;
 			
 		}
+	}
+	
+	public String getTimeRequired(){
+		String timeRequired = "";
+		if(day!=0){
+			if(day>1)
+				timeRequired = timeRequired + day +" days ";
+			else 
+				timeRequired = timeRequired + day +" day ";
+		}
+		if(hour != 0){
+			if(hour>1)
+				timeRequired = timeRequired + hour +" hours ";
+			else 
+				timeRequired = timeRequired + hour +" hour ";
+		}
+		if(minute != 0){
+			if(hour>1)
+				timeRequired = timeRequired + minute +" minutes";
+			else 
+				timeRequired = timeRequired + minute +" minute";
+		}
+		return timeRequired;
 	}
 }
