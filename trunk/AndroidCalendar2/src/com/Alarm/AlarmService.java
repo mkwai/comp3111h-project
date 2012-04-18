@@ -101,7 +101,7 @@ public class AlarmService extends Service{
 		}
 		
 		Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-		vibrator.vibrate(new long[]{2000,1000,2000,1000}, -1);
+		vibrator.vibrate(new long[]{2000,1000,2000,1000,2000,1000}, -1);
 		
 	}
 
