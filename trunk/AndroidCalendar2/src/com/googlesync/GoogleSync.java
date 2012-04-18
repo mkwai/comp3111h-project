@@ -60,20 +60,16 @@ public class GoogleSync {
 		this.userName = name;
 		this.userPassword = password;
 	}
-
-	public void isGoogleConnected(boolean state) {isGoogleConnected = state;}
-	public int getCount() {return count;}
-
+	
 	// getter
 	public String getUserName() {return userName;}
 	public String getUserPassword() {return userPassword;}
 	public boolean isGoogleConnected() {return isGoogleConnected;}
 	public void setCount(int count) {this.count = count;}
+	public void isGoogleConnected(boolean state) {isGoogleConnected = state;}
+	public int getCount() {return count;}
 
-	/*
-	 * Start Connection with userName, userPassword, return false if the
-	 * connection fails.
-	 */
+	// Start Connection with userName, userPassword, return false if the connection fails.
 	public boolean GoogleLogin() {
 		myService = new CalendarService("applicationName");
 		try {
@@ -260,8 +256,8 @@ public class GoogleSync {
 			 return event;
 			 
 		} catch (Exception e) {
-			//System.out.println("no such event ID");
-			e.printStackTrace();
+			System.out.println("no such event ID");
+			//e.printStackTrace();
 			return null;
 		} 
 	}	

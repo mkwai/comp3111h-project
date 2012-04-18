@@ -28,7 +28,9 @@ public class MyDataBase {
     private static final FriendTable FriendT = new FriendTable();
     private static final OtherTable OtherT = new OtherTable();
     private static final FriendTimeTable FTimeT = new FriendTimeTable();
-    private static final GoogleTable GoogleT= new GoogleTable();
+    private static final GoogleAddTable GoogleAddT= new GoogleAddTable();
+    private static final GoogleUpdateTable GoogleUpdateT= new GoogleUpdateTable();
+    private static final GoogleDeleteTable GoogleDeleteT= new GoogleDeleteTable();
 
     private static final TaskTable TaskT = new TaskTable();
     
@@ -38,14 +40,36 @@ public class MyDataBase {
     	public String getCreate();
     }
     
-    private static class GoogleTable implements Table{
+    private static class GoogleAddTable implements Table{
     	public String[] getFields(){
     		return new String[] {"eventID"};
     	}
 
-    	public String getName(){return "GoogleTable";}
+    	public String getName(){return "GoogleAddTable";}
     	public String getCreate(){
-    		return "create table GoogleTable "+
+    		return "create table GoogleAddTable "+
+    				"(eventID INT);";
+    	}
+    }
+    private static class GoogleUpdateTable implements Table{
+    	public String[] getFields(){
+    		return new String[] {"eventID"};
+    	}
+
+    	public String getName(){return "GoogleUpdateTable";}
+    	public String getCreate(){
+    		return "create table GoogleUpdateTable "+
+    				"(eventID INT);";
+    	}
+    }
+    private static class GoogleDeleteTable implements Table{
+    	public String[] getFields(){
+    		return new String[] {"eventID"};
+    	}
+
+    	public String getName(){return "GoogleDeleteTable";}
+    	public String getCreate(){
+    		return "create table GoogleDeleteTable "+
     				"(eventID INT);";
     	}
     }
@@ -145,7 +169,8 @@ public class MyDataBase {
 
 
     public MyDataBase(Context ctx) {
-    	Ts.add(TimeT); Ts.add(FriendT); Ts.add(OtherT); Ts.add(FTimeT);Ts.add(TaskT);Ts.add(GoogleT);
+    	Ts.add(TimeT); Ts.add(FriendT); Ts.add(OtherT); Ts.add(FTimeT);Ts.add(TaskT);
+    	Ts.add(GoogleAddT);Ts.add(GoogleUpdateT);Ts.add(GoogleDeleteT);
         this.mCtx = ctx;      
         mDbHelper = new DatabaseHelper(mCtx);
         mDb = mDbHelper.getWritableDatabase();

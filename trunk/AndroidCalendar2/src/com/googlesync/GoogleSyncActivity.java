@@ -2,6 +2,8 @@ package com.googlesync;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,6 +30,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -106,7 +109,6 @@ public class GoogleSyncActivity extends Activity {
 			username = ET_username.getText().toString();
 			password = ET_password.getText().toString();
 
-			
 			year = DateFormat.format("yyyy", currentDateCalendar).toString();
 			month = DateFormat.format("MM", currentDateCalendar).toString();
 			date = DateFormat.format("dd", currentDateCalendar).toString();
@@ -133,12 +135,11 @@ public class GoogleSyncActivity extends Activity {
 				} else {
 					new Thread(new Runnable() {
 						public void run() {
-							username= "klhoab@gmail.com";
-							password= "977026a1";
-							
-							AndroidCalendar2Activity.getGS().setUserInfo(username, password);
-								pastdayID = rgpast.getCheckedRadioButtonId();
- 
+
+							AndroidCalendar2Activity.getGS().setUserInfo(
+									username, password);
+							pastdayID = rgpast.getCheckedRadioButtonId();
+
 							if (pastdayID == R.id.gs_past7)
 								past = 7;
 							if (pastdayID == R.id.gs_past30)
@@ -168,84 +169,228 @@ public class GoogleSyncActivity extends Activity {
 								future = 365;
 
 							if (AndroidCalendar2Activity.getGS().GoogleLogin() == false) {
-								AndroidCalendar2Activity.getGS().isGoogleConnected(false);
+								AndroidCalendar2Activity.getGS()
+										.isGoogleConnected(false);
 								Looper.prepare();
 								ShowMsgDialog("System","User name and password not match.");
 								Looper.loop();
 							} else {
 								AndroidCalendar2Activity.getGS().isGoogleConnected(true);
-								
+
 								Looper.prepare();
 								ShowMsgDialog("System","Connected Successfully.");
-								
-								JSONArray ja = AndroidCalendar2Activity.getDB().fetchConditional("GoogleTable","");
-								System.out.println("# of (unsync)=" + ja.length());
-								
+
+								// upload un-sync records (insert)
+								JSONArray ja = AndroidCalendar2Activity.getDB().fetchConditional("GoogleAddTable", "");
+								System.out.println("# of (unsync->add)="+ ja.length());
+
+								String title, startDate, startTime, endDate, endTime;
 								for (int i = 0; i < ja.length(); i++) {
 									JSONObject jo;
 									try {
 										jo = ja.getJSONObject(i);
-										
-										String eventid= jo.getString("eventID");
-										System.out.println("Eventid (unsync)=" + eventid);
-										
-										JSONArray temp= AndroidCalendar2Activity.getDB().fetchAllNotes(
-											"TimeTable", new String[]{"eventid"}, new String[] {eventid} ) ; 
-									
-										for (int j=0; j<temp.length(); j++){
-											JSONObject tempo = temp.getJSONObject(j);
-											String title= tempo.getString("title");
-											String startDate= tempo.getString("startDate");
-											String startTime= tempo.getString("startTime");
-											String endDate= tempo.getString("endDate");
-											String endTime= tempo.getString("endTime");
-											
-											System.out.println("Title(unsync)=" + title);
-											
-											startDate= startDate.substring(0,4)+ "-"
-													+ startDate.substring(4,6)+ "-" 
-													+startDate.substring(6,8);
-											
-											endDate= endDate.substring(0,4)+ "-"
-													+ endDate.substring(4,6)+ "-" 
-													+endDate.substring(6,8);
-										
-											final String sdt = startDate + "T" + startTime.substring(0, 2)
-													+ ":" + startTime.substring(3, 5) + ":00";
-											final String edt = endDate + "T" + endTime.substring(0, 2)
-													+ ":" + endTime.substring(3, 5) + ":00";
-											
-											//sdt(unsync)=20120418T01:25:00
-											//edt(unsync)=20120418T02:25:00
 
-											// DateTime Format = "2012-03-01T22:40:00" 
-											System.out.println("sdt(unsync)=" + sdt);
-											System.out.println("edt(unsync)=" + edt);
-											
-											String googleEventID= AndroidCalendar2Activity.getGS().insert(
-													title,
-													DateTime.parseDateTime(sdt),
-													DateTime.parseDateTime(edt)
-												);
-											if (googleEventID!= ""){
-												String fields[] = {"eventID"};
-												String args[] = {googleEventID};
-												String condition=" eventID = '"+eventid+"' ";
-												AndroidCalendar2Activity.getDB().updateConditional("TimeTable", condition, fields, args);
+										String eventid = jo.getString("eventID");
+										System.out.println("Eventid (unsync->add)="+ eventid);
+
+										JSONArray temp = AndroidCalendar2Activity.getDB().fetchAllNotes(
+													"TimeTable",
+													new String[] { "eventid" },
+													new String[] { eventid });
+
+										for (int j = 0; j < temp.length(); j++) {
+											JSONObject tempo = temp.getJSONObject(j);
+											title = tempo.getString("title");
+											startDate = tempo.getString("startDate");
+											startTime = tempo.getString("startTime");
+											endDate = tempo.getString("endDate");
+											endTime = tempo.getString("endTime");
+
+											System.out.println("Title(unsync->add)="+ title);
+
+											String startDate2 = startDate.substring(0,4)+ "-"+ startDate.substring(4, 6)+ "-"+ startDate.substring(6, 8);
+											String endDate2 = endDate.substring(0, 4)+ "-"+ endDate.substring(4, 6)+ "-"+ endDate.substring(6, 8);
+
+											final String sdt = startDate2 + "T"+ startTime.substring(0, 2)+ ":"+ startTime.substring(3, 5)+ ":00";
+											final String edt = endDate2 + "T"+ endTime.substring(0, 2)+ ":"+ endTime.substring(3, 5)+ ":00";
+
+											// sdt(unsync)=20120418T01:25:00
+											// edt(unsync)=20120418T02:25:00
+
+											// DateTime Format = "2012-03-01T22:40:00"
+											System.out.println("sdt(unsync->add)="+ sdt);
+											System.out.println("edt(unsync->add)="+ edt);
+
+											String googleEventID = AndroidCalendar2Activity.getGS().insert(
+														title,
+														DateTime.parseDateTime(sdt),
+														DateTime.parseDateTime(edt));
+											if (googleEventID != "") {
+												String fields[] = { "eventID" };
+												String args[] = { googleEventID };
+												String condition = " eventID = '"+ eventid + "' ";
+												AndroidCalendar2Activity.getDB().updateConditional(
+														"TimeTable",condition,fields, args);
 											}
 										}
 									} catch (Exception e) {
 										e.printStackTrace();
 									}
 								}
+								AndroidCalendar2Activity.getDB().delete("GoogleAddTable", null);
 								
+								// upload un-sync records (update)
+								ja = AndroidCalendar2Activity.getDB().fetchConditional("GoogleUpdateTable", "");
+								System.out.println("# of (unsync->update)="+ ja.length());
+								for (int i = 0; i < ja.length(); i++) {
+									JSONObject jo;
+									try {
+										jo = ja.getJSONObject(i);
+
+										String eventid = jo.getString("eventID");
+										System.out.println("Eventid (unsync->update)="+ eventid);
+
+										JSONArray temp = AndroidCalendar2Activity.getDB().fetchAllNotes(
+													"TimeTable",
+													new String[] { "eventid" },
+													new String[] { eventid });
+										for (int j = 0; j < temp.length(); j++) {
+											JSONObject tempo = temp.getJSONObject(j);
+											title = tempo.getString("title");
+											startDate = tempo.getString("startDate");
+											startTime = tempo.getString("startTime");
+											endDate = tempo.getString("endDate");
+											endTime = tempo.getString("endTime");
+	
+											System.out.println("Title(unsync->update)="+ title);
+	
+											String startDate2 = startDate.substring(0,4)+ "-"+ startDate.substring(4, 6)+ "-"+ startDate.substring(6, 8);
+											String endDate2 = endDate.substring(0, 4)+ "-"+ endDate.substring(4, 6)+ "-"+ endDate.substring(6, 8);
+	
+											final String sdt = startDate2 + "T"+ startTime.substring(0, 2)+ ":"+ startTime.substring(3, 5)+ ":00";
+											final String edt = endDate2 + "T"+ endTime.substring(0, 2)+ ":"+ endTime.substring(3, 5)+ ":00";
+	
+											// sdt(unsync)=20120418T01:25:00
+											// edt(unsync)=20120418T02:25:00
+	
+											// DateTime Format = "2012-03-01T22:40:00"
+											System.out.println("sdt(unsync->update)="+ sdt);
+											System.out.println("edt(unsync->update)="+ edt);
+	
+											String googleEventID = AndroidCalendar2Activity.getGS().updateGoogleEvent(
+														eventid, title,
+														DateTime.parseDateTime(sdt),
+														DateTime.parseDateTime(edt));
+											// if successful
+											System.out.println("OLD ID(unsync->update)= "+ eventid);
+											if (googleEventID != "") {
+												String fields[] = { "eventID" };
+												String args[] = { googleEventID };
+												String condition = " eventID = '"+ eventid + "' ";
+												AndroidCalendar2Activity.getDB().updateConditional(
+														"TimeTable",condition,fields, args);
+											}
+											System.out.println("NEW ID(unsync->update)= "+ googleEventID);
+										}
+										
+									}
+									catch(Exception e){
+										e.printStackTrace();
+									}
+								}
+								AndroidCalendar2Activity.getDB().delete("GoogleUpdateTable", null);
+								
+								// upload un-sync records (delete)
+								ja = AndroidCalendar2Activity.getDB().fetchConditional("GoogleDeleteTable", "");
+								System.out.println("# of (unsync->delete)="+ ja.length());
+								for (int i = 0; i < ja.length(); i++) {
+									JSONObject jo;
+									try {
+										jo = ja.getJSONObject(i);
+
+										String eventid = jo.getString("eventID");
+										System.out.println("Eventid (unsync->delete)="+ eventid);
+
+										JSONArray temp = AndroidCalendar2Activity.getDB().fetchAllNotes(
+													"TimeTable",
+													new String[] { "eventid" },
+													new String[] { eventid });
+										for (int j = 0; j < temp.length(); j++) {
+											JSONObject tempo = temp.getJSONObject(j);
+											title = tempo.getString("title");
+											startDate = tempo.getString("startDate");
+											startTime = tempo.getString("startTime");
+											endDate = tempo.getString("endDate");
+											endTime = tempo.getString("endTime");
+	
+											System.out.println("Title(unsync->delete)="+ title);
+	
+											String startDate2 = startDate.substring(0,4)+ "-"+ startDate.substring(4, 6)+ "-"+ startDate.substring(6, 8);
+											String endDate2 = endDate.substring(0, 4)+ "-"+ endDate.substring(4, 6)+ "-"+ endDate.substring(6, 8);
+	
+											final String sdt = startDate2 + "T"+ startTime.substring(0, 2)+ ":"+ startTime.substring(3, 5)+ ":00";
+											final String edt = endDate2 + "T"+ endTime.substring(0, 2)+ ":"+ endTime.substring(3, 5)+ ":00";
+	
+											// sdt(unsync)=20120418T01:25:00
+											// edt(unsync)=20120418T02:25:00
+	
+											// DateTime Format = "2012-03-01T22:40:00"
+											System.out.println("sdt(unsync->delete)="+ sdt);
+											System.out.println("edt(unsync->delete)="+ edt);
+	
+											AndroidCalendar2Activity.getGS().deleteGoogleEvent(eventid);
+										}
+										
+									}
+									catch(Exception e){
+										e.printStackTrace();
+									}
+								}
+								AndroidCalendar2Activity.getDB().delete("GoogleDeleteTable", null);
+								
+								
+								// check if record is deleted online
+								String todayDate = year + "-" + month + "-" + date;
+								System.out.println("(online) todayDate: "+ todayDate);
+								
+								String dateFrom= AndroidCalendar2Activity.getGS().addDays(todayDate, -past);
+								String dateTo= AndroidCalendar2Activity.getGS().addDays(todayDate, future);
+								
+								//dateFrom: 2012-03-19
+								dateFrom= dateFrom.substring(0,4)+ dateFrom.substring(5,7) + dateFrom.substring(8,10);
+								dateTo= dateTo.substring(0,4)+ dateTo.substring(5,7) + dateTo.substring(8,10);
+								
+								System.out.println("(online)dateFrom: "+ dateFrom);
+								System.out.println("(online)dateTo: "+dateTo);
+								
+								String condition = " startDate >= '" + dateFrom + "' AND startDate <= '"
+										+ dateTo + "' ";
+								try {
+									ja = AndroidCalendar2Activity.getDB().fetchConditional("TimeTable",
+											condition);
+									for (int i = 0; i < ja.length(); i++) {
+										JSONObject jo = ja.getJSONObject(i);
+
+										String id= jo.getString("eventID");
+										System.out.println("eventID: "+id);
+										if (AndroidCalendar2Activity.getGS().getGoogleEvent(id)== null){
+											System.out.println("(deleting) eventID: "+ id);
+											AndroidCalendar2Activity.getDB().delete("TimeTable",id);
+										}
+									}
+
+								} catch (Exception e) {
+									Log.i("error", e.toString());
+								}
+							
+								
+								// Sync from google (insert/ update)
 								AndroidCalendar2Activity.getGS().getRangeEvents2(
-												(year + "-" + month + "-" + date), past, future);
-								
-								//AndroidCalendar2Activity.getGS().temp2();
-								
-								//temp= AndroidCalendar2Activity.getDB().getTable("TimeTable");
-								
+										(year + "-" + month + "-" + date),past, future);
+
+								// AndroidCalendar2Activity.getGS().temp2();
+								// AndroidCalendar2Activity.getDB().getTable("TimeTable");
+
 								Looper.loop();
 							}
 						}
