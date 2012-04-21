@@ -211,7 +211,7 @@ More than that, there is a feature in DailyAssistant that user can find out the 
 8.7 If the whole period selected is the common free time, then a message “all days free !” appears.
 
 
----- 
+------
 
 *9. To-Do List*
 
@@ -255,7 +255,7 @@ To-Do list page shows the list of tasks. User can set and update their progress 
 
 9.3.2 User can uncheck the “show completed task” checkbox  in order to only show those tasks in progress. 
 
-----
+-----
 
 *10. Hindering Access to Specific Website*
 
