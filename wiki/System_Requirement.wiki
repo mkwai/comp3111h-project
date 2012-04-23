@@ -30,7 +30,7 @@ Calendar and scheduler are the basic features of the personal assistant.
 
 1.1.3 User can select a date to see the monthly calendar of the month directly, using “go to” button. The date can be set by either using the “+” and “-” button or typing the month, day and year in the respective boxes. Wrong input is not allowed.
 
-1.1.4 The starting date of the calendar in DailyAssistant is 1/1/1900 and the last is 31/12/2100. 24 hours is available in the schedule in which each row represent 30 minutes. If the date entered/selected by user is out of the range, error message box will pop out.
+1.1.4 The starting date of the calendar in DailyAssistant is 1/1/1900 and the last is 31/12/2100. 24 hours is available in the schedule in which each row represent 30 minutes. If the date entered/selected by user is out of the range, it should cast back the date within the range when set pressed.
  
 
 
@@ -75,8 +75,9 @@ The details of those optional fields are discussed in the following:
 2.1.8 If private event check box is checked, then the event will not be shared with friends (detail in requirement 7). Otherwise, it will be shared if the private event check box is not checked.
 
 2.1.9 Clicking “Confirm”, the event will be added to the schedule. Clicking “Cancel”, it will go back to main page.
- 
+
 *2.2 Editing and Deleting Event*
+
 After an event is added, user can view via the daily schedule. User can edit the event information, which have the same input fields as the add event page.
 
 2.2.1 Click any event and then click “Edit”, the edit event page is displayed.
