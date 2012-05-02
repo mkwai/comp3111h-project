@@ -5,14 +5,14 @@
     <string name="addevent_addevent">Add Event</string>
     <string name="addevent_content">Title</string>
     <string name="addevent_content_hint">Enter event content</string>
-    <string name="addevent_starting_time">Starting</string>
-    <string name="addevent_ending_time">Ending</string>
+    <string name="addevent_starting_time">Starts</string>
+    <string name="addevent_ending_time">Ends</string>
     <string name="addevent_location_hint">Enter Location</string>
     <string name="addevent_location">Location</string>
     <string name="addevent_reminder">Reminder</string>
     <string name="addevent_restrict">Restrict facebook</string>
     <string name="addevent_private_event">Private Event</string>
-    <string name="addevent_contact_person">Contatct</string>
+    <string name="addevent_contact_person">Contact</string>
     <string name="addevent_optional">optional field</string>
     <string name="addevent_contact_person_hint">Enter Contact Person</string>
     <string name="addevent_confirm">Confirm</string>
@@ -20,8 +20,8 @@
     <string name="editevent_editevent">Edit Event</string>
     <string name="editevent_content">Title</string>
     <string name="editevent_content_hint">Enter event content</string>
-    <string name="editevent_starting_time">Starting</string>
-    <string name="editevent_ending_time">Ending</string>
+    <string name="editevent_starting_time">Starts</string>
+    <string name="editevent_ending_time">Ends</string>
     <string name="editevent_location_hint">Enter Location</string>
     <string name="editevent_location">Location</string>
     <string name="editevent_reminder">Reminder</string>
@@ -37,7 +37,7 @@
 
     <string name="monthlyview_synchronous">Sharing System</string>
     <string name="monthlyview_addevent">Add Event</string>
-    <string name="monthlyview_google">Google Synchronous</string>
+    <string name="monthlyview_google">Google Synchronize</string>
     <string name="monthlyview_daily">View Daily Schedule</string>
     <string name="monthlyview_monthly">Monthly</string>
     <string name="monthlyview_goto">GoTo</string>
@@ -49,13 +49,13 @@
     <string name="addtask_location">Location:</string>
     <string name="addtask_title_hint">Enter the title</string>
     <string name="addtask_location_hint">Enter the location</string>
-    <string name="addtask_addtask">Add task</string>
+    <string name="addtask_addtask">Add Task</string>
     <string name="addtask_progress">Progress:</string>
     <string name="addtask_deadlinetime">Deadline:</string>
     <string name="addtask_reminder">Reminder Setting:</string>
     <string name="addtask_cancel">Cancel</string>
     <string name="addtask_confirm">Confirm</string>
-    <string name="dailyview_addevent">+</string>
+    <string name="dailyview_addevent">Add Event</string>
     <string name="pl_total1">"Total: "</string>
     <string name="gs_username">User Name: </string>
     <string name="gs_password">Password: </string>
@@ -67,20 +67,20 @@
     <string name="gs_day4">90 days </string>
     <string name="gs_day5">180 days </string>
     <string name="gs_day6">365 days </string>
-    <string name="gs_sync">Synchronous</string>
+    <string name="gs_sync">Synchronize</string>
     <string name="gs_disconnect">Disconnect</string>
-    <string name="gs_gs">Sign in to Google</string>
+    <string name="gs_gs">Google Synchronize</string>
     <string name="addtask_progress_percent">0 % </string>
     <string name="monthlyview_weekDay"></string>
 
     <color name="view_color">#000080</color>
 
-    <string name="dailyview_previous">&lt;- previous</string>
-    <string name="dailyview_next">next -></string>
+    <string name="dailyview_previous">previous</string>
+    <string name="dailyview_next">next</string>
     <string name="monthlyview_previous">&lt;-</string>
     <string name="monthlyview_next">-&gt;</string>
-    <string name="editevent_delevent">Delete</string>
-	
+    <string name="editevent_delevent">Delete This Event</string>
+	 
     <string name="webCheck">Web Hindering</string>
     <string name="siteAdd">Add</string>
     <string name="addtask_5min">5 minutes</string>
@@ -92,4 +92,16 @@
     <string name="todolist_sort_text">sort by</string>
     <color name="text_color">#000000</color>
     <string name="todolist_show_text">show finished task</string>
+    <string name="addevent_contact_select">select from contact list</string>
+    <string name="dailyview_export">Export as image</string>
+    <string name="edittask_edittask">Edit Task</string>
+    <string name="edittask_delete">Delete This Task</string>
+    <string name="todolist_del_finishtask">delete finished task</string>
+    <string name="gs_ac">Google Account:</string>
+    <string name="bh_webadded">The following websites are added:</string>
+    <string name="bh_bh">Web Hindering</string>
+    <string name="bh_enterwebsite">Enter the website here</string>
+    <string name="dailyview_refresh">refresh</string>
+    <color name="button_color">#EEEEEE</color>
+    
 </resources>
